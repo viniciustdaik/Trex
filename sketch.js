@@ -39,7 +39,7 @@ function preload() {
   checkpointsound = loadSound("checkPoint.mp3");
   birdanm = loadAnimation("bird1.png", "bird2.png");
   birdimg = loadAnimation("bird1.png");
-  highscoreimg = loadImage("highscore.png")
+  highscoreimg = loadImage("highscore.png");
 }
 
 function setup() {
