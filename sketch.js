@@ -83,11 +83,11 @@ function setup() {
   birdG = new Group();
 
   gameover = createSprite(width/2, 100);//300, 100
-  gameover.addImage(gameoverimg);
+  gameover.addImage("gameover", gameoverimg);
   gameover.visible = false;
 
   restart = createSprite(width/2, 140);//300, 140
-  restart.addImage(restartimg)
+  restart.addImage("restart", restartimg)
   restart.visible = false;
   restart.scale = 0.6;
 
@@ -135,6 +135,7 @@ function draw() {
     keyDown('W')&&trex.y >=150&&trexIsCrouching==false||
     keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||
     touches.length > 0&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchButton)){
+      touches = [];
       trex.velocityY = -10;
       jumpsound.play();
       //trexIsJumping=true;
