@@ -220,7 +220,7 @@ function createclouds(){
   cloud.addImage("cloud", cloud_image);
   cloud.lifetime = 415;//215
   cloud.scale = 0.5;
-  cloud.y = Math.round(random(50, windowHeight-100));//100
+  cloud.y = Math.round(random(50, 100));//windowHeight-100(windowHeight update soon)
   cloud.depth = trex.depth;
   trex.depth = trex.depth+1;
   cloud.depth = crouchbutton.depth;
