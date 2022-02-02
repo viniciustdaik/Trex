@@ -14,7 +14,11 @@ var gamestate = PLAY;
 var jumpsound, failsound, checkpointsound;
 var trexIsCrouching = false;
 var trexIsJumping = false;
-var highscoreS, highscoreimg;
+var highscoreS, highscoreimg  ;
+var night = false;
+var trexIsInvencibleCactus = false;
+var trexIsInvencibleBirds = false;
+var crouchbutton, crouchbuttonimg;
 
 function preload() {
   //carregar imagens em variáveis auxiliares
@@ -40,17 +44,22 @@ function preload() {
   birdanm = loadAnimation("bird1.png", "bird2.png");
   birdimg = loadAnimation("bird1.png");
   highscoreimg = loadImage("highscore.png");
+  crouchbuttonimg = loadImage("down_arrow.png");
 }
 
 function setup() {
   //criação da area do jogo
-  createCanvas(600, 200);
-  ground = createSprite(200, 180, 400, 20);
+  createCanvas(windowWidth, windowHeight);//600, 200
+  ground = createSprite(width/2, 180, 400, 20);
   ground.addImage("ground", ground_image);
   
-  highscoreS = createSprite(520, 33, 10, 10);
+  highscoreS = createSprite(100, 33, 10, 10);//windowWidth-80, 33
   highscoreS.addImage("highscoreimg", highscoreimg);
   highscoreS.scale = 1.2;
+  
+  crouchbutton = createSprite(width/2, 30, 15, 15);
+  crouchbutton.addImage("crouchbutton", crouchbuttonimg);
+  crouchbutton.scale = 0.7;
   
   /*cloud1 = createSprite(160, 100, 30, 30);
   cloud1.addImage("cloud", cloud_image);
@@ -73,11 +82,11 @@ function setup() {
   cactuG = new Group();
   birdG = new Group();
 
-  gameover = createSprite(300, 100);
+  gameover = createSprite(width/2, 100);//300, 100
   gameover.addImage(gameoverimg);
   gameover.visible = false;
 
-  restart = createSprite(300, 140);
+  restart = createSprite(width/2, 140);//300, 140
   restart.addImage(restartimg)
   restart.visible = false;
   restart.scale = 0.6;
@@ -93,12 +102,15 @@ function setup() {
 }
 
 function draw() {
-  background('white');
+  text(highscore, highscoreS.x+25, 40);
+  textAlign("center");
+  if(night == false){
+    background('white');
+  }
   fill('gold');
   stroke('green');
   textSize(20);
-  text("Score: "+score, 450, 20);//500
-  text(highscore, highscoreS.x+15, 40);
+  text("Pontuação: "+score, highscoreS.x, 20);//500
   /*if(cloud1.x < -20){
     cloud1.x = 645;
   }
@@ -107,18 +119,22 @@ function draw() {
   }*/
   //console.log(trex.y);
   if(gamestate == PLAY){
+    cloudG.setVelocityXEach(-(4+3*score/100));//-(5+score/100)
+    cactuG.setVelocityXEach(-(5+score/100));//-(5+score/100)
+    birdG.setVelocityXEach(-(5+score/100));//-(5+score/100)
     //ground.velocityX = -2;
-    ground.velocityX = -(4+3*score/100);
+    ground.velocityX = -(4+3*score/100);//-(4+3*score/100)
     score = score+Math.round(getFrameRate()/30);
     if(score>0&&score%100==0){
       checkpointsound.play();
     }
-    if(ground.x < 0){
+    if(ground.x < 350){//< 0
       ground.x = ground.width/2;
     }
     if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||
     keyDown('W')&&trex.y >=150&&trexIsCrouching==false||
-    keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false){
+    keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||
+    touches.length > 0&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchButton)){
       trex.velocityY = -10;
       jumpsound.play();
       //trexIsJumping=true;
@@ -131,13 +147,17 @@ function draw() {
     }
     //console.log(trexIsJumping);
     //console.log(trex.y);
-    if(keyWentDown("S")&&trexIsJumping==false||keyWentDown("DOWN_ARROW")&&trexIsJumping==false){
+    if(keyWentDown("S")&&trexIsJumping==false
+    ||keyWentDown("DOWN_ARROW")&&trexIsJumping==false
+    ||mouseIsOver(crouchbutton)&&trexIsJumping==false){
       //trex.addAnimation("crouching", trex_crouching);
       trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
       trex.changeAnimation("crouching", trex_crouching);
       trexIsCrouching=true;
       //trex.velocityX = 2;
-    }if(keyWentUp("S")||keyWentUp("DOWN_ARROW")){
+    }if(keyWentUp("S")
+    ||keyWentUp("DOWN_ARROW")
+    ||!mouseIsOver(crouchbutton)){
       //trex.addAnimation("running", trex_running);
       trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
       trex.changeAnimation("running", trex_running);
@@ -148,7 +168,8 @@ function draw() {
     createcactu();
     createclouds();
     createbird();
-    if(cactuG.isTouching(trex)||birdG.isTouching(trex)){
+    if(cactuG.isTouching(trex)&&trexIsInvencibleCactus == false
+    ||birdG.isTouching(trex)&&trexIsInvencibleBirds == false){
       //trex.velocityY = -10;
       //jumpsound.play();
       gamestate = END;
@@ -192,14 +213,18 @@ function draw() {
   drawSprites();
 }
 function createclouds(){
-  if(frameCount%60==0){
-  cloud = createSprite(610, 100, 10, 10);
+  if(frameCount%60==0){//frameCount%60==0
+  cloud = createSprite(width+10, 100, 10, 10);//610, 100
+  //cloud.velocityX = -(4+3*score/100);//-(5+score/100)
   cloud.addImage("cloud", cloud_image);
+  cloud.lifetime = 415;//215
   cloud.scale = 0.5;
-  cloud.y = Math.round(random(50, 100));
-  cloud.velocityX = -3;
+  cloud.y = Math.round(random(50, windowHeight-100));//100
   cloud.depth = trex.depth;
   trex.depth = trex.depth+1;
+  cloud.depth = crouchbutton.depth;
+  crouchbutton.depth = crouchbutton.depth+1;
+  crouchbutton.depth = gameover.depth;
   cloud.depth = gameover.depth;
   gameover.depth = gameover.depth+1;
   trex.depth = gameover.depth;
@@ -209,9 +234,9 @@ function createclouds(){
 }
 
 function createcactu(){
-  if(frameCount%60==0){
-  var cactu = createSprite(610, 165, 10, 40);
-  cactu.velocityX = -(5+score/100);
+  if(frameCount%50==0){//frameCount%60==0
+  var cactu = createSprite(width+10, 165, 10, 40);//610, 165
+  //cactu.velocityX = -(5+score/100);//-(5+score/100)
   var aleatorio = Math.round(random(1, 6));
   switch(aleatorio){
     case 1:cactu.addImage(cactu1);
@@ -229,18 +254,18 @@ function createcactu(){
     default:break;
   }
   cactu.scale = 0.5;
-  cactu.lifetime = 215;
+  cactu.lifetime = 315;//215
   cactuG.add(cactu);
   }
 }
 
 function createbird(){
-  if(frameCount%230==0&&score>300){
-    var bird = createSprite(610, 100, 10, 10);
-    bird.velocityX = -(5+score/100);
-    bird.lifetime = 215;
+  if(frameCount%225==0&&score>300){//frameCount%230==0
+    var bird = createSprite(width+10, 100, 10, 10);//610, 100
+    //bird.velocityX = -(5+score/100);//-(5+score/100)
+    bird.lifetime = 315;//215
     bird.addAnimation("bird", birdanm);
-    bird.scale = 0.4;
+    bird.scale = 0.51;
     bird.y = Math.round(random(130, 130));
     birdG.add(bird);
   }
@@ -259,4 +284,12 @@ function reset(){
   }
   score = 0;
   
+}
+
+function night(){
+  night = true;
+}
+
+function turnday(){
+  night = false;
 }
