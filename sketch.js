@@ -134,7 +134,7 @@ function draw() {
     if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||
     keyDown('W')&&trex.y >=150&&trexIsCrouching==false||
     keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||
-    touches.length > 0&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchButton)){
+    touches.length > 0&&trex.y >=150&&trexIsCrouching==false){//&&!mouseIsOver(crouchButton)){
       touches = [];
       trex.velocityY = -10;
       jumpsound.play();
