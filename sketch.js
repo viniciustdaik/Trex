@@ -22,6 +22,7 @@ var nightMost = false;
 var trexIsInvencibleCactus = false;
 var trexIsInvencibleBirds = false;
 var crouchbutton, crouchbuttonimg;
+var staranim;
 
 function preload() {
   //carregar imagens em variáveis auxiliares
@@ -49,6 +50,8 @@ function preload() {
   birdimg = loadAnimation("./inimigos-obstaculos/bird1.png");
   highscoreimg = loadImage("./imagens-de-pontuacao/highscore.png");
   crouchbuttonimg = loadImage("down_arrow.png");
+  staranim = loadAnimation("./imagens-de-fundo/star1.png", 
+  "./imagens-de-fundo/star2.png", "./imagens-de-fundo/star3.png");
 }
 
 function setup() {
