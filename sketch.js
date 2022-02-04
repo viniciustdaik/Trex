@@ -164,23 +164,25 @@ function draw() {
     }
     //console.log(trexIsJumping);
     //console.log(trex.y);
-    if(keyWentDown('S')&&trexIsJumping==false
-    ||  keyWentDown("DOWN_ARROW")&&trexIsJumping==false
+    if(keyWentDown("S")&&trexIsJumping==false
+    ||keyWentDown(DOWN_ARROW)&&trexIsJumping==false
     ||mouseIsOver(crouchbutton)&&trexIsJumping==false){
       //trex.addAnimation("crouching", trex_crouching);
       trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
       trex.changeAnimation("crouching", trex_crouching);
       trexIsCrouching=true;
       //trex.velocityX = 2;
-    }if(keyWentUp('S')
-    ||keyWentUp("DOWN_ARROW")//){
-    ||!keyDown("DOWN_ARROW")&&!mouseIsOver(crouchbutton)
-    ||!keyDown('S')&&!mouseIsOver(crouchbutton)){
+    }if(keyWentUp("S")
+    ||keyWentUp(DOWN_ARROW)//){
+    ||!keyIsDown(DOWN_ARROW)&&!mouseIsOver(crouchbutton)){
+    //||!keyIsDown("S")&&!mouseIsOver(crouchbutton)){
       //trex.addAnimation("running", trex_running);
       trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
       trex.changeAnimation("running", trex_running);
       trexIsCrouching=false;
       //trex.velocityX = 0;
+    }else if(!keyIsDown(DOWN_ARROW)&&!mouseIsOver(crouchbutton)&&!keyIsDown("S")){
+
     }
     trex.velocityY = trex.velocityY + 0.5;
     createcactu();
