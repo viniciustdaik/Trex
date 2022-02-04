@@ -15,35 +15,39 @@ var jumpsound, failsound, checkpointsound;
 var trexIsCrouching = false;
 var trexIsJumping = false;
 var highscoreS, highscoreimg  ;
-var night = false;
+var Isnight = false;
+var Isday = true;
+var dayMost = true;
+var nightMost = false;
 var trexIsInvencibleCactus = false;
 var trexIsInvencibleBirds = false;
 var crouchbutton, crouchbuttonimg;
 
 function preload() {
   //carregar imagens em variáveis auxiliares
-  trex_running = loadAnimation("trex1-blink.png",  "trex3.png", "trex4.png", 
-  "trex1.png", "trex3.png", "trex4.png");
-  trex_collided = loadAnimation("trex_collided.png");
+  trex_running = loadAnimation("./trex/trex1-blink.png",  "./trex/trex3.png", "./trex/trex4.png", 
+  "./trex/trex1.png", "./trex/trex3.png", "./trex/trex4.png");
+  trex_collided = loadAnimation("./trex/trex_collided.png");
   ground_image = loadImage("ground2.png");
-  cloud_image = loadImage("cloud.png");
-  trex_crouching = loadAnimation("trex_low1-blink.png", "trex_low2.png", 
-  "trex_low1.png", "trex_low2.png", 
-  "trex_low1.png", "trex_low2.png");
-  cactu1 = loadImage("obstacle1.png");
-  cactu2 = loadImage("obstacle2.png");
-  cactu3 = loadImage("obstacle3.png");
-  cactu4 = loadImage("obstacle4.png");
-  cactu5 = loadImage("obstacle5.png");
-  cactu6 = loadImage("obstacle6.png");
+  cloud_image = loadImage("./imagens-de-fundo/cloud.png");
+  trex_crouching = loadAnimation("./trex/trex_low1-blink.png", "./trex/trex_low2.png", 
+  "./trex/trex_low1.png", "./trex/trex_low2.png", 
+  "./trex/trex_low1.png", "./trex/trex_low2.png");
+  cactu1 = loadImage("./inimigos-obstaculos/obstacle1.png");
+  cactu2 = loadImage("./inimigos-obstaculos/obstacle2.png");
+  cactu3 = loadImage("./inimigos-obstaculos/obstacle3.png");
+  cactu4 = loadImage("./inimigos-obstaculos/obstacle4.png");
+  cactu5 = loadImage("./inimigos-obstaculos/obstacle5.png");
+  cactu6 = loadImage("./inimigos-obstaculos/obstacle6.png");
   gameoverimg = loadImage("gameOver.png");
   restartimg = loadImage("restart.png");
   jumpsound = loadSound("jump.mp3");
   failsound = loadSound("fail.mp3");
   checkpointsound = loadSound("checkPoint.mp3");
-  birdanm = loadAnimation("bird1.png", "bird2.png");
-  birdimg = loadAnimation("bird1.png");
-  highscoreimg = loadImage("highscore.png");
+  birdanm = loadAnimation("./inimigos-obstaculos/bird1.png", 
+  "./inimigos-obstaculos/bird2.png");
+  birdimg = loadAnimation("./inimigos-obstaculos/bird1.png");
+  highscoreimg = loadImage("./imagens-de-pontuacao/highscore.png");
   crouchbuttonimg = loadImage("down_arrow.png");
 }
 
@@ -102,14 +106,15 @@ function setup() {
 }
 
 function draw() {
-  text(highscore, highscoreS.x+25, 40);
-  textAlign("center");
-  if(night == false){
-    background('white');
-  }
+  background('white');
   fill('gold');
   stroke('green');
   textSize(20);
+  text(highscore, highscoreS.x+25, 40);
+  textAlign("center");
+  //if(Isnight == false){
+  //  background('white'); //nao testei
+  //}
   text("Pontuação: "+score, highscoreS.x, 20);//500
   /*if(cloud1.x < -20){
     cloud1.x = 645;
@@ -119,6 +124,14 @@ function draw() {
   }*/
   //console.log(trex.y);
   if(gamestate == PLAY){
+    if(score%700==0){
+      if(Isnight == false&&dayMost == true){
+        turnnight();
+      }
+      if(Isday == false&&nightMost == true){
+        turnday();
+      }
+    }
     cloudG.setVelocityXEach(-(4+3*score/100));//-(5+score/100)
     cactuG.setVelocityXEach(-(5+score/100));//-(5+score/100)
     birdG.setVelocityXEach(-(5+score/100));//-(5+score/100)
@@ -148,17 +161,18 @@ function draw() {
     }
     //console.log(trexIsJumping);
     //console.log(trex.y);
-    if(keyWentDown("S")&&trexIsJumping==false
-    ||keyWentDown("DOWN_ARROW")&&trexIsJumping==false
+    if(keyWentDown('S')&&trexIsJumping==false
+    ||  keyWentDown("DOWN_ARROW")&&trexIsJumping==false
     ||mouseIsOver(crouchbutton)&&trexIsJumping==false){
       //trex.addAnimation("crouching", trex_crouching);
       trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
       trex.changeAnimation("crouching", trex_crouching);
       trexIsCrouching=true;
       //trex.velocityX = 2;
-    }if(keyWentUp("S")
-    ||keyWentUp("DOWN_ARROW")
-    ||!mouseIsOver(crouchbutton)){
+    }if(keyWentUp('S')
+    ||keyWentUp("DOWN_ARROW")//){
+    ||!keyDown("DOWN_ARROW")&&!mouseIsOver(crouchbutton)
+    ||!keyDown('S')&&!mouseIsOver(crouchbutton)){
       //trex.addAnimation("running", trex_running);
       trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
       trex.changeAnimation("running", trex_running);
@@ -220,7 +234,7 @@ function createclouds(){
   cloud.addImage("cloud", cloud_image);
   cloud.lifetime = 415;//215
   cloud.scale = 0.5;
-  cloud.y = Math.round(random(50, 100));//windowHeight-100(windowHeight update soon)
+  cloud.y = Math.round(random(50, 100));//windowHeight-100(windowHeight update soon(maybe))
   cloud.depth = trex.depth;
   trex.depth = trex.depth+1;
   cloud.depth = crouchbutton.depth;
@@ -287,10 +301,12 @@ function reset(){
   
 }
 
-function night(){
-  night = true;
+function turnnight(){
+  Isnight = true;
+  Isday = false;
 }
 
 function turnday(){
-  night = false;
+  Isnight = false;
+  Isday = true;
 }
