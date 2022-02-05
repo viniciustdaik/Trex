@@ -147,10 +147,11 @@ function draw() {
     if(ground.x < 350){//< 0
       ground.x = ground.width/2;
     }
-    if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||
-    keyDown('W')&&trex.y >=150&&trexIsCrouching==false||
-    keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||
-    touches.length > 0&&trex.y >=150&&trexIsCrouching==false){//&&!mouseIsOver(crouchButton)){
+    if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchbutton)||
+    keyDown('W')&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchbutton)||
+    keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchbutton)||
+    touches.length > 0&&trex.y >=150&&trexIsCrouching==false
+    &&!mouseIsOver(crouchbutton)){
       touches = [];
       trex.velocityY = -10;
       jumpsound.play();
