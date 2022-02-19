@@ -182,9 +182,9 @@ function draw() {
       trex.changeAnimation("running", trex_running);
       trexIsCrouching=false;
       //trex.velocityX = 0;
-    }else if(!keyIsDown(DOWN_ARROW)&&!mouseIsOver(crouchbutton)&&!keyIsDown("S")){
+    }//else if(!keyDown(DOWN_ARROW)&&!mouseIsOver(crouchbutton)&&!keyDown("S")){
 
-    }
+    //}
     trex.velocityY = trex.velocityY + 0.5;
     createcactu();
     createclouds();
