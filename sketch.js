@@ -185,7 +185,11 @@ function setup() {
 }
 
 function draw() {
-  background('cyan');
+  if(TrexColorido == true){
+    background('cyan');
+  }else{
+    background('white');
+  }
   fill('gold');
   stroke('green');
   textSize(20);
