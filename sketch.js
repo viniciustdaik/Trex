@@ -11,7 +11,11 @@ cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb,
 birdG, birdanm, birdimg, greenbirdanm, greenbirdimg, brownbirdanm, brownbirdimg, 
 cloudG;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
-var normalbutton, normalbuttonimg, coloridobutton, coloridobuttonimg;
+var normalbutton, normalbuttonimg, 
+coloridobutton, coloridobuttonimg, 
+leftbutton, leftbuttonimg, 
+rightbutton, rightbuttonimg, 
+selectbutton, selectbuttonimg;
 var score = 0;
 var highscore = 0;
 var PLAY = 1;
@@ -94,6 +98,9 @@ function preload() {
   restartimg = loadImage("restart.png");
   //normalbuttonimg = loadImage("normal.png");
   coloridobuttonimg = loadImage("Colorido.png");
+  leftbuttonimg = loadImage("left_arrow.png");
+  rightbuttonimg = loadImage("right_arrow.png");
+  selectbuttonimg = loadImage("select.png");
   jumpsound = loadSound("jump.mp3");
   failsound = loadSound("fail.mp3");
   checkpointsound = loadSound("checkPoint.mp3");
@@ -119,16 +126,6 @@ function setup() {
   
   ground = createSprite(width/2, 180, 400, 20);
   ground.visible = false;
-  if(TrexColorido == false){
-    ground.addImage("ground", ground_image);
-  }else if(TrexColorido == true){
-    ground.addImage("groundcolored", ground_colored_image);
-    sand = createSprite(width/2, height/2+180, windowWidth, windowHeight-12);
-    sand.shapeColor = 'gold';
-    sand.visible = false;
-  }else{
-
-  }
 
   coloridobutton = createSprite(width/2+255, height/2);
   coloridobutton.addImage("colorido", coloridobuttonimg);
@@ -139,6 +136,18 @@ function setup() {
   //normalbutton.addImage("colorido", coloridobuttonimg);
   //normalbutton.scale = 0.6;
   normalbutton.visible = false;
+
+  leftbutton = createSprite(width/2-75, 30, 15, 15);
+  leftbutton.addImage("leftarrow", leftbuttonimg);
+  leftbutton.scale = 0.7;
+
+  rightbutton = createSprite(width/2+75, 30, 15, 15);
+  rightbutton.addImage("rightarrow", rightbuttonimg);
+  rightbutton.scale = 0.7;
+
+  selectbutton = createSprite(width/2, 30, 15, 15);
+  selectbutton.addImage("selectbutton", selectbuttonimg);
+  selectbutton.scale = 0.7;
   
   highscoreS = createSprite(100, 33, 10, 10);//windowWidth-80, 33
   highscoreS.addImage("highscoreimg", highscoreimg);
@@ -249,18 +258,18 @@ function draw() {
     fill('lime');
     text("O", coloridobutton.x+200, coloridobutton.y+25);
     fill('gray');
-    text("N O R M A L", normalbutton.x, normalbutton.y+25);
+    text("N O R M A L", normalbutton.x+55, normalbutton.y+25);
     fill('cyan');
     stroke('green');
     textSize(32);
     text("Selecione Um Modo De Jogo.", width/2, height/2-95);
     text("Use As Setas Ou WASD.", width/2, height/2-55);
     if(normalbuttonover == true){
-      if(keyWentDown("D") || keyWentDown(RIGHT_ARROW)){
+      if(keyWentDown("D") || keyWentDown(RIGHT_ARROW) || mouseIsOver(rightbutton)){
         normalbuttonover = false;
         coloridobuttonover = true;
       }
-      if(keyDown("space")){
+      if(keyDown("space") || mouseIsOver(selectbutton)){//mousePressedOver(selectbutton)){
         TrexColorido = false;
         gamestate = PLAY;
         crouchbutton.visible = true;
@@ -270,14 +279,17 @@ function draw() {
         //coloridobutton.visible = false;
         ground.addImage("ground", ground_image);
         //groundvisibility = true;
+        leftbutton.visible = false;
+        rightbutton.visible = false;
+        selectbutton.visible = false;
       }
     }
     if(coloridobuttonover == true){
-      if(keyWentDown("A") || keyWentDown(LEFT_ARROW)){
+      if(keyWentDown("A") || keyWentDown(LEFT_ARROW) || mouseIsOver(leftbutton)){
         normalbuttonover = true;
         coloridobuttonover = false;
       }
-      if(keyDown("space")){
+      if(keyDown("space") || mouseIsOver(selectbutton)){//mousePressedOver(selectbutton)){
         TrexColorido = true;
         gamestate = PLAY;
         crouchbutton.visible = true;
@@ -291,6 +303,11 @@ function draw() {
         sand.shapeColor = 'gold';
         //sand.visible = true;
         //groundvisibility = true;
+        leftbutton.visible = false;
+        rightbutton.visible = false;
+        selectbutton.visible = false;
+        trex.depth = sand.depth;
+        sand.depth = sand.depth+1;
       }
     }
   }
