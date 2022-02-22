@@ -10,7 +10,7 @@ var cactu1, cactu2, cactu3, cactu4, cactu5, cactu6, cactuG,
 cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb,
 birdG, birdanm, birdimg, greenbirdanm, greenbirdimg, brownbirdanm, brownbirdimg, 
 cloudG;
-var gameover, restart, gameoverimg, restartimg;
+var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
 var score = 0;
 var highscore = 0;
 var PLAY=1;
@@ -86,6 +86,7 @@ function preload() {
   cactu5 = loadImage("./inimigos-obstaculos/obstacle5.png");
   cactu6 = loadImage("./inimigos-obstaculos/obstacle6.png");
   gameoverimg = loadImage("gameOver.png");
+  gameover_coloredimg = loadImage("gameOver(colored).png");
   restartimg = loadImage("restart.png");
   jumpsound = loadSound("jump.mp3");
   failsound = loadSound("fail.mp3");
@@ -161,7 +162,11 @@ function setup() {
   birdG = new Group();
 
   gameover = createSprite(width/2, 100);//300, 100
-  gameover.addImage("gameover", gameoverimg);
+  if(TrexColorido == false){
+    gameover.addImage("gameover", gameoverimg);
+  }else{
+    gameover.addImage("gameovercolored", gameover_coloredimg);
+  }
   gameover.visible = false;
 
   restart = createSprite(width/2, 140);//300, 140
