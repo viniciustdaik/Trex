@@ -2,7 +2,7 @@ var trex, trex_running, trex_runningnb, trex_crouching, trex_crouchingnb, trex_c
 trex_runninggreen, trex_crouchinggreen, trex_collidedgreen, 
 trex_runningbrown, trex_crouchingbrown, trex_collidedbrown;
 var edges;
-var ground, ground_image, ground_colored_image;
+var ground, ground_image, ground_colored_image;//, groundvisibility = false;
 var cloud, cloud_image, cloud_filled_img;
 //var cloud2;
 var invisibleground;
@@ -11,11 +11,13 @@ cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb,
 birdG, birdanm, birdimg, greenbirdanm, greenbirdimg, brownbirdanm, brownbirdimg, 
 cloudG;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
+var normalbutton, normalbuttonimg, coloridobutton, coloridobuttonimg;
 var score = 0;
 var highscore = 0;
-var PLAY=1;
-var END=0;
-var gamestate = PLAY;
+var PLAY = 1;
+var END = 0;
+var SELECT = -1;
+var gamestate = SELECT;
 var jumpsound, failsound, checkpointsound;
 var trexIsCrouching = false;
 var trexIsJumping = false;
@@ -29,7 +31,9 @@ var trexIsInvencibleBirds = false;
 var crouchbutton, crouchbuttonimg;
 var staranim;
 var dinosaurcolor = "notselected";
-var TrexColorido = false;
+var TrexColorido = "notselected";
+var coloridobuttonover = false, normalbuttonover = true;
+var trexfont;
 
 function preload() {
   //Carregar imagens em variáveis auxiliares.
@@ -88,6 +92,8 @@ function preload() {
   gameoverimg = loadImage("gameOver.png");
   gameover_coloredimg = loadImage("gameOver(colored).png");
   restartimg = loadImage("restart.png");
+  //normalbuttonimg = loadImage("normal.png");
+  coloridobuttonimg = loadImage("Colorido.png");
   jumpsound = loadSound("jump.mp3");
   failsound = loadSound("fail.mp3");
   checkpointsound = loadSound("checkPoint.mp3");
@@ -104,6 +110,7 @@ function preload() {
   crouchbuttonimg = loadImage("down_arrow.png");
   staranim = loadAnimation("./imagens-de-fundo/star1.png", 
   "./imagens-de-fundo/star2.png", "./imagens-de-fundo/star3.png");
+  trexfont = loadFont("./PressStart2P.ttf");
 }
 
 function setup() {
@@ -111,21 +118,37 @@ function setup() {
   createCanvas(windowWidth, windowHeight);//600, 200
   
   ground = createSprite(width/2, 180, 400, 20);
+  ground.visible = false;
   if(TrexColorido == false){
     ground.addImage("ground", ground_image);
-  }else{
+  }else if(TrexColorido == true){
     ground.addImage("groundcolored", ground_colored_image);
     sand = createSprite(width/2, height/2+180, windowWidth, windowHeight-12);
     sand.shapeColor = 'gold';
+    sand.visible = false;
+  }else{
+
   }
+
+  coloridobutton = createSprite(width/2+255, height/2);
+  coloridobutton.addImage("colorido", coloridobuttonimg);
+  coloridobutton.scale = 0.6;
+  coloridobutton.visible = false;
+  
+  normalbutton = createSprite(width/2-255, height/2);
+  //normalbutton.addImage("colorido", coloridobuttonimg);
+  //normalbutton.scale = 0.6;
+  normalbutton.visible = false;
   
   highscoreS = createSprite(100, 33, 10, 10);//windowWidth-80, 33
   highscoreS.addImage("highscoreimg", highscoreimg);
   highscoreS.scale = 1.2;
+  highscoreS.visible = false;
   
   crouchbutton = createSprite(width/2, 30, 15, 15);
   crouchbutton.addImage("crouchbutton", crouchbuttonimg);
   crouchbutton.scale = 0.7;
+  crouchbutton.visible = false;
   
   /*cloud1 = createSprite(160, 100, 30, 30);
   cloud1.addImage("cloud", cloud_image);
@@ -162,11 +185,7 @@ function setup() {
   birdG = new Group();
 
   gameover = createSprite(width/2, 100);//300, 100
-  if(TrexColorido == false){
-    gameover.addImage("gameover", gameoverimg);
-  }else{
-    gameover.addImage("gameovercolored", gameover_coloredimg);
-  }
+  
   gameover.visible = false;
 
   restart = createSprite(width/2, 140);//300, 140
@@ -187,13 +206,20 @@ function setup() {
 function draw() {
   if(TrexColorido == true){
     background('cyan');
-  }else{
+  }else if(TrexColorido == false){
+    background('white');
+  }else if(TrexColorido !== false && TrexColorido !== true){
     background('white');
   }
   fill('gold');
   stroke('green');
-  textSize(20);
-  text(highscore, highscoreS.x+25, 40);
+  textSize(15);
+  textFont(trexfont);
+  if(gamestate !== SELECT){
+    text(highscore, highscoreS.x+25, 42);
+    textAlign("center");
+    text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);//500
+  }
   textAlign("center");
   //if(Isnight == false){
   //  background('white'); //nao testei
@@ -201,7 +227,73 @@ function draw() {
   if(dinosaurcolor == "notselected"){
     setDinosaurColor();
   }
-  text("Pontuação: "+score, highscoreS.x, 20);//500
+  
+  if(gamestate == SELECT){
+    //textAlign("center");
+    fill('cyan');
+    stroke('white');
+    textSize(45);
+    text("C", coloridobutton.x-115, coloridobutton.y+25);
+    fill('red');
+    text("O", coloridobutton.x-70, coloridobutton.y+25);
+    fill('orange');
+    text("L", coloridobutton.x-25, coloridobutton.y+25);
+    fill('lightgreen');
+    text("O", coloridobutton.x+20, coloridobutton.y+25);
+    fill('lightpink');
+    text("R", coloridobutton.x+65, coloridobutton.y+25);
+    fill('purple');
+    text("I", coloridobutton.x+105, coloridobutton.y+25);
+    fill('yellow');
+    text("D", coloridobutton.x+153, coloridobutton.y+25);
+    fill('lime');
+    text("O", coloridobutton.x+200, coloridobutton.y+25);
+    fill('gray');
+    text("N O R M A L", normalbutton.x, normalbutton.y+25);
+    fill('cyan');
+    stroke('green');
+    textSize(32);
+    text("Selecione Um Modo De Jogo.", width/2, height/2-95);
+    text("Use As Setas Ou WASD.", width/2, height/2-55);
+    if(normalbuttonover == true){
+      if(keyWentDown("D") || keyWentDown(RIGHT_ARROW)){
+        normalbuttonover = false;
+        coloridobuttonover = true;
+      }
+      if(keyDown("space")){
+        TrexColorido = false;
+        gamestate = PLAY;
+        crouchbutton.visible = true;
+        ground.visible = true;
+        highscoreS.visible = true;
+        gameover.addImage("gameover", gameoverimg);
+        //coloridobutton.visible = false;
+        ground.addImage("ground", ground_image);
+        //groundvisibility = true;
+      }
+    }
+    if(coloridobuttonover == true){
+      if(keyWentDown("A") || keyWentDown(LEFT_ARROW)){
+        normalbuttonover = true;
+        coloridobuttonover = false;
+      }
+      if(keyDown("space")){
+        TrexColorido = true;
+        gamestate = PLAY;
+        crouchbutton.visible = true;
+        ground.visible = true;
+        highscoreS.visible = true;
+        gameover.addImage("gameovercolored", gameover_coloredimg);
+        //sand.visible = true;
+        //coloridobutton.visible = false;
+        ground.addImage("groundcolored", ground_colored_image);
+        sand = createSprite(width/2, height/2+180, windowWidth, windowHeight-12);
+        sand.shapeColor = 'gold';
+        //sand.visible = true;
+        //groundvisibility = true;
+      }
+    }
+  }
   /*if(cloud1.x < -20){
     cloud1.x = 645;
   }
@@ -477,7 +569,7 @@ function turnday(){
 }
 
 function setDinosaurColor(){
-  if(dinosaurcolor == "notselected" && TrexColorido == true){
+  if(dinosaurcolor == "notselected" && TrexColorido == true && gamestate !== SELECT){
     var randomcolor = Math.round(random(1, 3));
     if(randomcolor == 1){
       dinosaurcolor = "Cinza";
@@ -503,6 +595,7 @@ function setDinosaurColor(){
       trex.changeAnimation("running_brown", trex_runningbrown);
       //trex.scale = 0.5;
     }
+    trex.visible = true;
   }if(dinosaurcolor == "notselected" && TrexColorido == false){
     dinosaurcolor = "Cinza";
     //trex.addAnimation("running", trex_running);
@@ -510,6 +603,7 @@ function setDinosaurColor(){
     //trex.addAnimation("crouching", trex_crouching);
     trex.changeAnimation("running", trex_running);
     //trex.scale = 0.5;
+    trex.visible = true;
   }
-  trex.visible = true;
+  
 }
