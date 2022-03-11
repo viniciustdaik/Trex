@@ -13,6 +13,7 @@ cloudG;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
 var normalbutton, normalbuttonimg, 
 coloridobutton, coloridobuttonimg, 
+overnormal, overcolored, 
 leftbutton, leftbuttonimg, 
 rightbutton, rightbuttonimg, 
 selectbutton, selectbuttonimg;
@@ -114,10 +115,10 @@ function preload() {
   greenbirdimg = loadAnimation("./inimigos-obstaculos/greenbird1(no borders).png");
   brownbirdimg = loadAnimation("./inimigos-obstaculos/brownbird1(no borders).png");
   highscoreimg = loadImage("./imagens-de-pontuacao/highscore.png");
-  crouchbuttonimg = loadImage("down_arrow.png");
+  ////crouchbuttonimg = loadImage("down_arrow.png");
   staranim = loadAnimation("./imagens-de-fundo/star1.png", 
   "./imagens-de-fundo/star2.png", "./imagens-de-fundo/star3.png");
-  trexfont = loadFont("./PressStart2P.ttf");
+  trexfont = loadFont("./Trex.ttf");
 }
 
 function setup() {
@@ -126,7 +127,9 @@ function setup() {
   
   ground = createSprite(width/2, 180, 400, 20);
   ground.visible = false;
-
+  
+  //overnormal = createSprite(width/2+295, height/2, 360);
+  
   coloridobutton = createSprite(width/2+255, height/2);
   coloridobutton.addImage("colorido", coloridobuttonimg);
   coloridobutton.scale = 0.6;
@@ -153,11 +156,16 @@ function setup() {
   highscoreS.addImage("highscoreimg", highscoreimg);
   highscoreS.scale = 1.2;
   highscoreS.visible = false;
-  
-  crouchbutton = createSprite(width/2, 30, 15, 15);
-  crouchbutton.addImage("crouchbutton", crouchbuttonimg);
-  crouchbutton.scale = 0.7;
-  crouchbutton.visible = false;
+  //old crouch button
+  //crouchbutton = createSprite(width/2, 30, 15, 15);
+  //crouchbutton.addImage("crouchbutton", crouchbuttonimg);
+  //crouchbutton.scale = 0.7;
+  //crouchbutton.visible = false;
+
+  crouchbutton = createButton("");
+  crouchbutton.position(width / 2-35, -350);
+  crouchbutton.class("crouchbutton");
+  crouchbutton.mousePressed(crouch);
   
   /*cloud1 = createSprite(160, 100, 30, 30);
   cloud1.addImage("cloud", cloud_image);
@@ -213,11 +221,11 @@ function setup() {
 }
 
 function draw() {
-  if(TrexColorido == true){
+  if(TrexColorido == true && Isday == true){
     background('cyan');
-  }else if(TrexColorido == false){
+  }else if(TrexColorido == false && Isday == true){
     background('white');
-  }else if(TrexColorido !== false && TrexColorido !== true){
+  }else if(TrexColorido !== false && TrexColorido !== true && Isday == true){
     background('white');
   }
   fill('gold');
@@ -319,15 +327,16 @@ function draw() {
   }*/
   //console.log(trex.y);
   if(gamestate == PLAY){
+    crouchbutton.position(width / 2-35, 5);
     if(TrexColorido == false){
       trex.visible = true;
     }
     if(score%700==0){
       if(Isnight == false&&dayMost == true){
-        turnnight();
+        //turnnight();
       }
       if(Isday == false&&nightMost == true){
-        turnday();
+        //turnday();
       }
     }
     cloudG.setVelocityXEach(-(4+3*score/100));//-(5+score/100)
@@ -342,11 +351,11 @@ function draw() {
     if(ground.x < 350){//< 0
       ground.x = ground.width/2;
     }
-    if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchbutton)||
-    keyDown('W')&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchbutton)||
-    keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false&&!mouseIsOver(crouchbutton)||
+    if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
+    keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
+    keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
     touches.length > 0&&trex.y >=150&&trexIsCrouching==false
-    &&!mouseIsOver(crouchbutton)){
+    ){//&&!mouseIsOver(crouchbutton)){
       touches = [];
       trex.velocityY = -10;
       jumpsound.play();
@@ -361,8 +370,8 @@ function draw() {
     //console.log(trexIsJumping);
     //console.log(trex.y);
     if(keyWentDown("S") && trexIsJumping==false
-    ||keyWentDown(DOWN_ARROW) && trexIsJumping==false
-    ||mouseIsOver(crouchbutton) && trexIsJumping==false){
+    ||keyWentDown(DOWN_ARROW) && trexIsJumping==false){
+    //||mouseIsOver(crouchbutton) && trexIsJumping==false){
       //trex.addAnimation("crouching", trex_crouching);
       trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
       if(TrexColorido == true && dinosaurcolor == "Cinza"){
@@ -380,8 +389,8 @@ function draw() {
       trexIsCrouching = true;
       //trex.velocityX = 2;
     }if(keyWentUp("S")
-    ||keyWentUp(DOWN_ARROW)//){
-    ||!keyIsDown(DOWN_ARROW) && !mouseIsOver(crouchbutton)){
+    ||keyWentUp(DOWN_ARROW)){
+    //||!keyIsDown(DOWN_ARROW) && !mouseIsOver(crouchbutton)){
     //||!keyIsDown("S")&&!mouseIsOver(crouchbutton)){
       //trex.addAnimation("running", trex_running);
       trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
@@ -401,7 +410,7 @@ function draw() {
       //trex.velocityX = 0;
     }//else if(!keyDown(DOWN_ARROW)&&!mouseIsOver(crouchbutton)&&!keyDown("S")){
 
-    //}
+    //}*/
     trex.velocityY = trex.velocityY + 0.5;
     createcactu();
     createclouds();
@@ -593,7 +602,7 @@ function setDinosaurColor(){
       //trex.addAnimation("running", trex_running);
       //trex.addAnimation("collided", trex_collided);
       //trex.addAnimation("crouching", trex_crouching);
-      trex.changeAnimation("running", trex_running);
+      trex.changeAnimation("runningnb", trex_runningnb);
       //trex.scale = 0.5;
     }
     if(randomcolor == 2){
@@ -621,6 +630,46 @@ function setDinosaurColor(){
     trex.changeAnimation("running", trex_running);
     //trex.scale = 0.5;
     trex.visible = true;
+  }
+  
+}
+
+function crouch(){
+  if(trexIsCrouching == false && gamestate == PLAY){
+    //trex.addAnimation("crouching", trex_crouching);
+  trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+  if(TrexColorido == true && dinosaurcolor == "Cinza"){
+    trex.changeAnimation("crouchingnb", trex_crouchingnb);
+  }
+  if(TrexColorido == false){
+    trex.changeAnimation("crouching", trex_crouching);
+  }
+  if(TrexColorido == true && dinosaurcolor == "Marrom"){
+    trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+  }
+  if(TrexColorido == true && dinosaurcolor == "Verde"){
+    trex.changeAnimation("crouching_green", trex_crouchinggreen);
+  }
+  trexIsCrouching = true;
+  //trex.velocityX = 2;
+  }else if(trexIsCrouching == true && gamestate == PLAY){
+    trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+    if(TrexColorido == true || dinosaurcolor == "Cinza"){
+      trex.changeAnimation("runningnb", trex_runningnb);
+    }
+    if(TrexColorido == false){
+      trex.changeAnimation("running", trex_running);
+    }
+    if(TrexColorido == true && dinosaurcolor == "Marrom"){
+      trex.changeAnimation("running_brown", trex_runningbrown);
+    }
+    if(TrexColorido == true && dinosaurcolor == "Verde"){
+      trex.changeAnimation("running_green", trex_runninggreen);
+    }
+    trexIsCrouching = false;
+    //trex.velocityX = 0;
+  }else{
+
   }
   
 }
