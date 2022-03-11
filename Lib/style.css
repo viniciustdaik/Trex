@@ -6,3 +6,21 @@ canvas {
   display: block;
   border: 1px dashed grey;
 }
+
+.crouchbutton{
+  width:70px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('../trex/crouchimgbutton.png');
+  background-color: #9ea7a7;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  outline: none;
+}
+
