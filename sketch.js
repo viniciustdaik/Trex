@@ -354,24 +354,26 @@ function draw() {
     if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
     keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
     keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
-    touches.length > 0&&trex.y >=150&&trexIsCrouching==false
-    ){//&&!mouseIsOver(crouchbutton)){
+    touches.length > 0&&trex.y >=150&&trexIsCrouching==false){
+    //&& !mouseIsOver(crouchbutton)){
       touches = [];
       trex.velocityY = -10;
       jumpsound.play();
-      //trexIsJumping=true;
+      //trexIsJumping = true;
     }
-    if(trex.y>=150){
+    console.log(trexIsJumping);
+    if(trex.y >= 150){
       trexIsJumping = false;
     }
-    if(trex.y<150){
+    if(trex.y < 150){
       trexIsJumping = true;
     }
     //console.log(trexIsJumping);
     //console.log(trex.y);
-    if(keyWentDown("S") && trexIsJumping==false
-    ||keyWentDown(DOWN_ARROW) && trexIsJumping==false){
+    if(keyWentDown("S") && trexIsJumping == false
+    ||keyWentDown(DOWN_ARROW) && trexIsJumping == false){
     //||mouseIsOver(crouchbutton) && trexIsJumping==false){
+      //crouch();
       //trex.addAnimation("crouching", trex_crouching);
       trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
       if(TrexColorido == true && dinosaurcolor == "Cinza"){
@@ -392,6 +394,7 @@ function draw() {
     ||keyWentUp(DOWN_ARROW)){
     //||!keyIsDown(DOWN_ARROW) && !mouseIsOver(crouchbutton)){
     //||!keyIsDown("S")&&!mouseIsOver(crouchbutton)){
+      //crouch();
       //trex.addAnimation("running", trex_running);
       trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
       if(TrexColorido == true || dinosaurcolor == "Cinza"){
@@ -635,7 +638,7 @@ function setDinosaurColor(){
 }
 
 function crouch(){
-  if(trexIsCrouching == false && gamestate == PLAY){
+  if(trexIsCrouching == false && gamestate == PLAY && trexIsJumping == false){
     //trex.addAnimation("crouching", trex_crouching);
   trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
   if(TrexColorido == true && dinosaurcolor == "Cinza"){
