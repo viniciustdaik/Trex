@@ -40,6 +40,8 @@ var TrexColorido = "notselected";
 var coloridobuttonover = false, normalbuttonover = true;
 var trexfont;
 
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 function preload() {
   //Carregar imagens em variáveis auxiliares.
   trex_running = loadAnimation("./trex/trex1-blink.png",  "./trex/trex3.png", "./trex/trex4.png", 
@@ -97,7 +99,7 @@ function preload() {
   gameoverimg = loadImage("gameOver.png");
   gameover_coloredimg = loadImage("gameOver(colored).png");
   restartimg = loadImage("restart.png");
-  //normalbuttonimg = loadImage("normal.png");
+  normalbuttonimg = loadImage("normal.png");
   coloridobuttonimg = loadImage("Colorido.png");
   leftbuttonimg = loadImage("left_arrow.png");
   rightbuttonimg = loadImage("right_arrow.png");
@@ -115,7 +117,7 @@ function preload() {
   greenbirdimg = loadAnimation("./inimigos-obstaculos/greenbird1(no borders).png");
   brownbirdimg = loadAnimation("./inimigos-obstaculos/brownbird1(no borders).png");
   highscoreimg = loadImage("./imagens-de-pontuacao/highscore.png");
-  ////crouchbuttonimg = loadImage("down_arrow.png");
+  //crouchbuttonimg = loadImage("down_arrow.png");
   staranim = loadAnimation("./imagens-de-fundo/star1.png", 
   "./imagens-de-fundo/star2.png", "./imagens-de-fundo/star3.png");
   trexfont = loadFont("./Trex.ttf");
@@ -129,18 +131,28 @@ function setup() {
   ground.visible = false;
   
   //overnormal = createSprite(width/2+295, height/2, 360);
-  
-  coloridobutton = createSprite(width/2+255, height/2);
-  coloridobutton.addImage("colorido", coloridobuttonimg);
-  coloridobutton.scale = 0.6;
-  coloridobutton.visible = false;
-  
-  normalbutton = createSprite(width/2-255, height/2);
-  //normalbutton.addImage("colorido", coloridobuttonimg);
-  //normalbutton.scale = 0.6;
-  normalbutton.visible = false;
+  //oldcoloridobutton
+  //coloridobutton = createSprite(width/2+255, height/2);
+  //coloridobutton.addImage("colorido", coloridobuttonimg);
+  //coloridobutton.scale = 0.6;
+  //coloridobutton.visible = false;
 
-  leftbutton = createSprite(width/2-75, 30, 15, 15);
+  coloridobutton = createButton("");
+  coloridobutton.class("largebuttonC");
+  coloridobutton.position(width / 2 + 135, height / 2 - 30);
+  coloridobutton.mousePressed(turnColored);
+  //oldnormalbutton
+  //normalbutton = createSprite(width/2-255, height/2);
+  ////normalbutton.addImage("colorido", coloridobuttonimg);
+  ////normalbutton.scale = 0.6;
+  //normalbutton.visible = false;
+  
+  normalbutton = createButton("");
+  normalbutton.class("largebuttonN");
+  normalbutton.position(width / 2 -415, height / 2 - 30);
+  normalbutton.mousePressed(turnNormal);
+  
+  /*leftbutton = createSprite(width/2-75, 30, 15, 15);
   leftbutton.addImage("leftarrow", leftbuttonimg);
   leftbutton.scale = 0.7;
 
@@ -150,7 +162,7 @@ function setup() {
 
   selectbutton = createSprite(width/2, 30, 15, 15);
   selectbutton.addImage("selectbutton", selectbuttonimg);
-  selectbutton.scale = 0.7;
+  selectbutton.scale = 0.7;*/
   
   highscoreS = createSprite(100, 33, 10, 10);//windowWidth-80, 33
   highscoreS.addImage("highscoreimg", highscoreimg);
@@ -250,7 +262,7 @@ function draw() {
     fill('cyan');
     stroke('white');
     textSize(45);
-    text("C", coloridobutton.x-115, coloridobutton.y+25);
+    /*text("C", coloridobutton.x-115, coloridobutton.y+25);
     fill('red');
     text("O", coloridobutton.x-70, coloridobutton.y+25);
     fill('orange');
@@ -266,13 +278,14 @@ function draw() {
     fill('lime');
     text("O", coloridobutton.x+200, coloridobutton.y+25);
     fill('gray');
-    text("N O R M A L", normalbutton.x+55, normalbutton.y+25);
+    text("N O R M A L", normalbutton.x+55, normalbutton.y+25);*/
     fill('cyan');
     stroke('green');
+    textAlign("center");
     textSize(32);
-    text("Selecione Um Modo De Jogo.", width/2, height/2-95);
-    text("Use As Setas Ou WASD.", width/2, height/2-55);
-    if(normalbuttonover == true){
+    text("Selecione Um Modo De Jogo.", width / 2, height/2-95);
+    //text("Use As Setas Ou WASD.", width/2, height/2-55);
+    /*if(normalbuttonover == true){
       if(keyWentDown("D") || keyWentDown(RIGHT_ARROW) || mouseIsOver(rightbutton)){
         normalbuttonover = false;
         coloridobuttonover = true;
@@ -317,7 +330,7 @@ function draw() {
         trex.depth = sand.depth;
         sand.depth = sand.depth+1;
       }
-    }
+    }*/
   }
   /*if(cloud1.x < -20){
     cloud1.x = 645;
@@ -675,4 +688,44 @@ function crouch(){
 
   }
   
+}
+
+function turnColored(){
+  TrexColorido = true;
+  gamestate = PLAY;
+  crouchbutton.visible = true;
+  ground.visible = true;
+  highscoreS.visible = true;
+  gameover.addImage("gameovercolored", gameover_coloredimg);
+  //sand.visible = true;
+  //coloridobutton.visible = false;
+  ground.addImage("groundcolored", ground_colored_image);
+  sand = createSprite(width/2, height/2+180, windowWidth, windowHeight-12);
+  sand.shapeColor = 'gold';
+  //sand.visible = true;
+  //groundvisibility = true;
+  //leftbutton.visible = false;
+  //rightbutton.visible = false;
+  //selectbutton.visible = false;
+  trex.depth = sand.depth;
+  sand.depth = sand.depth+1;
+  coloridobutton.position(-1250, height / 2 - 30);
+  normalbutton.position(-1250, height / 2 - 30);
+}
+
+function turnNormal(){
+  TrexColorido = false;
+  gamestate = PLAY;
+  crouchbutton.visible = true;
+  ground.visible = true;
+  highscoreS.visible = true;
+  gameover.addImage("gameover", gameoverimg);
+  //coloridobutton.visible = false;
+  ground.addImage("ground", ground_image);
+  //groundvisibility = true;
+  //leftbutton.visible = false;
+  //rightbutton.visible = false;
+  //selectbutton.visible = false;
+  coloridobutton.position(-1250, height / 2 - 30);
+  normalbutton.position(-1250, height / 2 - 30);
 }
