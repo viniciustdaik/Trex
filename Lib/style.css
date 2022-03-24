@@ -24,3 +24,36 @@ canvas {
   outline: none;
 }
 
+.largebuttonC{
+  width: 360px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('../Colorido.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.largebuttonN{
+  width: 360px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('../normal.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
