@@ -7,7 +7,7 @@ var cloud, cloud_image, cloud_filled_img;
 //var cloud2;
 var invisibleground;
 var cactu1, cactu2, cactu3, cactu4, cactu5, cactu6, cactuG, 
-cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb,
+cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb, 
 birdG, birdanm, birdimg, greenbirdanm, greenbirdimg, brownbirdanm, brownbirdimg, 
 cloudG;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
@@ -124,8 +124,12 @@ function preload() {
 }
 
 function setup() {
-  //Criação da area do jogo.
-  createCanvas(windowWidth, windowHeight);//600, 200
+  //Criação da área do jogo.
+  createCanvas(windowWidth - 2.4, windowHeight - 2.5);//600, 200
+
+  var trexImg = createImg('./trex/trex_idle.png');
+  trexImg.position(width - width - width - width, height - height - height, height);
+  trexImg.size(150, 150);
   
   ground = createSprite(width/2, 180, 400, 20);
   ground.visible = false;
