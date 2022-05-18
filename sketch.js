@@ -733,3 +733,4 @@ function turnNormal(){
   coloridobutton.position(-1250, height / 2 - 30);
   normalbutton.position(-1250, height / 2 - 30);
 }
+
