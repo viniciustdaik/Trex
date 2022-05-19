@@ -127,7 +127,7 @@ function setup() {
   //Criação da área do jogo.
   createCanvas(windowWidth - 2.4, windowHeight - 2.5);//600, 200
 
-  var trexImg = createImg('./trex/trex_idle.png');
+  var trexImg = createImg('./trex/trex_idle(eye fixed).png');
   trexImg.position(width - width - width - width, height - height - height, height);
   trexImg.size(150, 150);
   
