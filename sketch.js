@@ -705,7 +705,7 @@ function turnColored(){
   //coloridobutton.visible = false;
   ground.addImage("groundcolored", ground_colored_image);
   sand = createSprite(width/2, height/2+180, windowWidth, windowHeight-12);
-  sand.shapeColor = 'gold';
+  sand.shapeColor = '#e7e060';
   //sand.visible = true;
   //groundvisibility = true;
   //leftbutton.visible = false;
