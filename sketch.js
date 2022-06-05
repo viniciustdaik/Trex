@@ -1289,7 +1289,7 @@ function turnColored(){
     ground.visible = true;
     //sand.visible = true;
     //coloridobutton.visible = false;
-    sand = createSprite(width/2, height/2+180, windowWidth, windowHeight-12);
+    sand = createSprite(width/2, height/2+180, width, height-12);
     sand.shapeColor = '#e7e060';
     //sand.visible = true;
     //groundvisibility = true;
