@@ -1130,10 +1130,12 @@ function reset(){
   }
   if(game == "Voo Infinito"){
     if(TrexColorido == true){
+      bird.visible = false;
       birdcolor = "notselected";
+    }else{
+      bird.changeAnimation("birdright", birdanmright);
     }
     bird.y = 160;
-    bird.visible = false;
     restart.y = height / 2 + 40;
     gameover.y = height / 2;
   }
