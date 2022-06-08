@@ -8,7 +8,7 @@ var cloud, cloud_image, cloud_filled_img, cloudG;
 var invisibleground;
 var cactu1, cactu2, cactu3, cactu4, cactu5, cactu6, cactuG, 
 cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb;
-var bird, birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
+var bird, birdIsFalling = false, birdIsFlying = false, birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
 birdanmright, birdimgright, greenbirdanmright, greenbirdimgright, brownbirdanmright, brownbirdimgright;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
 var normalbutton, normalbuttonimg, 
@@ -565,7 +565,27 @@ function draw() {
       //trexIsJumping = true;
     }
     bird.velocityY = bird.velocityY+0.8;
-
+    if(birdIsFalling == false && bird.velocityY > 0){
+      birdIsFalling = true;
+      birdIsFlying = false;
+    }
+    if(birdIsFalling == true && bird.velocityY <= 0){
+      birdIsFalling = false;
+    }
+    if(birdIsFlying == false && bird.velocityY < 0){
+      birdIsFlying = true;
+    }
+    if(birdIsFalling == true && bird.rotation !== 15){
+      bird.rotation = bird.rotation+1;
+    }
+    if(birdIsFalling == false && birdIsFlying == false && bird.rotation !== 0){
+      bird.rotation = bird.rotation-1;
+    }
+    if(birdIsFlying == true && bird.rotation !== -15){
+      bird.rotation = bird.rotation-1;
+    }
+    console.log("Falling: "+birdIsFalling);
+    console.log("Flying: "+birdIsFlying);
     if(bird.collide(ground) || bird.isTouching(birdG) || bird.y < -10){
       failsound.play();
       gamestate = END;
@@ -589,6 +609,7 @@ function draw() {
       }
     }
   }else if(game == "Voo Infinito" && gamestate == END){
+    bird.rotation = 0;
     ground.velocityX = 0;
     restart.visible = true;
     gameover.visible = true;
@@ -1129,6 +1150,8 @@ function reset(){
     restart.y = 140;
   }
   if(game == "Voo Infinito"){
+    birdIsFalling = false;
+    birdIsFlying = false;
     if(TrexColorido == true){
       bird.visible = false;
       birdcolor = "notselected";
