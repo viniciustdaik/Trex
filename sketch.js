@@ -8,7 +8,7 @@ var cloud, cloud_image, cloud_filled_img, cloudG;
 var invisibleground;
 var cactu1, cactu2, cactu3, cactu4, cactu5, cactu6, cactuG, 
 cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb;
-var bird, birdIsFalling = false, birdIsFlying = false, birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
+var bird, birdIsFalling = false, birdIsFlying = false, hitGround = false, birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
 birdanmright, birdimgright, greenbirdanmright, greenbirdimgright, brownbirdanmright, brownbirdimgright;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
 var normalbutton, normalbuttonimg, 
@@ -34,7 +34,7 @@ var trexIsInvencibleBirds = false;
 var crouchbutton, crouchbuttonimg;
 var staranim;
 var dinosaurcolor = "notselected", birdcolor = "notselected";
-var TrexColorido = "notselected";
+var TrexColorido = "notselected", sand;
 var coloridobuttonover = false, normalbuttonover = true;
 var trexfont;
 
@@ -141,6 +141,8 @@ function setup() {
   trexImg.size(150, 150);
   
   ground = createSprite(width/2, 180, 400, 20);
+  ground.addImage("ground", ground_image);
+  ground.addImage("groundcolored", ground_colored_image);
   ground.visible = false;
   
   //overnormal = createSprite(width/2+295, height/2, 360);
@@ -231,6 +233,10 @@ function setup() {
   trex.scale = 0.5;
   trex.visible = false;
 
+  sand = createSprite(width/2, height/2+180, width, height-12);
+  sand.shapeColor = '#e7e060';
+  sand.visible = false;
+
   bird = createSprite(50, 160, 20, 50);
   bird.addAnimation("birdright", birdanmright);
   bird.addAnimation("greenbirdright", greenbirdanmright);
@@ -238,6 +244,8 @@ function setup() {
   bird.addAnimation("birdimgright", birdimgright);
   bird.addAnimation("greenbirdimgright", greenbirdimgright);
   bird.addAnimation("brownbirdimgright", brownbirdimgright);
+  bird.setCollider("rectangle", 0, 0, 50, 50);
+  //bird.debug = true;
   bird.scale = 0.51 / 2 / 2 + 0.8;
   bird.visible = false;
 
@@ -249,7 +257,8 @@ function setup() {
   birdG = new Group();
 
   gameover = createSprite(width / 2, 100);//300, 100
-  
+  gameover.addImage("gameovercolored", gameover_coloredimg);
+  gameover.addImage("gameover", gameoverimg);
   gameover.visible = false;
 
   restart = createSprite(width / 2, 140);//300, 140
@@ -314,6 +323,43 @@ function draw() {
   textSize(15);
   textFont(trexfont);
   if(gamestate !== SELECT){
+    if(key == "Escape"){
+      key = null;
+      keyCode = null;
+      background("white");
+      gamestate = -1;
+      score = 0;
+      highscore = 0;
+      birdG.destroyEach();
+      cactuG.destroyEach();
+      cloudG.destroyEach();
+      bird.visible = false;
+      ground.visible = false;
+      sand.visible = false;
+      trex.visible = false;
+      highscoreS.visible = false;
+      gameover.visible = false;
+      restart.visible = false;
+      game = "notselected";
+      dinosaurcolor = "notselected";
+      birdcolor = "notselected";
+      TrexColorido = "notselected";
+      trexIsCrouching = false;
+      trexIsJumping = false;
+      birdIsFalling = false;
+      birdIsFlying = false;
+      bird.rotation = 0;
+      bird.y = 160;
+      if(crouchbutton.y !== -350){
+        crouchbutton.position(width / 2-35, -350);
+      }
+      if(infiniteflightbutton.x !== width / 2 + 255){
+        infiniteflightbutton.position(width / 2 + 255, height / 2 - 30);
+      }
+      if(infiniteracebutton.x !== width / 2 -415){
+        infiniteracebutton.position(width / 2 -415, height / 2 - 30);
+      }
+    }
     text(highscore, highscoreS.x+25, 42);
     textAlign("center");
     text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);//500
@@ -326,6 +372,10 @@ function draw() {
     setDinosaurColor();
   }
   if(gamestate == SELECT){
+    if(key !== null || keyCode == 27){
+      key = null;
+      keyCode = null;
+    }
     //textAlign("center");
     fill('cyan');
     stroke('white');
@@ -586,7 +636,30 @@ function draw() {
     }
     console.log("Falling: "+birdIsFalling);
     console.log("Flying: "+birdIsFlying);
-    if(bird.collide(ground) || bird.isTouching(birdG) || bird.y < -10){
+    if(bird.isTouching(birdG) || bird.y < -10){
+      failsound.play();
+      //if(birdcolor !== "Cinza"){//!== "Cinza"
+        //bird.y = bird.y + 11;
+      //}//else{
+        //bird.y = bird.y + 7.5;
+      //}
+      gamestate = END;
+      if(TrexColorido == true){
+        if(birdcolor == "Cinza"){
+          bird.changeAnimation("birdimgright", birdimgright);
+        }
+        if(birdcolor == "Verde"){
+          bird.changeAnimation("greenbirdimgright", greenbirdimgright);
+        }
+        if(birdcolor == "Marrom"){
+          bird.changeAnimation("brownbirdimgright", brownbirdimgright);
+        }
+      }else{
+        bird.changeAnimation("birdimgright", birdimgright);
+      }
+    }
+    else if(bird.collide(ground)){
+      hitGround = true;
       failsound.play();
       gamestate = END;
       if(birdcolor !== "Cinza"){
@@ -609,7 +682,18 @@ function draw() {
       }
     }
   }else if(game == "Voo Infinito" && gamestate == END){
-    bird.rotation = 0;
+    if(hitGround == true){
+      bird.rotation = 0;
+      hitGround = false;
+    }
+    //if(TrexColorido == false){
+    //  birdG.setAnimationEach("birdimgleft", birdimgleft);
+    //}
+    if(TrexColorido == true){
+      //if(birdG.birdimgleft !== null){
+      //  birdG.setAnimationEach("birdimgleft", birdimgleft);
+      //}
+    }
     ground.velocityX = 0;
     restart.visible = true;
     gameover.visible = true;
@@ -619,9 +703,7 @@ function draw() {
     cactuG.setVelocityXEach(0);
     cloudG.setVelocityXEach(0);
     birdG.setVelocityXEach(0);
-    if(TrexColorido == false){
-      //birdG.setAnimationEach("birdimgleft", birdimgleft);
-    }
+    
     bird.velocityY = 0;
     if(mousePressedOver(restart)
     ||touches.length > 0){
@@ -1137,6 +1219,7 @@ function createbird(){
 }
 
 function reset(){
+  bird.rotation = 0;
   gamestate = PLAY;
   //setDinosaurColor();
   if(game == "Corrida Infinita"){
@@ -1306,16 +1389,15 @@ function crouch(){
 function turnColored(){
   TrexColorido = true;
   gamestate = PLAY;
-  gameover.addImage("gameovercolored", gameover_coloredimg);
+  gameover.changeImage("gameovercolored", gameover_coloredimg);
   highscoreS.visible = true;
-  ground.addImage("groundcolored", ground_colored_image);
+  ground.changeImage("groundcolored", ground_colored_image);
   if(game == "Corrida Infinita"){
     crouchbutton.visible = true;
     ground.visible = true;
     //sand.visible = true;
     //coloridobutton.visible = false;
-    sand = createSprite(width/2, height/2+180, width, height-12);
-    sand.shapeColor = '#e7e060';
+    sand.visible = true;
     //sand.visible = true;
     //groundvisibility = true;
     //leftbutton.visible = false;
@@ -1327,6 +1409,7 @@ function turnColored(){
   if(game == "Voo Infinito"){
     bird.visible = true;
     ground.visible = true;
+    sand.visible = false;
   }
   coloridobutton.position(-1250, height / 2 - 30);
   normalbutton.position(-1250, height / 2 - 30);
@@ -1335,9 +1418,9 @@ function turnColored(){
 function turnNormal(){
   TrexColorido = false;
   gamestate = PLAY;
-  gameover.addImage("gameover", gameoverimg);
+  gameover.changeImage("gameover", gameoverimg);
   highscoreS.visible = true;
-  ground.addImage("ground", ground_image);
+  ground.changeImage("ground", ground_image);
   if(game == "Corrida Infinita"){
     crouchbutton.visible = true;
     ground.visible = true;
@@ -1351,6 +1434,7 @@ function turnNormal(){
   if(game == "Voo Infinito"){
     bird.visible = true;
     ground.visible = true;
+    sand.visible = false;
   }
   coloridobutton.position(-1250, height / 2 - 30);
   normalbutton.position(-1250, height / 2 - 30);
@@ -1358,14 +1442,17 @@ function turnNormal(){
 
 function turnCorridaInfinita(){
   game = "Corrida Infinita";
-  gameover.x = width / 2
+  trex.y = 160;
+  ground.y = 180;
+  gameover.x = width / 2;
   gameover.y = 100;
-  restart.x = width / 2
+  restart.x = width / 2;
   restart.y = 140;
 }
 
 function turnVooInfinito(){
   game = "Voo Infinito";
+  bird.y = 160;
   ground.y = height - 5;
   restart.y = height / 2 + 40;
   gameover.y = height / 2;
