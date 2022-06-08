@@ -8,7 +8,7 @@ var cloud, cloud_image, cloud_filled_img, cloudG;
 var invisibleground;
 var cactu1, cactu2, cactu3, cactu4, cactu5, cactu6, cactuG, 
 cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb;
-var bird, birdIsFalling = false, birdIsFlying = false, hitGround = false, birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
+var bird, birdIsInvencibleBirds = false, birdIsInvencibleGround = false, birdIsFalling = false, birdIsFlying = false, hitGround = false, birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
 birdanmright, birdimgright, greenbirdanmright, greenbirdimgright, brownbirdanmright, brownbirdimgright;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
 var normalbutton, normalbuttonimg, 
@@ -636,7 +636,7 @@ function draw() {
     }
     console.log("Falling: "+birdIsFalling);
     console.log("Flying: "+birdIsFlying);
-    if(bird.isTouching(birdG) || bird.y < -10){
+    if(bird.isTouching(birdG) && birdIsInvencibleBirds == false|| bird.y < -10){
       failsound.play();
       //if(birdcolor !== "Cinza"){//!== "Cinza"
         //bird.y = bird.y + 11;
@@ -658,7 +658,7 @@ function draw() {
         bird.changeAnimation("birdimgright", birdimgright);
       }
     }
-    else if(bird.collide(ground)){
+    else if(bird.collide(ground) && birdIsInvencibleGround == false){
       hitGround = true;
       failsound.play();
       gamestate = END;
@@ -743,8 +743,10 @@ function createclouds(){
     }
     cloud.depth = trex.depth;
     bird.depth = trex.depth;
+    restart.depth = trex.depth;
     trex.depth = trex.depth+1;
     bird.depth = bird.depth+1;
+    restart.depth = restart.depth+1;
     cloud.depth = crouchbutton.depth;
     crouchbutton.depth = crouchbutton.depth+1;
     crouchbutton.depth = gameover.depth;
