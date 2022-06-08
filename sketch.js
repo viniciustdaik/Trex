@@ -1453,6 +1453,7 @@ function turnCorridaInfinita(){
 function turnVooInfinito(){
   game = "Voo Infinito";
   bird.y = 160;
+  bird.velocityY = 0;
   ground.y = height - 5;
   restart.y = height / 2 + 40;
   gameover.y = height / 2;
