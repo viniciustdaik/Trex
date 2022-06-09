@@ -831,7 +831,7 @@ function createcactu(){
 }
 
 function createbird(){
-  var debughitbox = true;
+  var debughitbox = false;
   if(game == "Corrida Infinita"){
     if(frameCount%245==0&&score>300){//frameCount%230==0 //225
       var enemybird = createSprite(width+10, 100, 10, 10);//610, 100
