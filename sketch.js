@@ -887,7 +887,7 @@ function createbird(){
       if(isMobile){
         var maxb = 20;
         if(randomform == 1){
-          for(var b = 1; b <= 20; b = b+1){
+          for(var b = 1; b <= maxb; b = b+1){
             if(b !== 3 && b !== 4){
               var enemybird = createSprite(width+10, 80*b, 10, 10);//+10, 10, 10);
               enemybird.lifetime = 315;
@@ -1012,7 +1012,7 @@ function createbird(){
       }
       if(!isMobile){
         var maxb = 14;
-        for(var b = 1; b <= 14; b = b+1){
+        for(var b = 1; b <= maxb; b = b+1){
           if(randomform == 1){
             if(b !== 5 && b !== 6){
               /*if(b == 11 && height >= 861){
