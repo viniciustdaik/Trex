@@ -326,6 +326,11 @@ function draw() {
       push();
       fill('red');
       stroke('darkred');
+      if(!isMobile){
+        textSize(30);
+      }else{
+        textSize(15);
+      }
       text("Não Disponível Em Celular", infiniteflightbutton.x + 85, infiniteflightbutton.y + 230);
       pop();
     }
