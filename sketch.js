@@ -1011,7 +1011,7 @@ function createbird(){
         }*/
       }
       if(!isMobile){
-        var maxb = 11;
+        var maxb = 14;
         for(var b = 1; b <= 14; b = b+1){
           if(randomform == 1){
             if(b !== 5 && b !== 6){
