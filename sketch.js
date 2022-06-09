@@ -8,7 +8,9 @@ var cloud, cloud_image, cloud_filled_img, cloudG;
 var invisibleground;
 var cactu1, cactu2, cactu3, cactu4, cactu5, cactu6, cactuG, 
 cactu1nb, cactu2nb, cactu3nb, cactu4nb, cactu5nb, cactu6nb;
-var bird, birdIsInvencibleBirds = false, birdIsInvencibleGround = false, birdIsFalling = false, birdIsFlying = false, hitGround = false, birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
+var bird, birdIsInvencibleBirds = false, birdIsInvencibleGround = false, 
+birdIsFalling = false, birdIsFlying = false, hitGround = false, 
+birdG, birdanmleft, birdimgleft, greenbirdanmleft, greenbirdimgleft, brownbirdanmleft, brownbirdimgleft, 
 birdanmright, birdimgright, greenbirdanmright, greenbirdimgright, brownbirdanmright, brownbirdimgright;
 var gameover, restart, gameoverimg, gameover_coloredimg, restartimg;
 var normalbutton, normalbuttonimg, 
