@@ -40,6 +40,8 @@ var trexfont;
 
 var game = "notselected";
 
+var PcFeaturesOnMobile = false;
+
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 function preload() {
@@ -135,6 +137,8 @@ function preload() {
 function setup() {
   //Criação da área do jogo.
   createCanvas(windowWidth - 2.4, windowHeight - 2.5);//600, 200
+
+  database = firebase.database();
 
   var trexImg = createImg('./trex/trex_idle(eye fixed).png');
   trexImg.position(width - width - width - width, height - height - height, height);
@@ -274,6 +278,8 @@ function setup() {
   //trex.setCollider("rectangle", 0, 0, 400, trex.height);
   trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
   //trex.debug=true;
+
+  getState();
 }
 
 function draw() {
@@ -316,6 +322,13 @@ function draw() {
     textFont(trexfont);
     textAlign("center");
     text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y + 200);
+    if(isMobile && PcFeaturesOnMobile == false){
+      push();
+      fill('red');
+      stroke('darkred');
+      text("Não Disponível Em Celular", infiniteflightbutton.x + 85, infiniteflightbutton.y + 230);
+      pop();
+    }
     text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 200);
   }
   fill('gold');
@@ -1453,11 +1466,19 @@ function turnCorridaInfinita(){
 }
 
 function turnVooInfinito(){
-  game = "Voo Infinito";
-  bird.y = 160;
-  bird.velocityY = 0;
-  ground.y = height - 5;
-  restart.y = height / 2 + 40;
-  gameover.y = height / 2;
+  if(!isMobile || isMobile && PcFeaturesOnMobile == true){
+    game = "Voo Infinito";
+    bird.y = 160;
+    bird.velocityY = 0;
+    ground.y = height - 5;
+    restart.y = height / 2 + 40;
+    gameover.y = height / 2;
+  }
 }
 
+function getState() {
+  var PcFeaturesOnMobileRef = database.ref("PcFeaturesOnMobile");
+  PcFeaturesOnMobileRef.on("value", function (data) {
+    PcFeaturesOnMobile = data.val();
+  });
+}
