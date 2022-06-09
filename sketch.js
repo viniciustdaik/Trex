@@ -871,8 +871,8 @@ function createbird(){
     if(frameCount%125==0&&score>100){
       var randomform = Math.round(random(1, 3));
       if(isMobile){
-        for(var b = 1; b <= 8; b = b+1){
-          if(randomform == 1){
+        if(randomform == 1){
+          for(var b = 1; b <= 8; b = b+1){
             if(b !== 3 && 4){
               var enemybird = createSprite(width+10, 80*b, 10, 10);
               enemybird.lifetime = 315;
@@ -907,42 +907,45 @@ function createbird(){
             }
             
           }
+        }
           if(randomform == 2){
-            if(b !== 7 && 8){
-              var enemybird = createSprite(width+10, 80*b, 10, 10);
-              enemybird.lifetime = 315;
-                  
-              if(TrexColorido == true){
-                var randombird = Math.round(random(1, 3));
-                if(randombird == 1){
+            for(var b = 1; b <= 8; b = b+1){
+              if(b !== 7 && 8){
+                var enemybird = createSprite(width+10, 80*b, 10, 10);
+                enemybird.lifetime = 315;
+                    
+                if(TrexColorido == true){
+                  var randombird = Math.round(random(1, 3));
+                  if(randombird == 1){
+                    enemybird.addAnimation("birdleft", birdanmleft);
+                    enemybird.addAnimation("birdimgleft", birdimgleft);
+                    enemybird.changeAnimation("birdleft", birdanmleft);
+                  }
+                  if(randombird == 2){
+                    enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
+                    enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
+                    enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
+                  }
+                  if(randombird == 3){
+                    enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
+                    enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
+                    enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
+                  }
+                }else if(TrexColorido == false){
                   enemybird.addAnimation("birdleft", birdanmleft);
                   enemybird.addAnimation("birdimgleft", birdimgleft);
                   enemybird.changeAnimation("birdleft", birdanmleft);
+                }else{}
+                enemybird.scale = 0.51 / 2 / 2 + 0.8;
+                if(debughitbox == true){
+                  enemybird.debug = true;
                 }
-                if(randombird == 2){
-                  enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
-                  enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
-                  enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
-                }
-                if(randombird == 3){
-                  enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
-                  enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
-                  enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
-                }
-              }else if(TrexColorido == false){
-                enemybird.addAnimation("birdleft", birdanmleft);
-                enemybird.addAnimation("birdimgleft", birdimgleft);
-                enemybird.changeAnimation("birdleft", birdanmleft);
-              }else{}
-              enemybird.scale = 0.51 / 2 / 2 + 0.8;
-              if(debughitbox == true){
-                enemybird.debug = true;
+                birdG.add(enemybird);
               }
-              birdG.add(enemybird);
             }
-            
           }
           if(randomform == 3){
+            for(var b = 1; b <= 8; b = b+1){
             if(b !== 7 && 6){
               var enemybird = createSprite(width+10, 80*b, 10, 10);
               enemybird.lifetime = 315;
@@ -975,7 +978,6 @@ function createbird(){
               }
               birdG.add(enemybird);
             }
-            
           }
         }
       }
@@ -1599,19 +1601,19 @@ function getState() {
   PcFeaturesOnMobileRef.on("value", function (data) {
     PcFeaturesOnMobile = data.val();
   });
-  var trexIsInvencibleBirdsRef = database.ref("/Trex/trexIsInvencibleBirds");
+  var trexIsInvencibleBirdsRef = database.ref("trexIsInvencibleBirds");
   trexIsInvencibleBirdsRef.on("value", function (data) {
     trexIsInvencibleBirds = data.val();
   });
-  var trexIsInvencibleCactusRef = database.ref("/Trex/trexIsInvencibleCactus");
+  var trexIsInvencibleCactusRef = database.ref("trexIsInvencibleCactus");
   trexIsInvencibleCactusRef.on("value", function (data) {
     trexIsInvencibleCactus = data.val();
   });
-  var birdIsInvencibleBirdsRef = database.ref("/Bird/birdIsInvencibleBirds");
+  var birdIsInvencibleBirdsRef = database.ref("birdIsInvencibleBirds");
   birdIsInvencibleBirdsRef.on("value", function (data) {
     birdIsInvencibleBirds = data.val();
   });
-  var birdIsInvencibleGroundRef = database.ref("/Bird/birdIsInvencibleGround");
+  var birdIsInvencibleGroundRef = database.ref("birdIsInvencibleGround");
   birdIsInvencibleGroundRef.on("value", function (data) {
     birdIsInvencibleGround = data.val();
   });
