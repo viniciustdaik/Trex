@@ -870,48 +870,13 @@ function createbird(){
   if(game == "Voo Infinito"){
     if(frameCount%125==0&&score>100){
       var randomform = Math.round(random(1, 3));
-      for(var b = 1; b <= 11; b = b+1){
-        if(randomform == 1){
-          if(b !== 5 && b !== 6){
-            if(b == 11 && height >= 861){
-              var enemybird = createSprite(width+10, 80*10, 10, 10);
-              enemybird.lifetime = 315;
-              
-              if(TrexColorido == true){
-                var randombird = Math.round(random(1, 3));
-                if(randombird == 1){
-                  enemybird.addAnimation("birdleft", birdanmleft);
-                  enemybird.addAnimation("birdimgleft", birdimgleft);
-                  enemybird.changeAnimation("birdleft", birdanmleft);
-                }
-                if(randombird == 2){
-                  enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
-                  enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
-                  enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
-                }
-                if(randombird == 3){
-                  enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
-                  enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
-                  enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
-                }
-              }else if(TrexColorido == false){
-                enemybird.addAnimation("birdleft", birdanmleft);
-                enemybird.addAnimation("birdimgleft", birdimgleft);
-                enemybird.changeAnimation("birdleft", birdanmleft);
-              }else{}
-              enemybird.scale = 0.51 / 2 / 2 + 0.8;
-              if(debughitbox == true){
-                enemybird.debug = true;
-              }
-              birdG.add(enemybird);
-            }
-            if(b !== 11){
+      if(isMobile){
+        for(var b = 1; b <= 8; b = b+1){
+          if(randomform == 1){
+            if(b !== 3 && 4){
               var enemybird = createSprite(width+10, 80*b, 10, 10);
               enemybird.lifetime = 315;
-              if(b == 10){
-                enemybird.y = 0;
-              }
-              
+                  
               if(TrexColorido == true){
                 var randombird = Math.round(random(1, 3));
                 if(randombird == 1){
@@ -941,6 +906,152 @@ function createbird(){
               birdG.add(enemybird);
             }
             
+          }
+          if(randomform == 2){
+            if(b !== 7 && 8){
+              var enemybird = createSprite(width+10, 80*b, 10, 10);
+              enemybird.lifetime = 315;
+                  
+              if(TrexColorido == true){
+                var randombird = Math.round(random(1, 3));
+                if(randombird == 1){
+                  enemybird.addAnimation("birdleft", birdanmleft);
+                  enemybird.addAnimation("birdimgleft", birdimgleft);
+                  enemybird.changeAnimation("birdleft", birdanmleft);
+                }
+                if(randombird == 2){
+                  enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
+                  enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
+                  enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
+                }
+                if(randombird == 3){
+                  enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
+                  enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
+                  enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
+                }
+              }else if(TrexColorido == false){
+                enemybird.addAnimation("birdleft", birdanmleft);
+                enemybird.addAnimation("birdimgleft", birdimgleft);
+                enemybird.changeAnimation("birdleft", birdanmleft);
+              }else{}
+              enemybird.scale = 0.51 / 2 / 2 + 0.8;
+              if(debughitbox == true){
+                enemybird.debug = true;
+              }
+              birdG.add(enemybird);
+            }
+            
+          }
+          if(randomform == 3){
+            if(b !== 7 && 6){
+              var enemybird = createSprite(width+10, 80*b, 10, 10);
+              enemybird.lifetime = 315;
+                  
+              if(TrexColorido == true){
+                var randombird = Math.round(random(1, 3));
+                if(randombird == 1){
+                  enemybird.addAnimation("birdleft", birdanmleft);
+                  enemybird.addAnimation("birdimgleft", birdimgleft);
+                  enemybird.changeAnimation("birdleft", birdanmleft);
+                }
+                if(randombird == 2){
+                  enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
+                  enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
+                  enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
+                }
+                if(randombird == 3){
+                  enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
+                  enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
+                  enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
+                }
+              }else if(TrexColorido == false){
+                enemybird.addAnimation("birdleft", birdanmleft);
+                enemybird.addAnimation("birdimgleft", birdimgleft);
+                enemybird.changeAnimation("birdleft", birdanmleft);
+              }else{}
+              enemybird.scale = 0.51 / 2 / 2 + 0.8;
+              if(debughitbox == true){
+                enemybird.debug = true;
+              }
+              birdG.add(enemybird);
+            }
+            
+          }
+        }
+      }
+      if(!isMobile){
+        for(var b = 1; b <= 11; b = b+1){
+          if(randomform == 1){
+            if(b !== 5 && b !== 6){
+              if(b == 11 && height >= 861){
+                var enemybird = createSprite(width+10, 80*10, 10, 10);
+                enemybird.lifetime = 315;
+                
+                if(TrexColorido == true){
+                  var randombird = Math.round(random(1, 3));
+                  if(randombird == 1){
+                    enemybird.addAnimation("birdleft", birdanmleft);
+                    enemybird.addAnimation("birdimgleft", birdimgleft);
+                    enemybird.changeAnimation("birdleft", birdanmleft);
+                  }
+                  if(randombird == 2){
+                    enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
+                    enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
+                    enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
+                  }
+                  if(randombird == 3){
+                    enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
+                    enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
+                    enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
+                  }
+                }else if(TrexColorido == false){
+                  enemybird.addAnimation("birdleft", birdanmleft);
+                  enemybird.addAnimation("birdimgleft", birdimgleft);
+                  enemybird.changeAnimation("birdleft", birdanmleft);
+                }else{}
+                enemybird.scale = 0.51 / 2 / 2 + 0.8;
+                if(debughitbox == true){
+                  enemybird.debug = true;
+                }
+                birdG.add(enemybird);
+              }
+              if(b !== 11){
+                var enemybird = createSprite(width+10, 80*b, 10, 10);
+                enemybird.lifetime = 315;
+                if(b == 10){
+                  enemybird.y = 0;
+                }
+                
+                if(TrexColorido == true){
+                  var randombird = Math.round(random(1, 3));
+                  if(randombird == 1){
+                    enemybird.addAnimation("birdleft", birdanmleft);
+                    enemybird.addAnimation("birdimgleft", birdimgleft);
+                    enemybird.changeAnimation("birdleft", birdanmleft);
+                  }
+                  if(randombird == 2){
+                    enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
+                    enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
+                    enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
+                  }
+                  if(randombird == 3){
+                    enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
+                    enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
+                    enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
+                  }
+                }else if(TrexColorido == false){
+                  enemybird.addAnimation("birdleft", birdanmleft);
+                  enemybird.addAnimation("birdimgleft", birdimgleft);
+                  enemybird.changeAnimation("birdleft", birdanmleft);
+                }else{}
+                enemybird.scale = 0.51 / 2 / 2 + 0.8;
+                if(debughitbox == true){
+                  enemybird.debug = true;
+                }
+                birdG.add(enemybird);
+              }
+            }
+      
           }
         }
         if(randomform == 2){
