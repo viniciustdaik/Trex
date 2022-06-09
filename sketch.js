@@ -654,8 +654,8 @@ function draw() {
     if(birdIsFlying == true && bird.rotation !== -15){
       bird.rotation = bird.rotation-1;
     }
-    console.log("Falling: "+birdIsFalling);
-    console.log("Flying: "+birdIsFlying);
+    console.log("Falling: "+birdIsFalling, "Flying: "+birdIsFlying);
+    //console.log("Flying: "+birdIsFlying);
     if(bird.isTouching(birdG) && birdIsInvencibleBirds == false|| bird.y < -10){
       failsound.play();
       //if(birdcolor !== "Cinza"){//!== "Cinza"
@@ -1487,5 +1487,21 @@ function getState() {
   var PcFeaturesOnMobileRef = database.ref("PcFeaturesOnMobile");
   PcFeaturesOnMobileRef.on("value", function (data) {
     PcFeaturesOnMobile = data.val();
+  });
+  var trexIsInvencibleBirdsRef = database.ref("/Trex/trexIsInvencibleBirds");
+  trexIsInvencibleBirdsRef.on("value", function (data) {
+    trexIsInvencibleBirds = data.val();
+  });
+  var trexIsInvencibleCactusRef = database.ref("/Trex/trexIsInvencibleCactus");
+  trexIsInvencibleCactusRef.on("value", function (data) {
+    trexIsInvencibleCactus = data.val();
+  });
+  var birdIsInvencibleBirdsRef = database.ref("/Bird/birdIsInvencibleBirds");
+  birdIsInvencibleBirdsRef.on("value", function (data) {
+    birdIsInvencibleBirds = data.val();
+  });
+  var birdIsInvencibleGroundRef = database.ref("/Bird/birdIsInvencibleGround");
+  birdIsInvencibleGroundRef.on("value", function (data) {
+    birdIsInvencibleGround = data.val();
   });
 }
