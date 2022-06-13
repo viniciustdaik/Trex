@@ -334,7 +334,7 @@ function draw() {
     //}else{
     //  text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y - newHeight - 200);
     //}
-    if(isMobile && PcFeaturesOnMobile == false){
+    /*if(isMobile && PcFeaturesOnMobile == false){
       push();
       fill('red');
       stroke('darkred');
@@ -345,7 +345,7 @@ function draw() {
       }
       text("Não Disponível Em Celular", infiniteflightbutton.x + 85, infiniteflightbutton.y + 230);
       pop();
-    }
+    }*/
     text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 200);
   }
   fill('gold');
@@ -1429,6 +1429,7 @@ function createbird(){
 }
 
 function reset(){
+  getState();
   bird.rotation = 0;
   gamestate = PLAY;
   //setDinosaurColor();
@@ -1663,37 +1664,40 @@ function turnCorridaInfinita(){
 }
 
 function turnVooInfinito(){
-  if(!isMobile || isMobile && PcFeaturesOnMobile == true){
+  //if(!isMobile || isMobile && PcFeaturesOnMobile == true){
     game = "Voo Infinito";
     bird.y = 160;
     bird.velocityY = 0;
     ground.y = height - 5;
     restart.y = height / 2 + 40;
     gameover.y = height / 2;
-  }
+  //}
 }
 
 function getState() {
-  var PcFeaturesOnMobileRef = database.ref("PcFeaturesOnMobile");
-  PcFeaturesOnMobileRef.on("value", function (data) {
-    PcFeaturesOnMobile = data.val();
-  });
-  var trexIsInvencibleBirdsRef = database.ref("trexIsInvencibleBirds");
-  trexIsInvencibleBirdsRef.on("value", function (data) {
-    trexIsInvencibleBirds = data.val();
-  });
-  var trexIsInvencibleCactusRef = database.ref("trexIsInvencibleCactus");
-  trexIsInvencibleCactusRef.on("value", function (data) {
-    trexIsInvencibleCactus = data.val();
-  });
-  var birdIsInvencibleBirdsRef = database.ref("birdIsInvencibleBirds");
-  birdIsInvencibleBirdsRef.on("value", function (data) {
-    birdIsInvencibleBirds = data.val();
-  });
-  var birdIsInvencibleGroundRef = database.ref("birdIsInvencibleGround");
-  birdIsInvencibleGroundRef.on("value", function (data) {
-    birdIsInvencibleGround = data.val();
-  });
+  if(database !== null){
+    var PcFeaturesOnMobileRef = database.ref("PcFeaturesOnMobile");
+    PcFeaturesOnMobileRef.on("value", function (data) {
+      PcFeaturesOnMobile = data.val();
+    });
+    var trexIsInvencibleBirdsRef = database.ref("trexIsInvencibleBirds");
+    trexIsInvencibleBirdsRef.on("value", function (data) {
+      trexIsInvencibleBirds = data.val();
+    });
+    var trexIsInvencibleCactusRef = database.ref("trexIsInvencibleCactus");
+    trexIsInvencibleCactusRef.on("value", function (data) {
+      trexIsInvencibleCactus = data.val();
+    });
+    var birdIsInvencibleBirdsRef = database.ref("birdIsInvencibleBirds");
+    birdIsInvencibleBirdsRef.on("value", function (data) {
+      birdIsInvencibleBirds = data.val();
+    });
+    var birdIsInvencibleGroundRef = database.ref("birdIsInvencibleGround");
+    birdIsInvencibleGroundRef.on("value", function (data) {
+      birdIsInvencibleGround = data.val();
+    });
+  }
+  
 }
 
 function windowResized() {
