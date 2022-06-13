@@ -846,8 +846,13 @@ function createcactu(){
 function createbird(){
   var debughitbox = false;
   if(game == "Corrida Infinita"){
-    if(frameCount%245==0&&score>300){//frameCount%230==0 //225
+    if(frameCount%245==0&&score>=300){//frameCount%230==0 //225
       var enemybird = createSprite(width+10, 100, 10, 10);//610, 100
+      enemybird.y = Math.round(random(130, 130));
+      var upperhitbox = createSprite(enemybird.x, 100-30, 10, 80);
+      //upperhitbox.debug = true;
+      //upperhitbox.visible = false;
+      upperhitbox.lifetime = 315;
       enemybird.lifetime = 315;//215
       //enemybird.velocityX = -(5+score/100);//-(5+score/100)
       if(TrexColorido == true){
@@ -856,28 +861,42 @@ function createbird(){
           enemybird.addAnimation("birdleft", birdanmleft);
           enemybird.addAnimation("birdimgleft", birdimgleft);
           enemybird.changeAnimation("birdleft", birdanmleft);
+          upperhitbox.addAnimation("birdleft", birdanmleft);
+          upperhitbox.addAnimation("birdimgleft", birdimgleft);
+          upperhitbox.changeAnimation("birdleft", birdanmleft);
         }
         if(randombird == 2){
           enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
           enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
           enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
+          upperhitbox.addAnimation("greenbirdleft", greenbirdanmleft);
+          upperhitbox.addAnimation("greenbirdimgleft", greenbirdimgleft);
+          upperhitbox.changeAnimation("greenbirdleft", greenbirdanmleft);
         }
         if(randombird == 3){
           enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
           enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
           enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
+          upperhitbox.addAnimation("brownbirdleft", brownbirdanmleft);
+          upperhitbox.addAnimation("brownbirdimgleft", brownbirdimgleft);
+          upperhitbox.changeAnimation("brownbirdleft", brownbirdanmleft);
         }
       }else if(TrexColorido == false){
         enemybird.addAnimation("birdleft", birdanmleft);
         enemybird.addAnimation("birdimgleft", birdimgleft);
         enemybird.changeAnimation("birdleft", birdanmleft);
+        upperhitbox.addAnimation("birdleft", birdanmleft);
+        upperhitbox.addAnimation("birdimgleft", birdimgleft);
+        upperhitbox.changeAnimation("birdleft", birdanmleft);
       }else{}
       enemybird.scale = 0.51;
-      enemybird.y = Math.round(random(130, 130));
+      upperhitbox.scale = 0.51;
       if(debughitbox == true){
         enemybird.debug = true;
+        upperhitbox.debug = true;
       }
       birdG.add(enemybird);
+      birdG.add(upperhitbox);
     }
   }
   if(game == "Voo Infinito"){
