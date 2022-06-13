@@ -511,11 +511,12 @@ function draw() {
       //&& !mouseIsOver(crouchbutton)){
         touches = [];
         trex.velocityY = -10;
+        //jumpsound.stop();
         jumpsound.play();
         //trexIsJumping = true;
       }
       console.log(trexIsJumping);
-      if(trex.y >= 150){
+      if(trex.y >= 150 ||trex.collide(invisibleground)){
         trexIsJumping = false;
       }
       if(trex.y < 150){
@@ -580,6 +581,8 @@ function draw() {
       }
     }
     else if(gamestate == END){
+      trexIsCrouching = false;
+      trexIsJumping = false;
       if(TrexColorido == false){
         //birdG.setAnimationEach("birdimgleft", birdimgleft);
       }
@@ -1419,6 +1422,8 @@ function reset(){
     gameover.y = 100;
     restart.x = width / 2
     restart.y = 140;
+    trexIsCrouching = false;
+    trexIsJumping = false;
   }
   if(game == "Voo Infinito"){
     birdIsFalling = false;
@@ -1672,35 +1677,35 @@ function getState() {
   });
 }
 
-//function windowResized() {
-  /*if(!isMobile && windowWidth < width){
-    resizeCanvas(width, windowHeight - 2.5);
-  }else if(!isMobile && windowWidth > width){
-    resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
-  }
-  else *///if(!isMobile && height !== windowHeight){
-/*    resizeCanvas(width, windowHeight - 2.5);
-  }
-  else if(isMobile){
-    resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
-  }
-  else{
+function windowResized() {
+  //if(gamestate == PLAY){
+    /*if(!isMobile && windowWidth < width){
+      resizeCanvas(width, windowHeight - 2.5);
+    }else if(!isMobile && windowWidth > width){
+      resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
+    }
+    else *//*if(!isMobile && height !== windowHeight){
+      resizeCanvas(width, windowHeight - 2.5);
+    }
+    else if(isMobile){
+      resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
+    }
+    else{
 
-  }
-  if(newHeight == undefined){
-    newHeight = height - initialHeight + height;
-  }
-  
-  if(TrexColorido == true && Isday == true){
-    background('cyan');
-  }else if(TrexColorido == false && Isday == true){
-    background('white');
-  }else if(TrexColorido !== false && TrexColorido !== true && Isday == true){
-    background('white');
-  }
+    }
+    if(newHeight == undefined){
+      newHeight = height - initialHeight + height;
+    }
+    
+    if(TrexColorido == true && Isday == true){
+      background('cyan');
+    }else if(TrexColorido == false && Isday == true){
+      background('white');
+    }else if(TrexColorido !== false && TrexColorido !== true && Isday == true){
+      background('white');
+    }
 
 
-
-
-}*/
+  }*/
+}
 
