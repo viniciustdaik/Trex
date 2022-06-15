@@ -497,7 +497,7 @@ function draw() {
     if(gamestate == PLAY){
       if(birdG.isTouching(cactuG) || birdG.isTouching(cactuhitboxG)){
         birdG.destroyEach();
-        console.log("Birds touching cactuG | cactuhitboxG destroyed!");
+        //console.log("Birds touching cactuG | cactuhitboxG destroyed!");
       }
       crouchbutton.position(width / 2-35, 5);
       if(TrexColorido == false){
