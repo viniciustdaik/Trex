@@ -46,6 +46,8 @@ var initialHeight;//, newHeight;
 
 var PcFeaturesOnMobile = false;
 
+var getStateOrNot = false;
+
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
@@ -1453,7 +1455,9 @@ function createbird(){
 }
 
 function reset(){
-  getState();
+  if(getStateOrNot == true){
+    getState();
+  }
   bird.rotation = 0;
   gamestate = PLAY;
   //setDinosaurColor();
@@ -1700,6 +1704,10 @@ function turnVooInfinito(){
 
 function getState() {
   if(database !== null){
+    var getStateOrNotRef = database.ref("getStateOrNot");
+    getStateOrNotRef.on("value", function (data) {
+      getStateOrNot = data.val();
+    });
     var PcFeaturesOnMobileRef = database.ref("PcFeaturesOnMobile");
     PcFeaturesOnMobileRef.on("value", function (data) {
       PcFeaturesOnMobile = data.val();
