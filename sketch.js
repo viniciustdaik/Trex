@@ -48,6 +48,8 @@ var PcFeaturesOnMobile = false;
 
 var getStateOrNot = false;
 
+var cactuhitboxG;
+
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
@@ -269,6 +271,7 @@ function setup() {
   cloudG = new Group();
   cactuG = new Group();
   birdG = new Group();
+  cactuhitboxG = new Group();
 
   gameover = createSprite(width / 2, 100);//300, 100
   gameover.addImage("gameovercolored", gameover_coloredimg);
@@ -297,6 +300,7 @@ function draw() {
     score = score+Math.round(getFrameRate()/30);
     cloudG.setVelocityXEach(-(4+3*score/100));//-(5+score/100)
     cactuG.setVelocityXEach(-(5+score/100));//-(5+score/100)
+    cactuhitboxG.setVelocityXEach(-(5+score/100));//-(5+score/100)
     birdG.setVelocityXEach(-(5+score/100));//-(5+score/100)
     //ground.velocityX = -2;
     ground.velocityX = -(4+3*score/100);//-(4+3*score/100)
@@ -491,9 +495,9 @@ function draw() {
     }*/
     //console.log(trex.y);
     if(gamestate == PLAY){
-      if(birdG.isTouching(cactuG)){
+      if(birdG.isTouching(cactuG) || birdG.isTouching(cactuhitboxG)){
         birdG.destroyEach();
-        console.log("Birds touching cactuG destroyed!");
+        console.log("Birds touching cactuG | cactuhitboxG destroyed!");
       }
       crouchbutton.position(width / 2-35, 5);
       if(TrexColorido == false){
@@ -804,10 +808,12 @@ function createclouds(){
 }
 
 function createcactu(){
-  var debughitbox = true;
+  var debughitbox = false;
   if(game == "Corrida Infinita"){
     if(frameCount%70==0){//frameCount%60==0
       var cactu = createSprite(width+10, 165, 10, 40);//610, 165
+      var hitbox = createSprite(cactu.x, cactu.y, 75, 200);
+      hitbox.visible = false;
       //cactu.velocityX = -(5+score/100);//-(5+score/100)
       var aleatorio = Math.round(random(1, 6));
       if(TrexColorido == false){
@@ -845,16 +851,18 @@ function createcactu(){
       }
       if(debughitbox == true){
         cactu.debug = true;
+        hitbox.debug = true;
       }
       cactu.scale = 0.5;
       cactu.lifetime = 315;//215
       cactuG.add(cactu);
+      cactuhitboxG.add(hitbox);
     }
   }
 }
 
 function createbird(){
-  var debughitbox = true;
+  var debughitbox = false;
   var upperbirdenabled = true;
   if(game == "Corrida Infinita"){
     if(frameCount%245==0&&score>=300){//frameCount%230==0 //225 //frameCount%245==0
