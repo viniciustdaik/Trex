@@ -483,10 +483,6 @@ function draw() {
     }*/
   }
     if(game == "Corrida Infinita"){
-      if(birdG.isTouching(cactuG)){
-        birdG.destroyEach();
-        //console.log("Birds touching cactuG destroyed!");
-      }
     /*if(cloud1.x < -20){
       cloud1.x = 645;
     }
@@ -495,6 +491,10 @@ function draw() {
     }*/
     //console.log(trex.y);
     if(gamestate == PLAY){
+      if(birdG.isTouching(cactuG)){
+        birdG.destroyEach();
+        console.log("Birds touching cactuG destroyed!");
+      }
       crouchbutton.position(width / 2-35, 5);
       if(TrexColorido == false){
         trex.visible = true;
@@ -804,7 +804,7 @@ function createclouds(){
 }
 
 function createcactu(){
-  var debughitbox = false;
+  var debughitbox = true;
   if(game == "Corrida Infinita"){
     if(frameCount%70==0){//frameCount%60==0
       var cactu = createSprite(width+10, 165, 10, 40);//610, 165
@@ -854,7 +854,7 @@ function createcactu(){
 }
 
 function createbird(){
-  var debughitbox = false;
+  var debughitbox = true;
   var upperbirdenabled = true;
   if(game == "Corrida Infinita"){
     if(frameCount%245==0&&score>=300){//frameCount%230==0 //225 //frameCount%245==0
