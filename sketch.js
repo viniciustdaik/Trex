@@ -1712,27 +1712,27 @@ function turnVooInfinito(){
 
 function getState() {
   if(database !== null){
-    var getStateOrNotRef = database.ref("getStateOrNot");
+    var getStateOrNotRef = database.ref("/Trex/getStateOrNot/");
     getStateOrNotRef.on("value", function (data) {
       getStateOrNot = data.val();
     });
-    var PcFeaturesOnMobileRef = database.ref("PcFeaturesOnMobile");
+    var PcFeaturesOnMobileRef = database.ref("/Trex/PcFeaturesOnMobile/");
     PcFeaturesOnMobileRef.on("value", function (data) {
       PcFeaturesOnMobile = data.val();
     });
-    var trexIsInvencibleBirdsRef = database.ref("trexIsInvencibleBirds");
+    var trexIsInvencibleBirdsRef = database.ref("/Trex/trexIsInvencibleBirds/");
     trexIsInvencibleBirdsRef.on("value", function (data) {
       trexIsInvencibleBirds = data.val();
     });
-    var trexIsInvencibleCactusRef = database.ref("trexIsInvencibleCactus");
+    var trexIsInvencibleCactusRef = database.ref("/Trex/trexIsInvencibleCactus/");
     trexIsInvencibleCactusRef.on("value", function (data) {
       trexIsInvencibleCactus = data.val();
     });
-    var birdIsInvencibleBirdsRef = database.ref("birdIsInvencibleBirds");
+    var birdIsInvencibleBirdsRef = database.ref("/Trex/birdIsInvencibleBirds/");
     birdIsInvencibleBirdsRef.on("value", function (data) {
       birdIsInvencibleBirds = data.val();
     });
-    var birdIsInvencibleGroundRef = database.ref("birdIsInvencibleGround");
+    var birdIsInvencibleGroundRef = database.ref("/Trex/birdIsInvencibleGround/");
     birdIsInvencibleGroundRef.on("value", function (data) {
       birdIsInvencibleGround = data.val();
     });
