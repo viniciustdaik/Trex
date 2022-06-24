@@ -20,8 +20,8 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
+  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
+  transition-duration: 0.0s;/*0.4s*/
   outline: none;
 }
 
@@ -93,3 +93,18 @@ canvas {
   outline: none;
 }
 
+.BestHighscoresButton{
+  background-image: url('../imagens-de-pontuacao/highscore.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.TrashButton{
+  background-image: url('../trash.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
