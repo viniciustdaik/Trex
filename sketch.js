@@ -40,6 +40,15 @@ var TrexColorido = "notselected", sand;
 var coloridobuttonover = false, normalbuttonover = true;
 var trexfont;
 
+var ShowBestHighscore = false, ShowBestHighscoresButton, 
+ShowBestHighscoreActive = false, BestHighscores;
+
+var BestHighscores1 = false, BestHighscores2 = false, BestHighscores3 = false, BestHighscores4 = false, 
+BestHighscores5 = false;
+
+var BestHighscores1DeleteButton, BestHighscores2DeleteButton, BestHighscores3DeleteButton, 
+BestHighscores4DeleteButton, BestHighscores5DeleteButton;
+
 var game = "notselected";
 
 var initialHeight;//, newHeight;
@@ -152,6 +161,39 @@ function setup() {
 
   initialHeight = height;
 
+  BestHighscores = createSprite(width - width - width, -350);
+  BestHighscores.visible = false;
+
+  BestHighscores1DeleteButton = createButton("");
+  BestHighscores1DeleteButton.size(20, 20);
+  BestHighscores1DeleteButton.class("TrashButton");
+  BestHighscores1DeleteButton.position(width - width - width, height/2);
+  BestHighscores1DeleteButton.mousePressed(resetBestHighscoreOne);
+
+  BestHighscores2DeleteButton = createButton("");
+  BestHighscores2DeleteButton.size(20, 20);
+  BestHighscores2DeleteButton.class("TrashButton");
+  BestHighscores2DeleteButton.position(width - width - width, height/2);
+  BestHighscores2DeleteButton.mousePressed(resetBestHighscoreTwo);
+
+  BestHighscores3DeleteButton = createButton("");
+  BestHighscores3DeleteButton.size(20, 20);
+  BestHighscores3DeleteButton.class("TrashButton");
+  BestHighscores3DeleteButton.position(width - width - width, height/2);
+  BestHighscores3DeleteButton.mousePressed(resetBestHighscoreThree);
+
+  BestHighscores4DeleteButton = createButton("");
+  BestHighscores4DeleteButton.size(20, 20);
+  BestHighscores4DeleteButton.class("TrashButton");
+  BestHighscores4DeleteButton.position(width - width - width, height/2);
+  BestHighscores4DeleteButton.mousePressed(resetBestHighscoreFour);
+
+  BestHighscores5DeleteButton = createButton("");
+  BestHighscores5DeleteButton.size(20, 20);
+  BestHighscores5DeleteButton.class("TrashButton");
+  BestHighscores5DeleteButton.position(width - width - width, height/2);
+  BestHighscores5DeleteButton.mousePressed(resetBestHighscoreFive);
+
   var trexImg = createImg('./trex/trex_idle(eye fixed).png');
   trexImg.position(width - width - width - width, height - height - height, height);
   trexImg.size(150, 150);
@@ -167,6 +209,12 @@ function setup() {
   //coloridobutton.addImage("colorido", coloridobuttonimg);
   //coloridobutton.scale = 0.6;
   //coloridobutton.visible = false;
+
+  ShowBestHighscoresButton = createButton("");
+  ShowBestHighscoresButton.position(width - width - width, -350);
+  ShowBestHighscoresButton.size(50, 50);
+  ShowBestHighscoresButton.class("BestHighscoresButton");
+  ShowBestHighscoresButton.mousePressed(handleBestHighscores);
 
   coloridobutton = createButton("");
   coloridobutton.class("largebuttonC");
@@ -359,9 +407,116 @@ function draw() {
   textSize(15);
   textFont(trexfont);
   if(gamestate !== SELECT){
+    var BestHighscoresY = 25 - 35;
+    var BestHighscoresX = width/2 - 430;
+    if(ShowBestHighscore == true){
+      if(ShowBestHighscoreActive == true){
+        push();
+        textAlign("center");
+        if(BestHighscores1 !== false){
+          text("HI 1:"+BestHighscores1, BestHighscores.x, BestHighscores.y);
+        }else{
+          text("HI 1:Nenhum", BestHighscores.x, BestHighscores.y);
+        }
+
+        if(BestHighscores2 !== false){
+          text("HI 2:"+BestHighscores2, BestHighscores.x, BestHighscores.y+25);
+        }else{
+          text("HI 2:Nenhum", BestHighscores.x, BestHighscores.y+25);
+        }
+
+        if(BestHighscores3 !== false){
+          text("HI 3:"+BestHighscores3, BestHighscores.x, BestHighscores.y+50);
+        }else{
+          text("HI 3:Nenhum", BestHighscores.x, BestHighscores.y+50);
+        }
+
+        if(BestHighscores4 !== false){
+          text("HI 4:"+BestHighscores4, BestHighscores.x, BestHighscores.y+75);
+        }else{
+          text("HI 4:Nenhum", BestHighscores.x, BestHighscores.y+75);
+        }
+
+        if(BestHighscores5 !== false){
+          text("HI 5:"+BestHighscores5, BestHighscores.x, BestHighscores.y+100);
+        }else{
+          text("HI 5:Nenhum", BestHighscores.x, BestHighscores.y+100);
+        }
+        pop();
+      }
+      if(ShowBestHighscoresButton.x !== width - 55
+      ||ShowBestHighscoresButton.y !== 5){
+        ShowBestHighscoresButton.position(width - 55, 5);
+      }
+      if(ShowBestHighscoreActive == true && BestHighscores.x !== width/2
+      ||ShowBestHighscoreActive == true && BestHighscores.y !== height/2 - height/2/2 + 35){
+        BestHighscores.x = BestHighscoresX;
+        //BestHighscores1DeleteButton.position(width/2 + 100 - 15, BestHighscoresY + 20);
+        //BestHighscores2DeleteButton.position(width/2 + 100 - 15, BestHighscoresY + 45);
+        //BestHighscores3DeleteButton.position(width/2 + 100 - 15, BestHighscoresY + 68);
+        //BestHighscores4DeleteButton.position(width/2 + 100 - 15, BestHighscoresY + 92);
+        //BestHighscores5DeleteButton.position(width/2 + 100 - 15, BestHighscoresY + 118);
+        BestHighscores.y = BestHighscoresY + 35;
+      }
+      if(ShowBestHighscoreActive == false && BestHighscores.x !== width - width - width
+      ||ShowBestHighscoreActive == false && BestHighscores.y !== -350){
+        BestHighscores.x = width - width - width;
+        BestHighscores1DeleteButton.position(width - width - width, -350);
+        BestHighscores2DeleteButton.position(width - width - width, -350);
+        BestHighscores3DeleteButton.position(width - width - width, -350);
+        BestHighscores4DeleteButton.position(width - width - width, -350);
+        BestHighscores5DeleteButton.position(width - width - width, -350);
+        BestHighscores.y = -350;
+      }
+      if(ShowBestHighscoreActive == true){
+        if(BestHighscores1 !== false && BestHighscores1DeleteButton.x !== BestHighscoresX + 100 - 15){
+          BestHighscores1DeleteButton.position(BestHighscoresX + 100 - 15, BestHighscoresY + 20);
+        }
+        if(BestHighscores2 !== false && BestHighscores2DeleteButton.x !== BestHighscoresX + 100 - 15){
+          BestHighscores2DeleteButton.position(BestHighscoresX + 100 - 15, BestHighscoresY + 45);
+        }
+        if(BestHighscores3 !== false && BestHighscores3DeleteButton.x !== BestHighscoresX + 100 - 15){
+          BestHighscores3DeleteButton.position(BestHighscoresX + 100 - 15, BestHighscoresY + 68);
+        }
+        if(BestHighscores4 !== false && BestHighscores4DeleteButton.x !== BestHighscoresX + 100 - 15){
+          BestHighscores4DeleteButton.position(BestHighscoresX + 100 - 15, BestHighscoresY + 92);
+        }
+        if(BestHighscores5 !== false && BestHighscores5DeleteButton.x !== BestHighscoresX + 100 - 15){
+          BestHighscores5DeleteButton.position(BestHighscoresX + 100 - 15, BestHighscoresY + 118);
+        }
+        if(BestHighscores1 == false &&  BestHighscores1DeleteButton.x !== width - width - width
+        ||BestHighscores1 == false &&  BestHighscores1DeleteButton.y !== -350){
+          BestHighscores1DeleteButton.position(width - width - width, -350);
+        }
+        if(BestHighscores2 == false &&  BestHighscores2DeleteButton.x !== width - width - width
+        ||BestHighscores2 == false &&  BestHighscores2DeleteButton.y !== -350){
+          BestHighscores2DeleteButton.position(width - width - width, -350);
+        }
+        if(BestHighscores3 == false &&  BestHighscores3DeleteButton.x !== width - width - width
+        ||BestHighscores3 == false &&  BestHighscores3DeleteButton.y !== -350){
+          BestHighscores3DeleteButton.position(width - width - width, -350);
+        }
+        if(BestHighscores4 == false &&  BestHighscores4DeleteButton.x !== width - width - width
+        ||BestHighscores4 == false &&  BestHighscores4DeleteButton.y !== -350){
+          BestHighscores4DeleteButton.position(width - width - width, -350);
+        }
+        if(BestHighscores5 == false &&  BestHighscores5DeleteButton.x !== width - width - width
+        ||BestHighscores5 == false &&  BestHighscores5DeleteButton.y !== -350){
+          BestHighscores5DeleteButton.position(width - width - width, -350);
+        }
+      }
+    }
     if(key == "Escape"){
       key = null;
       keyCode = null;
+      ShowBestHighscoresButton.position(width - width - width, 5);
+      BestHighscores.x = width - width - width;
+      BestHighscores1DeleteButton.position(width - width - width, -350);
+      BestHighscores2DeleteButton.position(width - width - width, -350);
+      BestHighscores3DeleteButton.position(width - width - width, -350);
+      BestHighscores4DeleteButton.position(width - width - width, -350);
+      BestHighscores5DeleteButton.position(width - width - width, -350);
+      BestHighscores.y = -350;
       background("white");
       gamestate = -1;
       score = 0;
@@ -499,7 +654,14 @@ function draw() {
         birdG.destroyEach();
         //console.log("Birds touching cactuG | cactuhitboxG destroyed!");
       }
-      crouchbutton.position(width / 2-35, 5);
+      if(crouchbutton.x !== width / 2-35 && trexIsJumping == false
+      ||crouchbutton.y !== 5 && trexIsJumping == false){
+        crouchbutton.position(width / 2-35, 5);
+      }
+      if(crouchbutton.x !== width / 2-35 && trexIsJumping == true
+      ||crouchbutton.y !== -350 && trexIsJumping == true){
+        crouchbutton.position(width / 2-35, -350);
+      }
       if(TrexColorido == false){
         trex.visible = true;
       }
@@ -1500,8 +1662,39 @@ function reset(){
   cloudG.destroyEach();
   birdG.destroyEach();
   trex.changeAnimation("running", trex_running);
+  
   if(score>highscore){
     highscore = score;
+  }
+  if(ShowBestHighscore == true){
+    var chosen = false;
+    if(BestHighscores1 == false && chosen == false){
+      BestHighscores1 = highscore;
+      updateBestHighscore(1);
+      chosen = true;
+    }
+    if(BestHighscores1 !== false && BestHighscores2 == false && chosen == false){
+      BestHighscores2 = highscore;
+      updateBestHighscore(2);
+      chosen = true;
+    }
+    if(BestHighscores1 !== false && BestHighscores2 !== false && BestHighscores3 == false && chosen == false){
+      BestHighscores3 = highscore;
+      updateBestHighscore(3);
+      chosen = true;
+    }
+    if(BestHighscores1 !== false && BestHighscores2 !== false && BestHighscores3 !== false
+      && BestHighscores4 == false && chosen == false){
+      BestHighscores4 = highscore;
+      updateBestHighscore(4);
+      chosen = true;
+    }
+    if(BestHighscores1 !== false && BestHighscores2 !== false && BestHighscores3 !== false
+      && BestHighscores4 !== false && BestHighscores5 == false && chosen == false){
+      BestHighscores5 = highscore;
+      updateBestHighscore(5);
+      chosen = true;
+    }
   }
   score = 0;
   
@@ -1710,6 +1903,124 @@ function turnVooInfinito(){
   //}
 }
 
+function resetBestHighscore(number){
+  if(number == 1 && BestHighscores1 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore1: false
+    });
+  }
+
+  if(number == 2 && BestHighscores2 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore2: false
+    });
+  }
+
+  if(number == 3 && BestHighscores3 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore3: false
+    });
+  }
+
+  if(number == 4 && BestHighscores4 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore4: false
+    });
+  }
+
+  if(number == 5 && BestHighscores5 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore5: false
+    });
+  }
+  
+}
+
+function updateBestHighscore(number){
+  if(number == 1){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore1: BestHighscores1
+    });
+  }
+
+  if(number == 2){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore2: BestHighscores2
+    });
+  }
+
+  if(number == 3){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore3: BestHighscores3
+    });
+  }
+
+  if(number == 4){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore4: BestHighscores4
+    });
+  }
+
+  if(number == 5){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore5: BestHighscores5
+    });
+  }
+  
+}
+
+function resetBestHighscoreOne(){
+  if(BestHighscores1 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore1: false
+    });
+  }
+}
+
+function resetBestHighscoreTwo(){
+  if(BestHighscores2 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore2: false
+    });
+  }
+}
+
+function resetBestHighscoreThree(){
+  if(BestHighscores3 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore3: false
+    });
+  }
+}
+
+function resetBestHighscoreFour(){
+  if(BestHighscores4 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore4: false
+    });
+  }
+}
+
+function resetBestHighscoreFive(){
+  if(BestHighscores5 !== false){
+    database.ref('/Trex/BestHighscores/').update({
+      BestHighscore5: false
+    });
+  }
+}
+
+function handleBestHighscores(){
+  var changed = false;
+  if(ShowBestHighscoreActive == false && changed == false){
+    ShowBestHighscoreActive = true;
+    changed = true;
+  }
+  if(ShowBestHighscoreActive == true && changed == false){
+    ShowBestHighscoreActive = false;
+    changed = true;
+  }
+}
+
 function getState() {
   if(database !== null){
     var getStateOrNotRef = database.ref("/Trex/getStateOrNot/");
@@ -1735,6 +2046,30 @@ function getState() {
     var birdIsInvencibleGroundRef = database.ref("/Trex/birdIsInvencibleGround/");
     birdIsInvencibleGroundRef.on("value", function (data) {
       birdIsInvencibleGround = data.val();
+    });
+    var ShowBestHighscoreRef = database.ref("/Trex/ShowBestHighscore/");
+    ShowBestHighscoreRef.on("value", function (data) {
+      ShowBestHighscore = data.val();
+    });
+    var BestHighscore1Ref = database.ref("/Trex/BestHighscores/BestHighscore1/");
+    BestHighscore1Ref.on("value", function (data) {
+      BestHighscores1 = data.val();
+    });
+    var BestHighscore2Ref = database.ref("/Trex/BestHighscores/BestHighscore2/");
+    BestHighscore2Ref.on("value", function (data) {
+      BestHighscores2 = data.val();
+    });
+    var BestHighscore3Ref = database.ref("/Trex/BestHighscores/BestHighscore3/");
+    BestHighscore3Ref.on("value", function (data) {
+      BestHighscores3 = data.val();
+    });
+    var BestHighscore4Ref = database.ref("/Trex/BestHighscores/BestHighscore4/");
+    BestHighscore4Ref.on("value", function (data) {
+      BestHighscores4 = data.val();
+    });
+    var BestHighscore5Ref = database.ref("/Trex/BestHighscores/BestHighscore5/");
+    BestHighscore5Ref.on("value", function (data) {
+      BestHighscores5 = data.val();
     });
   }
   
