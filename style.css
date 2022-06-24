@@ -103,7 +103,8 @@ canvas {
 
 .TrashButton{
   background-image: url('../Trex/trash.png');
-  background-color: #ffffff;
+  border-width: 1.5px;
+  border-color: #000000;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
