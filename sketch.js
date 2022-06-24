@@ -408,7 +408,7 @@ function draw() {
   textFont(trexfont);
   if(gamestate !== SELECT){
     var BestHighscoresY = 25 - 35;
-    var BestHighscoresX = width/2 - 430;
+    var BestHighscoresX = width/2 - 410;
     if(ShowBestHighscore == true){
       if(ShowBestHighscoreActive == true){
         push();
