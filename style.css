@@ -1,0 +1,111 @@
+html, body {
+  margin: 0;
+  padding:0;
+}
+canvas {
+  display: block;
+  border: 1px dashed grey;
+
+}
+
+.crouchbutton{
+  width:70px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('../trex/crouchimgbutton.png');
+  background-color: #9ea7a7;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
+  transition-duration: 0.0s;/*0.4s*/
+  outline: none;
+}
+
+.largebuttonC{
+  width: 360px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('../Colorido.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.largebuttonN{
+  width: 360px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('../normal.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.squarebuttonIR{
+  width: 150px;
+  height: 150px;
+  border-radius: 35px;
+  background-image: url('../trex/trex_idle\(eye\ fixed\).png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.squarebuttonIF{
+  width: 150px;
+  height: 150px;
+  border-radius: 35px;
+  background-image: url('../inimigos-obstaculos/birds/bird1-left.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.BestHighscoresButton{
+  background-image: url('../imagens-de-pontuacao/highscore.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.TrashButton{
+  background-image: url('../trash.png');
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
