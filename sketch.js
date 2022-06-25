@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.22, mostRecentVersion = null;
+var version = 1.221, mostRecentVersion = null;
 
 var gotStateOneTime = false;
 
@@ -782,6 +782,7 @@ function draw() {
       }
     }
     else if(gamestate == END){
+      crouchbutton.position(width / 2-35, -350);
       trexIsCrouching = false;
       trexIsJumping = false;
       if(TrexColorido == false){
