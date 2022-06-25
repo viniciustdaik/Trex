@@ -41,7 +41,7 @@ var coloridobuttonover = false, normalbuttonover = true;
 var trexfont;
 
 var ShowBestHighscore = false, ShowBestHighscoresButton, 
-ShowBestHighscoreActive = false, BestHighscores;
+ShowBestHighscoreActive = false, BestHighscores, ShowBestHighscoresButtonHitbox;
 
 var BestHighscores1 = false, BestHighscores2 = false, BestHighscores3 = false, BestHighscores4 = false, 
 BestHighscores5 = false;
@@ -167,6 +167,8 @@ function setup() {
 
   BestHighscores = createSprite(width - width - width, -350);
   BestHighscores.visible = false;
+
+  ShowBestHighscoresButtonHitbox = createSprite(width - width - width, -350, 50, 50);
 
   BestHighscores1DeleteButton = createButton("");
   BestHighscores1DeleteButton.size(20, 20);
@@ -348,6 +350,11 @@ function setup() {
 }
 
 function draw() {
+  if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
+    ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
+    ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 25;
+    ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 25;
+  }
   if(gamestate == PLAY){
     score = score+Math.round(getFrameRate()/30);
     cloudG.setVelocityXEach(-(4+3*score/100));//-(5+score/100)
@@ -697,10 +704,11 @@ function draw() {
       if(score>0&&score%100==0){
         checkpointsound.play();
       }
-      if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
-      keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
-      keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mouseIsOver(crouchbutton)||
-      touches.length > 0&&trex.y >=150&&trexIsCrouching==false){
+      if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+      keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+      keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+      touches.length > 0&&trex.y >=150&&trexIsCrouching==false
+      && !mousePressedOver(ShowBestHighscoresButtonHitbox)){
       //&& !mouseIsOver(crouchbutton)){
         touches = [];
         trex.velocityY = -10;
