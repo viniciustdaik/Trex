@@ -95,7 +95,8 @@ canvas {
 
 .BestHighscoresButton{
   background-image: url('../Trex/imagens-de-pontuacao/highscore.png');
-  background-color: #ffffff;
+  border-width: 1.5px;
+  border-color: #000000;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
