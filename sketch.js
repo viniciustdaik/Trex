@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.221, mostRecentVersion = null;
+var version = 1.222, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -164,6 +164,12 @@ function setup() {
   database = firebase.database();
 
   initialHeight = height;
+
+  reloadButton = createButton("Recarregar");
+  reloadButton.position(width - width - width, height - 25);
+  reloadButton.size(80, 35);
+  reloadButton.class("reloadButton");
+  reloadButton.mousePressed(reload);
 
   BestHighscores = createSprite(width - width - width, -350);
   BestHighscores.visible = false;
@@ -396,6 +402,9 @@ function draw() {
     textAlign("center");
     stroke('darkred');
     text("Está versão não é a mais recente.", width/2, height - 25);
+    if(reloadButton.x !== width/2 + 265|| reloadButton.y !== height - 50){
+      reloadButton.position(width/2 + 265, height - 50);
+    }
     pop();
   }
   if(game == "notselected"){
@@ -2142,3 +2151,6 @@ function windowResized() {
   }*/
 }
 
+function reload(){
+  location.reload();
+}
