@@ -51,6 +51,10 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
+var version = 1.01, mostRecentVersion = null;
+
+var gotStateOneTime = false;
+
 var initialHeight;//, newHeight;
 
 var PcFeaturesOnMobile = false;
@@ -376,6 +380,16 @@ function draw() {
     background('white');
   }else if(TrexColorido !== false && TrexColorido !== true && Isday == true){
     background('white');
+  }
+  if(mostRecentVersion !== null && mostRecentVersion > version){
+    console.log('This is not the most Recent Version.');
+    push();
+    textSize(35);
+    fill('red');
+    textAlign("center");
+    stroke('darkred');
+    text("Está versão não é a mais recente.", width/2, height - 25);
+    pop();
   }
   if(game == "notselected"){
     textSize(30);
@@ -2030,56 +2044,61 @@ function handleBestHighscores(){
 
 function getState() {
   if(database !== null){
+    if(getStateOrNot == true || gotStateOneTime == false){
+      var PcFeaturesOnMobileRef = database.ref("/Trex/PcFeaturesOnMobile/");
+      PcFeaturesOnMobileRef.on("value", function (data) {
+        PcFeaturesOnMobile = data.val();
+      });
+      var trexIsInvencibleBirdsRef = database.ref("/Trex/trexIsInvencibleBirds/");
+      trexIsInvencibleBirdsRef.on("value", function (data) {
+        trexIsInvencibleBirds = data.val();
+      });
+      var trexIsInvencibleCactusRef = database.ref("/Trex/trexIsInvencibleCactus/");
+      trexIsInvencibleCactusRef.on("value", function (data) {
+        trexIsInvencibleCactus = data.val();
+      });
+      var birdIsInvencibleBirdsRef = database.ref("/Trex/birdIsInvencibleBirds/");
+      birdIsInvencibleBirdsRef.on("value", function (data) {
+        birdIsInvencibleBirds = data.val();
+      });
+      var birdIsInvencibleGroundRef = database.ref("/Trex/birdIsInvencibleGround/");
+      birdIsInvencibleGroundRef.on("value", function (data) {
+        birdIsInvencibleGround = data.val();
+      });
+      var ShowBestHighscoreRef = database.ref("/Trex/ShowBestHighscore/");
+      ShowBestHighscoreRef.on("value", function (data) {
+        ShowBestHighscore = data.val();
+      });
+      var BestHighscore1Ref = database.ref("/Trex/BestHighscores/BestHighscore1/");
+      BestHighscore1Ref.on("value", function (data) {
+        BestHighscores1 = data.val();
+      });
+      var BestHighscore2Ref = database.ref("/Trex/BestHighscores/BestHighscore2/");
+      BestHighscore2Ref.on("value", function (data) {
+        BestHighscores2 = data.val();
+      });
+      var BestHighscore3Ref = database.ref("/Trex/BestHighscores/BestHighscore3/");
+      BestHighscore3Ref.on("value", function (data) {
+        BestHighscores3 = data.val();
+      });
+      var BestHighscore4Ref = database.ref("/Trex/BestHighscores/BestHighscore4/");
+      BestHighscore4Ref.on("value", function (data) {
+        BestHighscores4 = data.val();
+      });
+      var BestHighscore5Ref = database.ref("/Trex/BestHighscores/BestHighscore5/");
+      BestHighscore5Ref.on("value", function (data) {
+        BestHighscores5 = data.val();
+      });
+    }
     var getStateOrNotRef = database.ref("/Trex/getStateOrNot/");
     getStateOrNotRef.on("value", function (data) {
       getStateOrNot = data.val();
     });
-    var PcFeaturesOnMobileRef = database.ref("/Trex/PcFeaturesOnMobile/");
-    PcFeaturesOnMobileRef.on("value", function (data) {
-      PcFeaturesOnMobile = data.val();
-    });
-    var trexIsInvencibleBirdsRef = database.ref("/Trex/trexIsInvencibleBirds/");
-    trexIsInvencibleBirdsRef.on("value", function (data) {
-      trexIsInvencibleBirds = data.val();
-    });
-    var trexIsInvencibleCactusRef = database.ref("/Trex/trexIsInvencibleCactus/");
-    trexIsInvencibleCactusRef.on("value", function (data) {
-      trexIsInvencibleCactus = data.val();
-    });
-    var birdIsInvencibleBirdsRef = database.ref("/Trex/birdIsInvencibleBirds/");
-    birdIsInvencibleBirdsRef.on("value", function (data) {
-      birdIsInvencibleBirds = data.val();
-    });
-    var birdIsInvencibleGroundRef = database.ref("/Trex/birdIsInvencibleGround/");
-    birdIsInvencibleGroundRef.on("value", function (data) {
-      birdIsInvencibleGround = data.val();
-    });
-    var ShowBestHighscoreRef = database.ref("/Trex/ShowBestHighscore/");
-    ShowBestHighscoreRef.on("value", function (data) {
-      ShowBestHighscore = data.val();
-    });
-    var BestHighscore1Ref = database.ref("/Trex/BestHighscores/BestHighscore1/");
-    BestHighscore1Ref.on("value", function (data) {
-      BestHighscores1 = data.val();
-    });
-    var BestHighscore2Ref = database.ref("/Trex/BestHighscores/BestHighscore2/");
-    BestHighscore2Ref.on("value", function (data) {
-      BestHighscores2 = data.val();
-    });
-    var BestHighscore3Ref = database.ref("/Trex/BestHighscores/BestHighscore3/");
-    BestHighscore3Ref.on("value", function (data) {
-      BestHighscores3 = data.val();
-    });
-    var BestHighscore4Ref = database.ref("/Trex/BestHighscores/BestHighscore4/");
-    BestHighscore4Ref.on("value", function (data) {
-      BestHighscores4 = data.val();
-    });
-    var BestHighscore5Ref = database.ref("/Trex/BestHighscores/BestHighscore5/");
-    BestHighscore5Ref.on("value", function (data) {
-      BestHighscores5 = data.val();
+    var mostRecentVersionRef = database.ref("/Trex/mostRecentVersion/");
+    mostRecentVersionRef.on("value", function (data) {
+      mostRecentVersion = data.val();
     });
   }
-  
 }
 
 function windowResized() {
