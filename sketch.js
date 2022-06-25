@@ -1654,9 +1654,9 @@ function createbird(){
 }
 
 function reset(){
-  if(getStateOrNot == true){
+  //if(getStateOrNot == true){
     getState();
-  }
+  //}
   bird.rotation = 0;
   gamestate = PLAY;
   //setDinosaurColor();
