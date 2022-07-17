@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2235, mostRecentVersion = null, reloadButton;
+var version = 1.22351, mostRecentVersion = null, reloadButton;//actual version=1.222
 
 var gotStateOneTime = false;
 
@@ -70,6 +70,10 @@ var isiPad = /iPad/i.test(navigator.userAgent);//iPad
 var isAndroid = /Android/i.test(navigator.userAgent);
 
 var isiPhoneXR = /iPhoneXR/i.test(navigator.userAgent);
+
+let isIPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio &&
+window.devicePixelRatio === 2 && window.screen.width === 414 &&
+window.screen.height === 896
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
 
@@ -424,8 +428,14 @@ function draw() {
     if(isiPad == true){
       text("É um iPad!", width/2, height/2);
     }
-    if(isiPhoneXR == true){
+    if(isiPhoneXR == true || isIPhoneXR == true){
       text("WOW! FUNCIONOU! DETECTOU UM iPhone XR!", width/2, height/2);
+      if(isiPhoneXR == true){
+        text("isiPhoneXR é true", width/2, height + 35);
+      }
+      if(isIPhoneXR == true){
+        text("isIPhoneXR é true", width/2, height + 35);
+      }
     }
   pop();
   if(game == "notselected"){
