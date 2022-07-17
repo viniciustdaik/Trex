@@ -362,21 +362,6 @@ function setup() {
 }
 
 function draw() {
-  push();
-    fill('gold');
-    stroke('yellow');
-    textAlign("center");
-    textSize(35);
-    if(isAndroid == true){
-      text("É um Android!", width/2, height/2);
-    }
-    if(isiPad == true){
-      text("É um iPad!", width/2, height/2);
-    }
-    if(isiPhoneXR == true){
-      text("WOW! FUNCIONOU! DETECTOU UM iPhone XR!", width/2, height/2);
-    }
-  pop();
   if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
     ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
     ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 25;
@@ -428,6 +413,21 @@ function draw() {
     }
     pop();
   }
+  push();
+    fill('gold');
+    stroke('yellow');
+    textAlign("center");
+    textSize(35);
+    if(isAndroid == true){
+      text("É um Android!", width/2, height/2);
+    }
+    if(isiPad == true){
+      text("É um iPad!", width/2, height/2);
+    }
+    if(isiPhoneXR == true){
+      text("WOW! FUNCIONOU! DETECTOU UM iPhone XR!", width/2, height/2);
+    }
+  pop();
   if(game == "notselected"){
     textSize(30);
     fill('gold');
