@@ -65,6 +65,12 @@ var cactuhitboxG;
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
+var isiPad = /iPad/i.test(navigator.userAgent);//iPad
+
+var isAndroid = /Android/i.test(navigator.userAgent);
+
+var isiPhoneXR = /iPhoneXR/i.test(navigator.userAgent);
+
 //var isTablet = /iPad/i.test(navigator.userAgent);
 
 function preload() {
@@ -356,6 +362,21 @@ function setup() {
 }
 
 function draw() {
+  push();
+    fill('gold');
+    stroke('yellow');
+    textAlign("center");
+    textSize(35);
+    if(isAndroid == true){
+      text("É um Android!", width/2, height/2);
+    }
+    if(isiPad == true){
+      text("É um iPad!", width/2, height/2);
+    }
+    if(isiPhoneXR == true){
+      text("WOW! FUNCIONOU! DETECTOU UM iPhone XR!", width/2, height/2);
+    }
+  pop();
   if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
     ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
     ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 25;
