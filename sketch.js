@@ -63,15 +63,17 @@ var getStateOrNot = false;
 
 var cactuhitboxG;
 
-var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
+var isMobile = true;///iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
-var isiPad = /iPad/i.test(navigator.userAgent);//iPad
+var isiPhone = /iPhone/i.test(navigator.userAgent);
+
+var isiPad = /iPad/i.test(navigator.userAgent);
 
 var isAndroid = /Android/i.test(navigator.userAgent);
 
-var isiPhoneXR = /iPhoneXR/i.test(navigator.userAgent);
+var isiPod = /iPod/i.test(navigator.userAgent);
 
-let isIPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio &&
+let isiPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio &&
 window.devicePixelRatio === 2 && window.screen.width === 414 &&
 window.screen.height === 896
 
@@ -384,17 +386,25 @@ function draw() {
     }
   }
   if(game !== "notselected" && TrexColorido == "notselected"){
+    //if(isMobile == false && isiPhoneXR == false){
+      if(normalbutton.position.x !== width / 2 -415){
+        normalbutton.position(width / 2 -415, height / 2 - 30);//width / 2 -415, height / 2 - 30
+      }
+      if(coloridobutton.position.x !== width / 2 + 135){
+        coloridobutton.position(width / 2 + 135 - 35, height / 2 - 30);//width / 2 + 135, height / 2 - 30
+      }
+    //}
+
+    //if(isMobile == true || isiPhoneXR == true){
+    //  normalbutton.position(width / 2 -415, normalbutton.position.y);
+    //  coloridobutton.position(width / 2 + 135 - 35, coloridobutton.position.y);
+    //}
+
     if(infiniteflightbutton.position.x !== width - width - width){
       infiniteflightbutton.position(width - width - width, height / 2 - 30);
     }
     if(infiniteracebutton.position.x !== width - width - width){
       infiniteracebutton.position(width - width - width, height / 2 - 30);
-    }
-    if(normalbutton.position.x !== width / 2 -415){
-      normalbutton.position(width / 2 -415, height / 2 - 30);
-    }
-    if(coloridobutton.position.x !== width / 2 + 135){
-      coloridobutton.position(width / 2 + 135, height / 2 - 30);
     }
   }
   if(TrexColorido == true && Isday == true){
@@ -417,27 +427,6 @@ function draw() {
     }
     pop();
   }
-  push();
-    fill('gold');
-    stroke('yellow');
-    textAlign("center");
-    textSize(35);
-    if(isAndroid == true){
-      text("É um Android!", width/2, height/2);
-    }
-    if(isiPad == true){
-      text("É um iPad!", width/2, height/2);
-    }
-    if(isiPhoneXR == true || isIPhoneXR == true){
-      text("WOW! FUNCIONOU! DETECTOU UM iPhone XR!", width/2, height/2);
-      if(isiPhoneXR == true){
-        text("isiPhoneXR é true", width/2, height/2 + 35);
-      }
-      if(isIPhoneXR == true){
-        text("isIPhoneXR é true", width/2, height/2 + 35);
-      }
-    }
-  pop();
   if(game == "notselected"){
     textSize(30);
     fill('gold');
@@ -2185,3 +2174,4 @@ function windowResized() {
 function reload(){
   location.reload();
 }
+
