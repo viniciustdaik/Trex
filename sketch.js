@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2223, mostRecentVersion = null, reloadButton;
+var version = 1.2224, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -289,10 +289,9 @@ function setup() {
   isMobile == true || isiPhoneXR == true){
     //infiniteracebutton.size(100, 100);
     //infiniteflightbutton.size(100, 100);
-    infiniteracebutton.position(width/2-415+15+125, infiniteracebutton.y);
-    infiniteflightbutton.position(width / 2 + 255-15-85, infiniteflightbutton.y);
+    infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
+    infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
   }
-
   
   /*leftbutton = createSprite(width/2-75, 30, 15, 15);
   leftbutton.addImage("leftarrow", leftbuttonimg);
@@ -415,10 +414,10 @@ function draw() {
   if(game !== "notselected" && TrexColorido == "notselected"){
     //if(isMobile == false && isiPhoneXR == false){
       if(normalbutton.position.x !== width / 2 -415){
-        normalbutton.position(width / 2 -415, normalbutton.y);//width / 2 -415, height / 2 - 30
+        normalbutton.position(width / 2 -415 + 20, normalbutton.y);//width / 2 -415, height / 2 - 30
       }
       if(coloridobutton.position.x !== width / 2 + 135 - 35){//width / 2 + 135
-        coloridobutton.position(width / 2 + 135 - 35, coloridobutton.y);//width / 2 + 135, height / 2 - 30
+        coloridobutton.position(width / 2 + 135 - 75, coloridobutton.y);//width / 2 + 135, height / 2 - 30
       }
     //}
 
@@ -470,13 +469,23 @@ function draw() {
     }
   }
   if(game == "notselected"){
-    textSize(30);
+    if(isMobile == false && isiPhoneXR == false){
+      textSize(30);
+    }else if(isMobile == true || isiPhoneXR == true){
+      textSize(22.5);
+    }
+    
     fill('gold');
     stroke('green');
     textFont(trexfont);
     textAlign("center");
     //if(initialHeight == height){
-      text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y + 200);
+      if(isMobile == false && isiPhoneXR == false){
+        text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y + 185);
+      }else if(isMobile == true || isiPhoneXR == true){
+        text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y + 175);
+      }
+      
     //}else{
     //  text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y - newHeight - 200);
     //}
@@ -492,7 +501,11 @@ function draw() {
       text("Não Disponível Em Celular", infiniteflightbutton.x + 85, infiniteflightbutton.y + 230);
       pop();
     }*/
-    text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 200);
+    if(isMobile == false && isiPhoneXR == false){
+      text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 185);
+    }else if(isMobile == true || isiPhoneXR == true){
+      text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 175);
+    }
   }
   fill('gold');
   stroke('green');
@@ -648,7 +661,17 @@ function draw() {
       }
       if(infiniteracebutton.x !== width / 2 -415){
         infiniteracebutton.position(width / 2 -415+15, infiniteracebutton.y);
+        
       }
+      if(//browserName == "safari" && isMobile == true ||
+      //browserName == "safari" && isiPhoneXR == true
+      isMobile == true || isiPhoneXR == true){
+        //infiniteracebutton.size(100, 100);
+        //infiniteflightbutton.size(100, 100);
+        infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
+        infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
+      }
+      
     }
     text(highscore, highscoreS.x+25, 42);
     textAlign("center");
@@ -1961,8 +1984,8 @@ function turnColored(){
     ground.visible = true;
     sand.visible = false;
   }
-  coloridobutton.position(-1250, height / 2 - 30);
-  normalbutton.position(-1250, height / 2 - 30);
+  coloridobutton.position(-1250, coloridobutton.y);
+  normalbutton.position(-1250, normalbutton.y);
 }
 
 function turnNormal(){
