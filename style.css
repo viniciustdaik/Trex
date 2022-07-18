@@ -124,3 +124,15 @@ canvas {
   background-repeat: no-repeat;
 }
 
+.reloadButton{
+  border-radius: 5%;
+  border-width: 1.5px;
+  border-color: #000000;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  color: red;
+  background-color: #000000;
+}
