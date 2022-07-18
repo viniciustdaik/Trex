@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.22285, mostRecentVersion = null, reloadButton;
+var version = 1.22286, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -776,7 +776,7 @@ function draw() {
         fill('cyan');
         stroke('green');
         textAlign('center');
-        textSize(14);
+        textSize(15.5);
         text("Selecione Um Modo De Jogo.", width / 2, 50);
         pop();
       }else{
