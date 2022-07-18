@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2222, mostRecentVersion = null, reloadButton;
+var version = 1.2223, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -815,6 +815,7 @@ function draw() {
           trex.changeAnimation("crouching_green", trex_crouchinggreen);
         }
         trexIsCrouching = true;
+        
         //trex.velocityX = 2;
       }if(keyWentUp("S")
       ||keyWentUp(DOWN_ARROW)){
@@ -840,6 +841,12 @@ function draw() {
       }//else if(!keyDown(DOWN_ARROW)&&!mouseIsOver(crouchbutton)&&!keyDown("S")){
 
       //}*/
+      if(trex.velocityY < 0 && trexIsCrouching == true){
+        trex.velocityY = 1;
+        if(trexIsJumping == true && trexIsCrouching == true){
+          trexIsJumping = false;
+        }
+      }
       trex.velocityY = trex.velocityY + 0.5;
       createcactu();
       createclouds();
