@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2221, mostRecentVersion = null, reloadButton;//actual version=1.222
+var version = 1.2221, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -63,7 +63,7 @@ var getStateOrNot = false;
 
 var cactuhitboxG;
 
-var isMobile = true;///iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
 var isiPhone = /iPhone/i.test(navigator.userAgent);
 
@@ -76,6 +76,8 @@ var isiPod = /iPod/i.test(navigator.userAgent);
 let isiPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio &&
 window.devicePixelRatio === 2 && window.screen.width === 414 &&
 window.screen.height === 896
+
+var browserName;
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
 
@@ -177,6 +179,22 @@ function setup() {
 
   initialHeight = height;
 
+  let userAgent = navigator.userAgent;
+  
+  if(userAgent.match(/chrome|chromium|crios/i)){
+    //browserName = "chrome";
+  }else if(userAgent.match(/firefox|fxios/i)){
+    browserName = "firefox";
+  }else if(userAgent.match(/safari/i)){
+    browserName = "safari";
+  }else if(userAgent.match(/opr\//i)){
+    browserName = "opera";
+  }else if(userAgent.match(/edg/i)){
+    browserName = "edge";
+  }else{
+    browserName = "NoBrowser";
+  }
+
   reloadButton = createButton("Recarregar");
   reloadButton.position(width - width - width, height - 25);
   reloadButton.size(80, 35);
@@ -242,12 +260,12 @@ function setup() {
 
   coloridobutton = createButton("");
   coloridobutton.class("largebuttonC");
-  coloridobutton.position(width - width - width, height / 2 - 30);
+  coloridobutton.position(width - width - width, height / 2 - 70);
   coloridobutton.mousePressed(turnColored);
 
   infiniteflightbutton = createButton("");
   infiniteflightbutton.class("squarebuttonIF");
-  infiniteflightbutton.position(width / 2 + 255, height / 2 - 30);
+  infiniteflightbutton.position(width / 2 + 255-15, height / 2 - 70);
   infiniteflightbutton.mousePressed(turnVooInfinito);
 
   //oldnormalbutton
@@ -258,13 +276,22 @@ function setup() {
   
   normalbutton = createButton("");
   normalbutton.class("largebuttonN");
-  normalbutton.position(width - width - width, height / 2 - 30);
+  normalbutton.position(width - width - width, height / 2 - 70);
   normalbutton.mousePressed(turnNormal);
 
   infiniteracebutton = createButton("");
   infiniteracebutton.class("squarebuttonIR");
-  infiniteracebutton.position(width / 2 -415, height / 2 - 30);
+  infiniteracebutton.position(width / 2 -415+15, height / 2 - 70);
   infiniteracebutton.mousePressed(turnCorridaInfinita);
+
+  if(//browserName == "safari" && isMobile == true ||
+  //browserName == "safari" && isiPhoneXR == true
+  isMobile == true || isiPhoneXR == true){
+    //infiniteracebutton.size(100, 100);
+    //infiniteflightbutton.size(100, 100);
+    infiniteracebutton.position(width/2-415+15+125, infiniteracebutton.y);
+    infiniteflightbutton.position(width / 2 + 255-15-85, infiniteflightbutton.y);
+  }
 
   
   /*leftbutton = createSprite(width/2-75, 30, 15, 15);
@@ -388,10 +415,10 @@ function draw() {
   if(game !== "notselected" && TrexColorido == "notselected"){
     //if(isMobile == false && isiPhoneXR == false){
       if(normalbutton.position.x !== width / 2 -415){
-        normalbutton.position(width / 2 -415, height / 2 - 30);//width / 2 -415, height / 2 - 30
+        normalbutton.position(width / 2 -415, normalbutton.y);//width / 2 -415, height / 2 - 30
       }
-      if(coloridobutton.position.x !== width / 2 + 135){
-        coloridobutton.position(width / 2 + 135 - 35, height / 2 - 30);//width / 2 + 135, height / 2 - 30
+      if(coloridobutton.position.x !== width / 2 + 135 - 35){//width / 2 + 135
+        coloridobutton.position(width / 2 + 135 - 35, coloridobutton.y);//width / 2 + 135, height / 2 - 30
       }
     //}
 
@@ -401,10 +428,10 @@ function draw() {
     //}
 
     if(infiniteflightbutton.position.x !== width - width - width){
-      infiniteflightbutton.position(width - width - width, height / 2 - 30);
+      infiniteflightbutton.position(width - width - width, infiniteflightbutton.y);
     }
     if(infiniteracebutton.position.x !== width - width - width){
-      infiniteracebutton.position(width - width - width, height / 2 - 30);
+      infiniteracebutton.position(width - width - width, infiniteracebutton.y);
     }
   }
   if(TrexColorido == true && Isday == true){
@@ -417,15 +444,30 @@ function draw() {
   if(mostRecentVersion !== null && mostRecentVersion > version){
     console.log('This is not the most Recent Version.');
     push();
-    textSize(35);
+    if(isMobile == false && isiPhoneXR == false){
+      textSize(35);
+    }else if(isMobile == true || isiPhoneXR == true){
+      textSize(25);
+    }
+    
     fill('red');
     textAlign("center");
     stroke('darkred');
-    text("Está versão não é a mais recente.", width/2, height - 25);
-    if(reloadButton.x !== width/2 + 265|| reloadButton.y !== height - 50){
-      reloadButton.position(width/2 + 265, height - 50);
+    text("Esta versão não é a mais recente.", width/2, height - 25);
+    if(isMobile == false && isiPhoneXR == false){
+      if(reloadButton.x !== width/2 + 265|| reloadButton.y !== height - 50){
+        reloadButton.position(width/2 + 265, height - 50);
+      }
+    }else if(isMobile == true || isiPhoneXR == true){
+      if(reloadButton.x !== width/2 + 190|| reloadButton.y !== height - 50){
+        reloadButton.position(width/2 + 190, height - 50);
+      }
     }
     pop();
+  }else{
+    if(reloadButton.x !== width - width - width || reloadButton.y !== height - 25){
+      reloadButton.position(width - width - width, height - 25);
+    }
   }
   if(game == "notselected"){
     textSize(30);
@@ -602,10 +644,10 @@ function draw() {
         crouchbutton.position(width / 2-35, -350);
       }
       if(infiniteflightbutton.x !== width / 2 + 255){
-        infiniteflightbutton.position(width / 2 + 255, height / 2 - 30);
+        infiniteflightbutton.position(width / 2 + 255-15, infiniteflightbutton.y);
       }
       if(infiniteracebutton.x !== width / 2 -415){
-        infiniteracebutton.position(width / 2 -415, height / 2 - 30);
+        infiniteracebutton.position(width / 2 -415+15, infiniteracebutton.y);
       }
     }
     text(highscore, highscoreS.x+25, 42);
@@ -1937,8 +1979,8 @@ function turnNormal(){
     ground.visible = true;
     sand.visible = false;
   }
-  coloridobutton.position(-1250, height / 2 - 30);
-  normalbutton.position(-1250, height / 2 - 30);
+  coloridobutton.position(-1250, coloridobutton.y);
+  normalbutton.position(-1250, normalbutton.y);
 }
 
 function turnCorridaInfinita(){
