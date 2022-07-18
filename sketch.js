@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2228, mostRecentVersion = null, reloadButton;
+var version = 1.22285, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -459,12 +459,12 @@ function draw() {
   if(mostRecentVersion !== null && mostRecentVersion > version){
     var reloadbuttonX = null;
     if(isMobile == false && isiPhoneXR == false && reloadbuttonX == null){
-      reloadbuttonX = width/2+265;
+      reloadbuttonX = width/2+265-25;
     }else if(isMobile == true && reloadbuttonX == null && mostOfTheScreen == "width"
       || isiPhoneXR == true && reloadbuttonX == null && mostOfTheScreen == "width"){
-      reloadbuttonX = width/2+190;
+      reloadbuttonX = width/2+190-25;
     }else if(isMobile == true && mostOfTheScreen == "height" && reloadbuttonX == null){
-      reloadbuttonX = width/2+138;
+      reloadbuttonX = width/2+113;
     }
     console.log('This is not the most Recent Version.');
     push();
@@ -482,9 +482,9 @@ function draw() {
     stroke('darkred');
     if(game == "Corrida Infinita" && TrexColorido !== true
     || game !== "Corrida Infinita"){
-      text("Esta versão não é a mais recente.", width/2, height - 25);
+      text("Esta versão não é a mais recente.", width/2-25, height - 25);
     }else if(game == "Corrida Infinita" && TrexColorido == true){
-      text("Esta versão não é a mais recente.", width/2, 170);
+      text("Esta versão não é a mais recente.", width/2-25, 170);
     }
     if(game == "Corrida Infinita" && TrexColorido !== true
     || game !== "Corrida Infinita"){
@@ -776,7 +776,7 @@ function draw() {
         fill('cyan');
         stroke('green');
         textAlign('center');
-        textSize(17);
+        textSize(14);
         text("Selecione Um Modo De Jogo.", width / 2, 50);
         pop();
       }else{
