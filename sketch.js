@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.22287, mostRecentVersion = null, reloadButton;
+var version = 1.22288, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -63,7 +63,7 @@ var getStateOrNot = false;
 
 var cactuhitboxG;
 
-var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
+var isMobile = true;///iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
 var isiPhone = /iPhone/i.test(navigator.userAgent);
 
@@ -188,6 +188,7 @@ function setup() {
   }else{
     mostOfTheScreen = "height";
   }
+  mostOfTheScreen = "height";
   
   if(userAgent.match(/chrome|chromium|crios/i)){
     //browserName = "chrome";
@@ -476,7 +477,7 @@ function draw() {
       reloadbuttonYSubtract = +5;
     }else if(isMobile == true && mostOfTheScreen == "height" && reloadbuttonX == null){
       reloadbuttonX = width/2+113;
-      reloadbuttonYSubtract = +8;
+      reloadbuttonYSubtract = +10;
     }
     if(game == "Corrida Infinita" && TrexColorido !== true && reloadbuttonY == null
     || game !== "Corrida Infinita" && reloadbuttonY == null){
