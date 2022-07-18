@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2226, mostRecentVersion = null, reloadButton;
+var version = 1.2227, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -300,6 +300,11 @@ function setup() {
     infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
     infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
   }
+
+  if(mostOfTheScreen == "height" && isMobile == true){
+    infiniteracebutton.position(width / 2 - 80, 70);
+    infiniteflightbutton.position(width / 2 - 80 , infiniteracebutton.y + 190);
+  }
   
   /*leftbutton = createSprite(width/2-75, 30, 15, 15);
   leftbutton.addImage("leftarrow", leftbuttonimg);
@@ -420,19 +425,21 @@ function draw() {
     }
   }
   if(game !== "notselected" && TrexColorido == "notselected"){
-    //if(isMobile == false && isiPhoneXR == false){
+    if(isMobile == false || isMobile == true && mostOfTheScreen == "width"){
       if(normalbutton.position.x !== width / 2 -415){
         normalbutton.position(width / 2 -415 + 30, normalbutton.y);//width / 2 -415, height / 2 - 30
       }
       if(coloridobutton.position.x !== width / 2 + 135 - 35){//width / 2 + 135
         coloridobutton.position(width / 2 + 135 - 105, coloridobutton.y);//width / 2 + 135, height / 2 - 30
       }
-    //}
-
-    //if(isMobile == true || isiPhoneXR == true){
-    //  normalbutton.position(width / 2 -415, normalbutton.position.y);
-    //  coloridobutton.position(width / 2 + 135 - 35, coloridobutton.position.y);
-    //}
+    }else if(isMobile == true && mostOfTheScreen == "height"){
+      if(normalbutton.position.x !== width / 2 -415){
+        normalbutton.position(width / 2 - 185, 70);//width / 2 -415, height / 2 - 30
+      }
+      if(coloridobutton.position.x !== width / 2 + 135 - 35){//width / 2 + 135
+        coloridobutton.position(width / 2 - 185, 160);//width / 2 + 135, height / 2 - 30
+      }
+    }
 
     if(infiniteflightbutton.position.x !== width - width - width){
       infiniteflightbutton.position(width - width - width, infiniteflightbutton.y);
@@ -744,11 +751,20 @@ function draw() {
     }else if(isMobile == true || isiPhoneXR == true){
       textSize(21);
     }
-    if(game !== "notselected"){
-      text("Selecione Um Modo De Jogo.", width / 2, height/2-95);
-    }else{
-      text("Selecione Um Jogo.", width / 2, height/2-95);
+    if(mostOfTheScreen == "width" && isMobile == true || isMobile == false){
+      if(game !== "notselected"){
+        text("Selecione Um Modo De Jogo.", width / 2, height/2-95);
+      }else{
+        text("Selecione Um Jogo.", width / 2, height/2-95);
+      }
+    }else if(mostOfTheScreen == "height" && isMobile == true){
+      if(game !== "notselected"){
+        text("Selecione Um Modo De Jogo.", width / 2, 50);
+      }else{
+        text("Selecione Um Jogo.", width / 2, 50);
+      }
     }
+    
     
     //text("Use As Setas Ou WASD.", width/2, height/2-55);
     /*if(normalbuttonover == true){
