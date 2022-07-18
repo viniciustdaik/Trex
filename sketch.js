@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.22286, mostRecentVersion = null, reloadButton;
+var version = 1.22287, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -63,7 +63,7 @@ var getStateOrNot = false;
 
 var cactuhitboxG;
 
-var isMobile = true;///iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
 var isiPhone = /iPhone/i.test(navigator.userAgent);
 
@@ -188,8 +188,7 @@ function setup() {
   }else{
     mostOfTheScreen = "height";
   }
-  mostOfTheScreen = "height"
-
+  
   if(userAgent.match(/chrome|chromium|crios/i)){
     //browserName = "chrome";
   }else if(userAgent.match(/firefox|fxios/i)){
@@ -206,7 +205,14 @@ function setup() {
 
   reloadButton = createButton("Recarregar");
   reloadButton.position(width - width - width, height - 25);
-  reloadButton.size(80, 35);
+  if(isMobile == false && isiPhoneXR == false){
+    reloadButton.size(80, 35);
+  }else if(isMobile == true && mostOfTheScreen == "width" 
+  || isiPhoneXR == true && mostOfTheScreen == "width"){
+    reloadButton.size(80, 25);
+  }else if(isMobile == true && mostOfTheScreen == "height"){
+
+  }
   reloadButton.class("reloadButton");
   reloadButton.mousePressed(reload);
 
@@ -458,14 +464,28 @@ function draw() {
   }
   if(mostRecentVersion !== null && mostRecentVersion > version){
     var reloadbuttonX = null;
+    var reloadbuttonY = null;
+    var reloadbuttonYSubtract = null;
     if(isMobile == false && isiPhoneXR == false && reloadbuttonX == null){
       reloadbuttonX = width/2+265-25;
+      reloadButton.size(reloadButton.width, 35);
     }else if(isMobile == true && reloadbuttonX == null && mostOfTheScreen == "width"
       || isiPhoneXR == true && reloadbuttonX == null && mostOfTheScreen == "width"){
       reloadbuttonX = width/2+190-25;
+      reloadButton.size(reloadButton.width, 25);
+      reloadbuttonYSubtract = +5;
     }else if(isMobile == true && mostOfTheScreen == "height" && reloadbuttonX == null){
       reloadbuttonX = width/2+113;
+      reloadbuttonYSubtract = +8;
     }
+    if(game == "Corrida Infinita" && TrexColorido !== true && reloadbuttonY == null
+    || game !== "Corrida Infinita" && reloadbuttonY == null){
+      reloadbuttonY = height - 50;
+    }
+    else if(game == "Corrida Infinita" && TrexColorido == true && reloadbuttonY == null){
+      reloadbuttonY = 140;
+    }
+    reloadbuttonY = reloadbuttonY + reloadbuttonYSubtract;
     console.log('This is not the most Recent Version.');
     push();
     if(isMobile == false && isiPhoneXR == false){
@@ -489,22 +509,22 @@ function draw() {
     if(game == "Corrida Infinita" && TrexColorido !== true
     || game !== "Corrida Infinita"){
       if(isMobile == false && isiPhoneXR == false){
-        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== height - 50){
-          reloadButton.position(reloadbuttonX, height - 50);//width/2 + 265, height - 50
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== reloadbuttonY){
+          reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 265, height - 50
         }
       }else if(isMobile == true || isiPhoneXR == true){
-        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== height - 50){
-          reloadButton.position(reloadbuttonX, height - 50);//width/2 + 190, height - 50
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== reloadbuttonY){
+          reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 190, height - 50
         }
       }
     }else if(game == "Corrida Infinita" && TrexColorido == true){
       if(isMobile == false && isiPhoneXR == false){
-        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== 140){
-          reloadButton.position(reloadbuttonX, 140);//width/2 + 265, 140
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== reloadbuttonY){
+          reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 265, 140
         }
       }else if(isMobile == true || isiPhoneXR == true){
-        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== 140){
-          reloadButton.position(reloadbuttonX, 140);//width/2 + 190, 140
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== reloadbuttonY){
+          reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 190, 140
         }
       }
     }
