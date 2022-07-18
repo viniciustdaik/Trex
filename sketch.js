@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2227, mostRecentVersion = null, reloadButton;
+var version = 1.2228, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -63,7 +63,7 @@ var getStateOrNot = false;
 
 var cactuhitboxG;
 
-var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
+var isMobile = true;///iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
 var isiPhone = /iPhone/i.test(navigator.userAgent);
 
@@ -188,7 +188,8 @@ function setup() {
   }else{
     mostOfTheScreen = "height";
   }
-  
+  mostOfTheScreen = "height"
+
   if(userAgent.match(/chrome|chromium|crios/i)){
     //browserName = "chrome";
   }else if(userAgent.match(/firefox|fxios/i)){
@@ -456,12 +457,24 @@ function draw() {
     background('white');
   }
   if(mostRecentVersion !== null && mostRecentVersion > version){
+    var reloadbuttonX = null;
+    if(isMobile == false && isiPhoneXR == false && reloadbuttonX == null){
+      reloadbuttonX = width/2+265;
+    }else if(isMobile == true && reloadbuttonX == null && mostOfTheScreen == "width"
+      || isiPhoneXR == true && reloadbuttonX == null && mostOfTheScreen == "width"){
+      reloadbuttonX = width/2+190;
+    }else if(isMobile == true && mostOfTheScreen == "height" && reloadbuttonX == null){
+      reloadbuttonX = width/2+138;
+    }
     console.log('This is not the most Recent Version.');
     push();
     if(isMobile == false && isiPhoneXR == false){
       textSize(35);
-    }else if(isMobile == true || isiPhoneXR == true){
+    }else if(isMobile == true && mostOfTheScreen == "width" 
+    || isiPhoneXR == true && mostOfTheScreen == "width"){
       textSize(25);
+    }else if(isMobile == true && mostOfTheScreen == "height"){
+      textSize(18);
     }
     
     fill('red');
@@ -476,22 +489,22 @@ function draw() {
     if(game == "Corrida Infinita" && TrexColorido !== true
     || game !== "Corrida Infinita"){
       if(isMobile == false && isiPhoneXR == false){
-        if(reloadButton.x !== width/2 + 265|| reloadButton.y !== height - 50){
-          reloadButton.position(width/2 + 265, height - 50);
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== height - 50){
+          reloadButton.position(reloadbuttonX, height - 50);//width/2 + 265, height - 50
         }
       }else if(isMobile == true || isiPhoneXR == true){
-        if(reloadButton.x !== width/2 + 190|| reloadButton.y !== height - 50){
-          reloadButton.position(width/2 + 190, height - 50);
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== height - 50){
+          reloadButton.position(reloadbuttonX, height - 50);//width/2 + 190, height - 50
         }
       }
     }else if(game == "Corrida Infinita" && TrexColorido == true){
       if(isMobile == false && isiPhoneXR == false){
-        if(reloadButton.x !== width/2 + 265|| reloadButton.y !== 140){
-          reloadButton.position(width/2 + 265, 140);
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== 140){
+          reloadButton.position(reloadbuttonX, 140);//width/2 + 265, 140
         }
       }else if(isMobile == true || isiPhoneXR == true){
-        if(reloadButton.x !== width/2 + 190|| reloadButton.y !== 140){
-          reloadButton.position(width/2 + 190, 140);
+        if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== 140){
+          reloadButton.position(reloadbuttonX, 140);//width/2 + 190, 140
         }
       }
     }
@@ -759,7 +772,13 @@ function draw() {
       }
     }else if(mostOfTheScreen == "height" && isMobile == true){
       if(game !== "notselected"){
+        push();
+        fill('cyan');
+        stroke('green');
+        textAlign('center');
+        textSize(17);
         text("Selecione Um Modo De Jogo.", width / 2, 50);
+        pop();
       }else{
         text("Selecione Um Jogo.", width / 2, 50);
       }
