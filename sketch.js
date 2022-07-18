@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2224, mostRecentVersion = null, reloadButton;
+var version = 1.2225, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -414,10 +414,10 @@ function draw() {
   if(game !== "notselected" && TrexColorido == "notselected"){
     //if(isMobile == false && isiPhoneXR == false){
       if(normalbutton.position.x !== width / 2 -415){
-        normalbutton.position(width / 2 -415 + 20, normalbutton.y);//width / 2 -415, height / 2 - 30
+        normalbutton.position(width / 2 -415 + 30, normalbutton.y);//width / 2 -415, height / 2 - 30
       }
       if(coloridobutton.position.x !== width / 2 + 135 - 35){//width / 2 + 135
-        coloridobutton.position(width / 2 + 135 - 75, coloridobutton.y);//width / 2 + 135, height / 2 - 30
+        coloridobutton.position(width / 2 + 135 - 95, coloridobutton.y);//width / 2 + 135, height / 2 - 30
       }
     //}
 
@@ -713,8 +713,17 @@ function draw() {
     fill('cyan');
     stroke('green');
     textAlign("center");
-    textSize(32);
-    text("Selecione Um Modo De Jogo.", width / 2, height/2-95);
+    if(isMobile == false && isiPhoneXR == false){
+      textSize(32);
+    }else if(isMobile == true || isiPhoneXR == true){
+      textSize(21);
+    }
+    if(game !== "notselected"){
+      text("Selecione Um Modo De Jogo.", width / 2, height/2-95);
+    }else{
+      text("Selecione Um Jogo.", width / 2, height/2-95);
+    }
+    
     //text("Use As Setas Ou WASD.", width/2, height/2-55);
     /*if(normalbuttonover == true){
       if(keyWentDown("D") || keyWentDown(RIGHT_ARROW) || mouseIsOver(rightbutton)){
