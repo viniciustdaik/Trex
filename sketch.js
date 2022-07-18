@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2221, mostRecentVersion = null, reloadButton;
+var version = 1.2222, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
