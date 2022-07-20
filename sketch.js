@@ -2331,6 +2331,13 @@ function windowResized() {
 
 
   }*/
+
+  if(width > height){
+    mostOfTheScreen = "width";
+  }else{
+    mostOfTheScreen = "height";
+  }
+
 }
 
 function reload(){
