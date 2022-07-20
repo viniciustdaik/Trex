@@ -63,7 +63,7 @@ var getStateOrNot = false;
 
 var cactuhitboxG;
 
-var isMobile = true;///iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);//iPad
 
 var isiPhone = /iPhone/i.test(navigator.userAgent);
 
@@ -188,7 +188,6 @@ function setup() {
   }else{
     mostOfTheScreen = "height";
   }
-  mostOfTheScreen = "height";
   
   if(userAgent.match(/chrome|chromium|crios/i)){
     //browserName = "chrome";
