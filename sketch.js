@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.22289, mostRecentVersion = null, reloadButton;
+var version = 1.222895, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -419,6 +419,10 @@ function setup() {
 }
 
 function draw() {
+  if(birdG.isTouching(cactuG) || birdG.isTouching(cactuhitboxG)){
+    birdG.destroyEach();
+    //console.log("Birds touching cactuG | cactuhitboxG destroyed!");
+  }else{birdG.setVisibleEach(true);}
   if(crouchbuttonbackground.x !== crouchbutton.x && crouchbutton.x >= 0 && crouchbutton.y >= 0
   && gamestate == PLAY
   ||crouchbuttonbackground.y !== crouchbutton.y && crouchbutton.x >= 0 && crouchbutton.y >= 0
@@ -876,12 +880,10 @@ function draw() {
     }*/
     //console.log(trex.y);
     if(gamestate == PLAY){
-      if(birdG.isTouching(cactuG) || birdG.isTouching(cactuhitboxG)){
-        birdG.destroyEach();
-        //console.log("Birds touching cactuG | cactuhitboxG destroyed!");
-      }
       if(crouchbutton.x !== width / 2-35 && trexIsJumping == false && !isMobile
-      ||crouchbutton.y !== 5 && trexIsJumping == false && !isMobile){
+      ||crouchbutton.y !== 5 && trexIsJumping == false && !isMobile
+      ||crouchbutton.x !== width / 2-35 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"
+      ||crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"){
         crouchbutton.position(width / 2-35, 5);
       }else if(crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false 
       && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
@@ -911,7 +913,8 @@ function draw() {
       keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       touches.length > 0&&trex.y >=150&&trexIsCrouching==false
-      && !mousePressedOver(ShowBestHighscoresButtonHitbox)){
+      && !mousePressedOver(ShowBestHighscoresButtonHitbox)
+      && !mousePressedOver(crouchbuttonbackground)){
       //&& !mouseIsOver(crouchbutton)){
         touches = [];
         trex.velocityY = -10;
@@ -1268,10 +1271,12 @@ function createbird(){
   var upperbirdenabled = true;
   if(game == "Corrida Infinita"){
     if(frameCount%245==0&&score>=300){//frameCount%230==0 //225 //frameCount%245==0
-      var enemybird = createSprite(width+10, 100, 10, 10);//610, 100
+      var enemybird = createSprite(width+15/*width+10*/, 100, 10, 10);//610, 100
+      enemybird.visible = false;
       enemybird.y = Math.round(random(130, 130));
       if(upperbirdenabled == true){
         var upperbird = createSprite(enemybird.x, 100-30, 10, 80);
+        upperbird.visible = false;
         //upperbird.visible = false;
         upperbird.lifetime = 315;
       }
