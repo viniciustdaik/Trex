@@ -33,7 +33,7 @@ var Isnight = false, Isday = true;
 var dayMost = true, nightMost = false;
 var trexIsInvencibleCactus = false;
 var trexIsInvencibleBirds = false;
-var crouchbutton, crouchbuttonbackground, crouchbuttonimg;
+var crouchbutton, crouchbuttonclass = "crouchbutton", crouchbuttonimg;//, crouchbuttonbackground;
 var staranim;
 var dinosaurcolor = "notselected", birdcolor = "notselected";
 var TrexColorido = "notselected", sand;
@@ -335,10 +335,9 @@ function setup() {
   //crouchbutton.scale = 0.7;
   //crouchbutton.visible = false;
 
-  crouchbuttonbackground = createButton("");
-  //crouchbuttonbackground.position(crouchbutton.x, crouchbutton.y);
-  crouchbuttonbackground.position(width-width-width, -350);
-  crouchbuttonbackground.class("crouchbuttonBackground");
+  //crouchbuttonbackground = createButton("");
+  //crouchbuttonbackground.position(width-width-width, -350);
+  //crouchbuttonbackground.class("crouchbuttonBackground");
 
   crouchbutton = createButton("");
   crouchbutton.position(width / 2-35, -350);
@@ -423,15 +422,17 @@ function draw() {
     birdG.destroyEach();
     //console.log("Birds touching cactuG | cactuhitboxG destroyed!");
   }else{birdG.setVisibleEach(true);}
-  if(crouchbuttonbackground.x !== crouchbutton.x && crouchbutton.x >= 0 && crouchbutton.y >= 0
+  /*if(crouchbuttonbackground.x !== crouchbutton.x && crouchbutton.x >= 0 && crouchbutton.y >= 0
   && gamestate == PLAY
   ||crouchbuttonbackground.y !== crouchbutton.y && crouchbutton.x >= 0 && crouchbutton.y >= 0
   && gamestate == PLAY){
-    crouchbuttonbackground.position(crouchbutton.x, crouchbutton.y);
+    //crouchbuttonbackground.position(crouchbutton.x, crouchbutton.y);
+    crouchbutton.class("crouchbuttonBackground");
   }else if(gamestate !== PLAY && crouchbuttonbackground.y !== crouchbutton.y
   ||gamestate !== PLAY && crouchbuttonbackground.x !== crouchbutton.x){
-    crouchbuttonbackground.position(crouchbutton.x, crouchbutton.y);
-  }
+    //crouchbuttonbackground.position(crouchbutton.x, crouchbutton.y);
+    crouchbutton.class("crouchbutton");
+  }*/
   if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
     ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
     ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 25;
@@ -885,15 +886,30 @@ function draw() {
       ||crouchbutton.x !== width / 2-35 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"
       ||crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"){
         crouchbutton.position(width / 2-35, 5);
+        if(crouchbuttonclass == "crouchbuttonbackground"){
+          crouchbutton.class("crouchbutton");
+          crouchbuttonclass = "crouchbutton";
+        }
       }else if(crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false 
       && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
       ||crouchbutton.x !== width / 2-35 == false && isMobile == true
       && mostOfTheScreen == "height"){ //isIPhoneXR
         crouchbutton.position(width / 2-35, invisibleground.y + 50);
+        if(crouchbuttonclass == "crouchbuttonbackground"){
+          crouchbutton.class("crouchbutton");
+          crouchbuttonclass = "crouchbutton";
+        }
       }
-      if(crouchbutton.x !== width / 2-35 && trexIsJumping == true
-      ||crouchbutton.y !== -350 && trexIsJumping == true){
-        crouchbutton.position(width / 2-35, -350);
+      if(trexIsJumping == true){//crouchbutton.x !== width / 2-35 && trexIsJumping == true
+      //||crouchbutton.y !== -350 && trexIsJumping == true){
+        //crouchbutton.position(width / 2-35, -350);
+        if(crouchbuttonclass == "crouchbutton"){
+          crouchbutton.class("crouchbuttonBackground");
+          crouchbuttonclass = "crouchbuttonbackground";
+        }
+      }else if(trexIsJumping == false && crouchbuttonclass == "crouchbuttonbackground"){
+        crouchbutton.class("crouchbutton");
+        crouchbuttonclass = "crouchbutton";
       }
       if(TrexColorido == false){
         trex.visible = true;
@@ -913,8 +929,8 @@ function draw() {
       keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       touches.length > 0&&trex.y >=150&&trexIsCrouching==false
-      && !mousePressedOver(ShowBestHighscoresButtonHitbox)
-      && !mousePressedOver(crouchbuttonbackground)){
+      && !mousePressedOver(ShowBestHighscoresButtonHitbox)){
+      //&& !mousePressedOver(crouchbuttonbackground)){
       //&& !mouseIsOver(crouchbutton)){
         touches = [];
         trex.velocityY = -10;
