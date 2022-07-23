@@ -52,7 +52,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.222897, mostRecentVersion = null, reloadButton;
+var version = 1.222898, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -935,7 +935,13 @@ function draw() {
       keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       touches.length > 0&&trex.y >=150&&trexIsCrouching==false
-      && !mouseIsOver(ShowBestHighscoresButtonHitbox)){
+      && !mouseIsOver(ShowBestHighscoresButtonHitbox)
+      && !mouseIsOver(crouchbutton)
+      && !mouseIsOver(BestHighscores1DeleteButton)
+      && !mouseIsOver(BestHighscores2DeleteButton)
+      && !mouseIsOver(BestHighscores3DeleteButton)
+      && !mouseIsOver(BestHighscores4DeleteButton)
+      && !mouseIsOver(BestHighscores5DeleteButton)){
       //&& !mousePressedOver(crouchbuttonbackground)){
       //&& !mouseIsOver(crouchbutton)){
         touches = [];
@@ -2200,7 +2206,7 @@ function resetBestHighscore(number){
       BestHighscore5: false
     });
   }
-  
+  touches = [];
 }
 
 function updateBestHighscore(number){
@@ -2242,6 +2248,7 @@ function resetBestHighscoreOne(){
       BestHighscore1: false
     });
   }
+  touches = [];
 }
 
 function resetBestHighscoreTwo(){
@@ -2250,6 +2257,7 @@ function resetBestHighscoreTwo(){
       BestHighscore2: false
     });
   }
+  touches = [];
 }
 
 function resetBestHighscoreThree(){
@@ -2258,6 +2266,7 @@ function resetBestHighscoreThree(){
       BestHighscore3: false
     });
   }
+  touches = [];
 }
 
 function resetBestHighscoreFour(){
@@ -2266,6 +2275,7 @@ function resetBestHighscoreFour(){
       BestHighscore4: false
     });
   }
+  touches = [];
 }
 
 function resetBestHighscoreFive(){
@@ -2274,6 +2284,7 @@ function resetBestHighscoreFive(){
       BestHighscore5: false
     });
   }
+  touches = [];
 }
 
 function handleBestHighscores(){
