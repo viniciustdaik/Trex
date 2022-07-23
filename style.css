@@ -152,3 +152,37 @@ canvas {
   transition-duration: 0.0s;/*0.4s*/
   outline: none;
 }
+
+.crouchbuttongreentrex{
+  width:70px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('./trex/greencrouchimgbutton.png');
+  background-color: #9ea7a7;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
+  transition-duration: 0.0s;/*0.4s*/
+  outline: none;
+}
+
+.crouchbuttonbrowntrex{
+  width:70px;
+  height: 70px;
+  border-radius: 35px;
+  background-image: url('./trex/browncrouchimgbutton.png');
+  background-color: #9ea7a7;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
+  transition-duration: 0.0s;/*0.4s*/
+  outline: none;
+}
