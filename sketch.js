@@ -51,7 +51,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.222895, mostRecentVersion = null, reloadButton;
+var version = 1.222896, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -929,7 +929,7 @@ function draw() {
       keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       touches.length > 0&&trex.y >=150&&trexIsCrouching==false
-      && !mousePressedOver(ShowBestHighscoresButtonHitbox)){
+      && !mouseIsOver(ShowBestHighscoresButtonHitbox)){
       //&& !mousePressedOver(crouchbuttonbackground)){
       //&& !mouseIsOver(crouchbutton)){
         touches = [];
@@ -968,8 +968,8 @@ function draw() {
         trexIsCrouching = true;
         
         //trex.velocityX = 2;
-      }if(keyWentUp("S")
-      ||keyWentUp(DOWN_ARROW)){
+      }if(keyWentUp("S") && !keyDown(DOWN_ARROW)
+      ||keyWentUp(DOWN_ARROW) && !keyDown("S")){
       //||!keyIsDown(DOWN_ARROW) && !mouseIsOver(crouchbutton)){
       //||!keyIsDown("S")&&!mouseIsOver(crouchbutton)){
         //crouch();
@@ -2086,7 +2086,7 @@ function crouch(){
   }else{
 
   }
-  
+  touches = [];
 }
 
 function turnColored(){
@@ -2280,6 +2280,7 @@ function handleBestHighscores(){
     ShowBestHighscoreActive = false;
     changed = true;
   }
+  touches = [];
 }
 
 function getState() {
