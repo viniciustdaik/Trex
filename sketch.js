@@ -33,7 +33,8 @@ var Isnight = false, Isday = true;
 var dayMost = true, nightMost = false;
 var trexIsInvencibleCactus = false;
 var trexIsInvencibleBirds = false;
-var crouchbutton, crouchbuttonclass = "crouchbutton", crouchbuttonimg;//, crouchbuttonbackground;
+var crouchbutton, crouchbuttonclass = "crouchbutton", crouchbuttonOnPC = false, 
+crouchbuttonimg;//, crouchbuttonbackground;
 var staranim;
 var dinosaurcolor = "notselected", birdcolor = "notselected";
 var TrexColorido = "notselected", sand;
@@ -51,7 +52,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.222896, mostRecentVersion = null, reloadButton;
+var version = 1.222897, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -885,10 +886,12 @@ function draw() {
       ||crouchbutton.y !== 5 && trexIsJumping == false && !isMobile
       ||crouchbutton.x !== width / 2-35 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"
       ||crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"){
-        crouchbutton.position(width / 2-35, 5);
-        if(crouchbuttonclass == "crouchbuttonbackground"){
-          crouchbutton.class("crouchbutton");
-          crouchbuttonclass = "crouchbutton";
+        if(isMobile || !isMobile && crouchbuttonOnPC == true){
+          crouchbutton.position(width / 2-35, 5);
+          if(crouchbuttonclass == "crouchbuttonbackground"){
+            crouchbutton.class("crouchbutton");
+            crouchbuttonclass = "crouchbutton";
+          }
         }
       }else if(crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false 
       && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
@@ -910,6 +913,9 @@ function draw() {
       }else if(trexIsJumping == false && crouchbuttonclass == "crouchbuttonbackground"){
         crouchbutton.class("crouchbutton");
         crouchbuttonclass = "crouchbutton";
+      }else if(!isMobile && crouchbuttonOnPC == false && crouchbutton.x >= 0
+      ||!isMobile && crouchbuttonOnPC == false && crouchbutton.y >= 0){
+        crouchbutton.position(width / 2-35, -350);
       }
       if(TrexColorido == false){
         trex.visible = true;
