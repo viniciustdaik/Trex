@@ -34,7 +34,7 @@ var dayMost = true, nightMost = false;
 var trexIsInvencibleCactus = false;
 var trexIsInvencibleBirds = false;
 var crouchbutton, crouchbuttonclass = "crouchbutton", crouchbuttonOnPC = false, 
-crouchbuttonimg;//, crouchbuttonbackground;
+crouchbuttonimg, crouchbuttonHitbox;//, crouchbuttonbackground;
 var staranim;
 var dinosaurcolor = "notselected", birdcolor = "notselected";
 var TrexColorido = "notselected", sand;
@@ -52,7 +52,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.222898, mostRecentVersion = null, reloadButton;
+var version = 1.222899, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -345,6 +345,11 @@ function setup() {
   crouchbutton.class("crouchbutton");
   crouchbutton.mousePressed(crouch);
 
+  //crouchbutton.position(width/2-35,height/2);
+  crouchbuttonHitbox = createSprite(crouchbutton.x + 34, crouchbutton.y + 35, 72, 75);
+  crouchbuttonHitbox.visible = false;
+
+
   /*cloud1 = createSprite(160, 100, 30, 30);
   cloud1.addImage("cloud", cloud_image);
   cloud1.scale = 0.5;
@@ -435,9 +440,14 @@ function draw() {
     crouchbutton.class("crouchbutton");
   }*/
   if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
-    ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
+  ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
     ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 25;
     ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 25;
+  }
+  if(crouchbuttonHitbox.x !== crouchbutton.x + 34
+  ||crouchbuttonHitbox.y !== crouchbutton.y + 35){
+    crouchbuttonHitbox.x = crouchbutton.x + 34;
+    crouchbuttonHitbox.y = crouchbutton.y + 35;
   }
   if(gamestate == PLAY){
     score = score+Math.round(getFrameRate()/30);
@@ -936,12 +946,7 @@ function draw() {
       keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
       touches.length > 0&&trex.y >=150&&trexIsCrouching==false
       && !mouseIsOver(ShowBestHighscoresButtonHitbox)
-      && !mouseIsOver(crouchbutton)
-      && !mouseIsOver(BestHighscores1DeleteButton)
-      && !mouseIsOver(BestHighscores2DeleteButton)
-      && !mouseIsOver(BestHighscores3DeleteButton)
-      && !mouseIsOver(BestHighscores4DeleteButton)
-      && !mouseIsOver(BestHighscores5DeleteButton)){
+      && !mouseIsOver(crouchbuttonHitbox)){
       //&& !mousePressedOver(crouchbuttonbackground)){
       //&& !mouseIsOver(crouchbutton)){
         touches = [];
