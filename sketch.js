@@ -42,7 +42,8 @@ var coloridobuttonover = false, normalbuttonover = true;
 var trexfont;
 
 var ShowBestHighscore = false, ShowBestHighscoresButton, 
-ShowBestHighscoreActive = false, BestHighscores, ShowBestHighscoresButtonHitbox;
+ShowBestHighscoreActive = false, BestHighscores, ShowBestHighscoresButtonShadow, 
+ShowBestHighscoresButtonHitbox;
 
 var BestHighscores1 = false, BestHighscores2 = false, BestHighscores3 = false, BestHighscores4 = false, 
 BestHighscores5 = false;
@@ -52,7 +53,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2228991, mostRecentVersion = null, reloadButton;
+var version = 1.2228992, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -220,7 +221,10 @@ function setup() {
   BestHighscores = createSprite(width - width - width, -350);
   BestHighscores.visible = false;
 
+  ShowBestHighscoresButtonShadow = createSprite(width - width - width, -350, 50, 50);
+
   ShowBestHighscoresButtonHitbox = createSprite(width - width - width, -350, 50, 50);
+  ShowBestHighscoresButtonHitbox.visible = false;
 
   BestHighscores1DeleteButton = createButton("");
   BestHighscores1DeleteButton.size(20, 20);
@@ -439,10 +443,15 @@ function draw() {
     //crouchbuttonbackground.position(crouchbutton.x, crouchbutton.y);
     crouchbutton.class("crouchbutton");
   }*/
+  if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x
+  ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y){
+    ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
+    ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
+  }
   if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
   ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
-    ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 25;
-    ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 25;
+    ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
+    ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
   }
   if(crouchbuttonHitbox.x !== crouchbutton.x + 34
   ||crouchbuttonHitbox.y !== crouchbutton.y + 35){
