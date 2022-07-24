@@ -52,7 +52,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.222899, mostRecentVersion = null, reloadButton;
+var version = 1.2228991, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -1964,29 +1964,36 @@ function reset(){
   }
   if(ShowBestHighscore == true){
     var chosen = false;
-    if(BestHighscores1 == false && chosen == false){
+    if(BestHighscores1 == false && chosen == false && highscore !== BestHighscores2
+    && highscore !== BestHighscores3 && highscore !== BestHighscores4 && highscore !== BestHighscores5){
       BestHighscores1 = highscore;
       updateBestHighscore(1);
       chosen = true;
     }
-    if(BestHighscores1 !== false && BestHighscores2 == false && chosen == false){
+    if(BestHighscores1 !== false && BestHighscores2 == false && chosen == false && highscore !== BestHighscores1
+    && highscore !== BestHighscores3 && highscore !== BestHighscores4 && highscore !== BestHighscores5){
       BestHighscores2 = highscore;
       updateBestHighscore(2);
       chosen = true;
     }
-    if(BestHighscores1 !== false && BestHighscores2 !== false && BestHighscores3 == false && chosen == false){
+    if(BestHighscores1 !== false && BestHighscores2 !== false && BestHighscores3 == false && chosen == false
+    && highscore !== BestHighscores1 && highscore !== BestHighscores2 && highscore !== BestHighscores4
+    && highscore !== BestHighscores5){
       BestHighscores3 = highscore;
       updateBestHighscore(3);
       chosen = true;
     }
     if(BestHighscores1 !== false && BestHighscores2 !== false && BestHighscores3 !== false
-      && BestHighscores4 == false && chosen == false){
+    && BestHighscores4 == false && chosen == false && highscore !== BestHighscores1
+    && highscore !== BestHighscores2 && highscore !== BestHighscores3 && highscore !== BestHighscores5){
       BestHighscores4 = highscore;
       updateBestHighscore(4);
       chosen = true;
     }
     if(BestHighscores1 !== false && BestHighscores2 !== false && BestHighscores3 !== false
-      && BestHighscores4 !== false && BestHighscores5 == false && chosen == false){
+    && BestHighscores4 !== false && BestHighscores5 == false && chosen == false
+    && highscore !== BestHighscores1 && highscore !== BestHighscores2 && highscore !== BestHighscores3
+    && highscore !== BestHighscores4){
       BestHighscores5 = highscore;
       updateBestHighscore(5);
       chosen = true;
