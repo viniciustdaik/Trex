@@ -53,7 +53,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2228996, mostRecentVersion = null, reloadButton;
+var version = 1.2228997, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -546,6 +546,13 @@ function draw() {
     }
     else if(game == "Corrida Infinita" && TrexColorido == true && reloadbuttonY == null){
       reloadbuttonY = 140;
+      if(isMobile == true && mostOfTheScreen == "height"){
+        reloadbuttonYSubtract = +15;
+      }
+      if(isMobile == true && mostOfTheScreen == "width"){
+        reloadbuttonYSubtract = +8;
+      }
+      
     }
     reloadbuttonY = reloadbuttonY + reloadbuttonYSubtract;
     console.log('This is not the most Recent Version.');
