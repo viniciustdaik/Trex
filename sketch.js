@@ -34,7 +34,7 @@ var dayMost = true, nightMost = false;
 var trexIsInvencibleCactus = false;
 var trexIsInvencibleBirds = false;
 var crouchbutton, crouchbuttonclass = "crouchbutton", crouchbuttonOnPC = false, 
-crouchbuttonimg, crouchbuttonHitbox;//, crouchbuttonbackground;
+crouchbuttonimg, crouchbuttonHitbox, crouchbuttonbackgroundimage;//, crouchbuttonbackground;
 var staranim;
 var dinosaurcolor = "notselected", birdcolor = "notselected";
 var TrexColorido = "notselected", sand;
@@ -82,8 +82,6 @@ window.screen.height === 896
 var browserName;
 
 var mostOfTheScreen;
-
-var crouchbuttonbackgroundimage;
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
 
