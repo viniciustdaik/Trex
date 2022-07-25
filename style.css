@@ -153,6 +153,22 @@ canvas {
   outline: none;
 }
 
+.crouchbuttonBackgroundIMG{
+  width: 50px;
+  height: 50px;
+  border-radius: 35px;
+  background-color: #9ea7a7;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: auto;
+  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
+  transition-duration: 0.0s;/*0.4s*/
+  outline: auto;
+}
+
 .crouchbuttongreentrex{
   width:70px;
   height: 70px;
