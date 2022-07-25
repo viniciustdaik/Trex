@@ -983,6 +983,13 @@ function draw() {
         crouchbutton.position(width / 2-35, -350);
         crouchbuttonbackgroundimage.position(width /2-35, -350);
       }
+
+      if(crouchbuttonHitbox.x !== crouchbutton.x + 34
+      ||crouchbuttonHitbox.y !== crouchbutton.y + 35){
+        crouchbuttonHitbox.x = crouchbutton.x + 34;
+        crouchbuttonHitbox.y = crouchbutton.y + 35;
+      }
+
       if(TrexColorido == false){
         trex.visible = true;
       }
@@ -1251,6 +1258,22 @@ function draw() {
     //if(bird.y > height + 160){
     //  bird.velocityY = 0;
     //}
+  }
+
+  if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x
+  ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y){
+    ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
+    ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
+  }
+  if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
+  ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
+    ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
+    ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
+  }
+  if(crouchbuttonHitbox.x !== crouchbutton.x + 34
+  ||crouchbuttonHitbox.y !== crouchbutton.y + 35){
+    crouchbuttonHitbox.x = crouchbutton.x + 34;
+    crouchbuttonHitbox.y = crouchbutton.y + 35;
   }
 
   drawSprites();
