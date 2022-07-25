@@ -53,7 +53,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2228992, mostRecentVersion = null, reloadButton;
+var version = 1.2228993, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -82,6 +82,8 @@ window.screen.height === 896
 var browserName;
 
 var mostOfTheScreen;
+
+var crouchbuttonbackgroundimage;
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
 
@@ -282,7 +284,7 @@ function setup() {
   coloridobutton.class("largebuttonC");
   coloridobutton.position(width - width - width, height / 2 - 70);
   coloridobutton.mousePressed(turnColored);
-
+  
   infiniteflightbutton = createButton("");
   infiniteflightbutton.class("squarebuttonIF");
   infiniteflightbutton.position(width / 2 + 255-15, height / 2 - 70);
@@ -353,6 +355,9 @@ function setup() {
   crouchbuttonHitbox = createSprite(crouchbutton.x + 34, crouchbutton.y + 35, 72, 75);
   crouchbuttonHitbox.visible = false;
 
+  crouchbuttonbackgroundimage = createImg("nothing.png");
+  crouchbuttonbackgroundimage.class("crouchbuttonBackgroundIMG");
+  crouchbuttonbackgroundimage.position(width / 2-35 , -350);
 
   /*cloud1 = createSprite(160, 100, 30, 30);
   cloud1.addImage("cloud", cloud_image);
@@ -918,9 +923,9 @@ function draw() {
             }
           }
         }
-      }else if(crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false 
+      }else if(crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false
       && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
-      ||crouchbutton.x !== width / 2-35 == false && isMobile == true
+      ||crouchbutton.x !== width / 2-35 && trexIsJumping == false && isMobile == true
       && mostOfTheScreen == "height"){ //isIPhoneXR
         crouchbutton.position(width / 2-35, invisibleground.y + 50);
         if(crouchbuttonclass == "crouchbuttonbackground"){
@@ -934,25 +939,51 @@ function draw() {
           }
         }
       }
-      if(trexIsJumping == true){//crouchbutton.x !== width / 2-35 && trexIsJumping == true
+      if(trexIsJumping == true && crouchbuttonOnPC == true && !isMobile
+      || isMobile && trexIsJumping == true){//crouchbutton.x !== width / 2-35 && trexIsJumping == true
       //||crouchbutton.y !== -350 && trexIsJumping == true){
-        //crouchbutton.position(width / 2-35, -350);
-        if(crouchbuttonclass == "crouchbutton"){
-          crouchbutton.class("crouchbuttonBackground");
-          crouchbuttonclass = "crouchbuttonbackground";
+        crouchbutton.position(width / 2-35, -350);
+        if(crouchbuttonbackgroundimage.x !== invisibleground.y + 50
+        && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
+        ||crouchbuttonbackgroundimage.x !== width / 2-35&& isMobile == true
+        && mostOfTheScreen == "height"){
+          crouchbuttonbackgroundimage.position(width / 2-35, invisibleground + 50);
+        }else if(crouchbuttonbackgroundimage.x !== width / 2-35 && !isMobile
+        ||crouchbuttonbackgroundimage.y !== 5 && !isMobile
+        ||crouchbuttonbackgroundimage.x !== width / 2-35 && isMobile
+        && mostOfTheScreen == "width"
+        ||crouchbuttonbackgroundimage.y !== 5 && isMobile 
+        && mostOfTheScreen == "width"){
+          crouchbuttonbackgroundimage.position(width / 2-35, 5);
         }
-      }else if(trexIsJumping == false && crouchbuttonclass == "crouchbuttonbackground"){
+        if(crouchbuttonclass == "crouchbutton"){
+          //crouchbutton.class("crouchbuttonBackground");
+          //crouchbuttonclass = "crouchbuttonbackground";
+        }
+      }else if(trexIsJumping == false && crouchbuttonclass == "crouchbuttonbackground"
+      ||crouchbuttonclass == "crouchbutton" && dinosaurcolor !== "Cinza"
+      ||crouchbuttonclass == "crouchbuttongreentrex" && dinosaurcolor !== "Verde"
+      ||crouchbuttonclass == "crouchbuttonbrowntrex" && dinosaurcolor !== "Marrom"
+      ||trexIsJumping == false && crouchbuttonbackgroundimage.y !== -350
+      ||trexIsJumping == false && crouchbuttonbackgroundimage.x !== width /2-35){
         if(dinosaurcolor == "Cinza"){
           crouchbutton.class("crouchbutton");
+          crouchbuttonclass = "crouchbutton";
         }else if(dinosaurcolor == "Verde"){
           crouchbutton.class("crouchbuttongreentrex");
+          crouchbuttonclass = "crouchbuttongreentrex";
         }else if(dinosaurcolor == "Marrom"){
           crouchbutton.class("crouchbuttonbrowntrex");
+          crouchbuttonclass = "crouchbuttonbrowntrex";
         }
-        crouchbuttonclass = "crouchbutton";
+        //crouchbuttonclass = "crouchbutton";
+        if(trexIsJumping == false){
+          crouchbuttonbackgroundimage.position(width /2-35, -350);
+        }
       }else if(!isMobile && crouchbuttonOnPC == false && crouchbutton.x >= 0
       ||!isMobile && crouchbuttonOnPC == false && crouchbutton.y >= 0){
         crouchbutton.position(width / 2-35, -350);
+        crouchbuttonbackgroundimage.position(width /2-35, -350);
       }
       if(TrexColorido == false){
         trex.visible = true;
@@ -2031,6 +2062,7 @@ function setDinosaurColor(){
       //trex.addAnimation("collided", trex_collided);
       //trex.addAnimation("crouching", trex_crouching);
       trex.changeAnimation("runningnb", trex_runningnb);
+      crouchbuttonclass = "crouchbutton";
       crouchbutton.class("crouchbutton");
       //trex.scale = 0.5;
     }
@@ -2040,6 +2072,7 @@ function setDinosaurColor(){
       //trex.addAnimation("collided_green", trex_collidedgreen);
       //trex.addAnimation("crouching_green", trex_crouchinggreen);
       trex.changeAnimation("running_green", trex_runninggreen);
+      crouchbuttonclass = "crouchbuttongreentrex";
       crouchbutton.class("crouchbuttongreentrex");
       //trex.scale = 0.5;
     }
@@ -2049,6 +2082,7 @@ function setDinosaurColor(){
       //trex.addAnimation("collided_brown", trex_collidedbrown);
       //trex.addAnimation("crouching_brown", trex_crouchingbrown);
       trex.changeAnimation("running_brown", trex_runningbrown);
+      crouchbuttonclass = "crouchbuttonbrowntrex";
       crouchbutton.class("crouchbuttonbrowntrex");
       //trex.scale = 0.5;
     }
