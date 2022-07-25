@@ -167,6 +167,8 @@ canvas {
   -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
   transition-duration: 0.0s;/*0.4s*/
   outline: auto;
+  border-color: #000000;
+  outline-color: #000000;
 }
 
 .crouchbuttongreentrex{
