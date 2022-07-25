@@ -904,12 +904,16 @@ function draw() {
     }*/
     //console.log(trex.y);
     if(gamestate == PLAY){
-      if(crouchbutton.x !== width / 2-35 && trexIsJumping == false && !isMobile
-      ||crouchbutton.y !== 5 && trexIsJumping == false && !isMobile
+      if(crouchbutton.x !== width / 2-35 && trexIsJumping == false && !isMobile && mostOfTheScreen == "width"
+      ||crouchbutton.y !== 5 && trexIsJumping == false && !isMobile && mostOfTheScreen == "width"
       ||crouchbutton.x !== width / 2-35 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"
       ||crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"){
         if(isMobile || !isMobile && crouchbuttonOnPC == true){
           crouchbutton.position(width / 2-35, 5);
+          if(crouchbuttonHitbox.x !== crouchbutton.x + 34 || crouchbuttonHitbox.y !== crouchbutton.y + 35){
+            crouchbuttonHitbox.x = crouchbutton.x + 34;
+            crouchbuttonHitbox.y = crouchbutton.y + 35;
+          }
           if(crouchbuttonclass == "crouchbuttonbackground"){
             crouchbuttonclass = "crouchbutton";
             if(dinosaurcolor == "Cinza"){
@@ -924,8 +928,16 @@ function draw() {
       }else if(crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false
       && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
       ||crouchbutton.x !== width / 2-35 && trexIsJumping == false && isMobile == true
-      && mostOfTheScreen == "height"){ //isIPhoneXR
+      && mostOfTheScreen == "height" //isIPhoneXR
+      ||crouchbutton.x !== width / 2-35 && !isMobile && crouchbuttonOnPC == true
+      && mostOfTheScreen == "height"
+      ||crouchbutton.y !== invisibleground.y + 50 && !isMobile && crouchbuttonOnPC == true
+      && mostOfTheScreen == "height"){
         crouchbutton.position(width / 2-35, invisibleground.y + 50);
+        if(crouchbuttonHitbox.x !== crouchbutton.x + 34 || crouchbuttonHitbox.y !== crouchbutton.y + 35){
+          crouchbuttonHitbox.x = crouchbutton.x + 34;
+          crouchbuttonHitbox.y = crouchbutton.y + 35;
+        }
         if(crouchbuttonclass == "crouchbuttonbackground"){
           crouchbuttonclass = "crouchbutton";
           if(dinosaurcolor == "Cinza"){
@@ -941,13 +953,20 @@ function draw() {
       || isMobile && trexIsJumping == true){//crouchbutton.x !== width / 2-35 && trexIsJumping == true
       //||crouchbutton.y !== -350 && trexIsJumping == true){
         crouchbutton.position(width / 2-35, -350);
-        if(crouchbuttonbackgroundimage.x !== invisibleground.y + 50
+        if(crouchbuttonbackgroundimage.y !== invisibleground.y + 50
         && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
-        ||crouchbuttonbackgroundimage.x !== width / 2-35&& isMobile == true
+        ||crouchbuttonbackgroundimage.x !== width / 2-35 && isMobile == true
+        && mostOfTheScreen == "height"
+        ||crouchbuttonbackgroundimage.x !== width / 2-35 && !isMobile && crouchbuttonOnPC == true
+        && mostOfTheScreen == "height"
+        ||crouchbuttonbackgroundimage.y !== invisibleground.y + 50 && !isMobile && crouchbuttonOnPC == true
         && mostOfTheScreen == "height"){
-          crouchbuttonbackgroundimage.position(width / 2-35, invisibleground + 50);
-        }else if(crouchbuttonbackgroundimage.x !== width / 2-35 && !isMobile
-        ||crouchbuttonbackgroundimage.y !== 5 && !isMobile
+          crouchbuttonbackgroundimage.position(width / 2-35, invisibleground.y + 50);
+        }
+        if(crouchbuttonbackgroundimage.x !== width / 2-35 && !isMobile && mostOfTheScreen == "width"
+        && crouchbuttonOnPC == true
+        ||crouchbuttonbackgroundimage.y !== 5 && !isMobile && mostOfTheScreen == "width"
+        && crouchbuttonOnPC == true
         ||crouchbuttonbackgroundimage.x !== width / 2-35 && isMobile
         && mostOfTheScreen == "width"
         ||crouchbuttonbackgroundimage.y !== 5 && isMobile 
