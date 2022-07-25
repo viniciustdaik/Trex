@@ -53,7 +53,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2228993, mostRecentVersion = null, reloadButton;
+var version = 1.2228994, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -914,7 +914,7 @@ function draw() {
             crouchbuttonHitbox.x = crouchbutton.x + 34;
             crouchbuttonHitbox.y = crouchbutton.y + 35;
           }
-          if(crouchbuttonclass == "crouchbuttonbackground"){
+          /*if(crouchbuttonclass == "crouchbuttonbackground"){
             crouchbuttonclass = "crouchbutton";
             if(dinosaurcolor == "Cinza"){
               crouchbutton.class("crouchbutton");
@@ -923,7 +923,7 @@ function draw() {
             } else if(dinosaurcolor == "Marrom"){
               crouchbutton.class("crouchbuttonbrowntrex");
             }
-          }
+          }*/
         }
       }else if(crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false
       && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
@@ -938,7 +938,7 @@ function draw() {
           crouchbuttonHitbox.x = crouchbutton.x + 34;
           crouchbuttonHitbox.y = crouchbutton.y + 35;
         }
-        if(crouchbuttonclass == "crouchbuttonbackground"){
+        /*if(crouchbuttonclass == "crouchbuttonbackground"){
           crouchbuttonclass = "crouchbutton";
           if(dinosaurcolor == "Cinza"){
             crouchbutton.class("crouchbutton");
@@ -947,7 +947,7 @@ function draw() {
           }else if(dinosaurcolor == "Marrom"){
             crouchbutton.class("crouchbuttonbrowntrex");
           }
-        }
+        }*/
       }
       if(trexIsJumping == true && crouchbuttonOnPC == true && !isMobile
       || isMobile && trexIsJumping == true){//crouchbutton.x !== width / 2-35 && trexIsJumping == true
