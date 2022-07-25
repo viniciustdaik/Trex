@@ -909,6 +909,8 @@ function draw() {
       ||crouchbutton.x !== width / 2-35 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"
       ||crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"){
         if(isMobile || !isMobile && crouchbuttonOnPC == true){
+          crouchbuttonHitbox.x = width / 2-35 + 34;
+          crouchbuttonHitbox.y = 5 + 35;
           crouchbutton.position(width / 2-35, 5);
           if(crouchbuttonHitbox.x !== crouchbutton.x + 34 || crouchbuttonHitbox.y !== crouchbutton.y + 35){
             crouchbuttonHitbox.x = crouchbutton.x + 34;
@@ -933,6 +935,8 @@ function draw() {
       && mostOfTheScreen == "height"
       ||crouchbutton.y !== invisibleground.y + 50 && !isMobile && crouchbuttonOnPC == true
       && mostOfTheScreen == "height"){
+        crouchbuttonHitbox.x = width / 2-35 + 34;
+        crouchbuttonHitbox.y = invisibleground.y + 50 + 35;
         crouchbutton.position(width / 2-35, invisibleground.y + 50);
         if(crouchbuttonHitbox.x !== crouchbutton.x + 34 || crouchbuttonHitbox.y !== crouchbutton.y + 35){
           crouchbuttonHitbox.x = crouchbutton.x + 34;
@@ -1111,6 +1115,7 @@ function draw() {
     }
     else if(gamestate == END){
       crouchbutton.position(width / 2-35, -350);
+      crouchbuttonbackgroundimage.position(width / 2-35, -350);
       trexIsCrouching = false;
       trexIsJumping = false;
       if(TrexColorido == false){
