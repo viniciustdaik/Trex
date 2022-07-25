@@ -53,7 +53,7 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2228995, mostRecentVersion = null, reloadButton;
+var version = 1.2228996, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
@@ -352,6 +352,15 @@ function setup() {
   //crouchbutton.position(width/2-35,height/2);
   crouchbuttonHitbox = createSprite(crouchbutton.x + 34, crouchbutton.y + 35, 72, 75);
   crouchbuttonHitbox.visible = false;
+  crouchbuttonHitbox.x = width / 2-35 + 34;
+
+  if(mostOfTheScreen == "width"){
+    crouchbuttonHitbox.y = 5 + 35;
+  }
+  //A condição if abaixo está depois do invisibleground
+  //if(mostOfTheScreen == "height"){
+  //  crouchbuttonHitbox.y = invisibleground.y + 50 + 35;
+  //}
 
   crouchbuttonbackgroundimage = createImg("nothing.png");
   crouchbuttonbackgroundimage.class("crouchbuttonBackgroundIMG");
@@ -421,6 +430,16 @@ function setup() {
   invisibleground = createSprite(200, 190, 400, 10);
   invisibleground.visible = false;
 
+  if(mostOfTheScreen == "height"){
+    crouchbuttonHitbox.y = invisibleground.y + 50 + 35;
+  }
+  //A condição if abaixo está depois da criação do crouchbuttonHitbox
+  //if(mostOfTheScreen == "width"){
+  //  crouchbuttonHitbox.y = 5 + 35;
+  //}
+  //O console.log abaixo está no começo da função draw
+  //console.log("x:"+crouchbuttonHitbox.x+" y:"+crouchbuttonHitbox.y);
+
   /*var teste = Math.round(random(1, 100));
   console.log(teste);*/
   //trex.setCollider("rectangle", 0, 0, 400, trex.height);
@@ -431,6 +450,7 @@ function setup() {
 }
 
 function draw() {
+  //console.log("x:"+crouchbuttonHitbox.x+" y:"+crouchbuttonHitbox.y);
   if(birdG.isTouching(cactuG) || birdG.isTouching(cactuhitboxG)){
     birdG.destroyEach();
     //console.log("Birds touching cactuG | cactuhitboxG destroyed!");
@@ -456,11 +476,11 @@ function draw() {
     ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
     ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
   }
-  if(crouchbuttonHitbox.x !== crouchbutton.x + 34
-  ||crouchbuttonHitbox.y !== crouchbutton.y + 35){
-    crouchbuttonHitbox.x = crouchbutton.x + 34;
-    crouchbuttonHitbox.y = crouchbutton.y + 35;
-  }
+  //if(crouchbuttonHitbox.x !== crouchbutton.x + 34
+  //||crouchbuttonHitbox.y !== crouchbutton.y + 35){
+  //  crouchbuttonHitbox.x = crouchbutton.x + 34;
+  //  crouchbuttonHitbox.y = crouchbutton.y + 35;
+  //}
   if(gamestate == PLAY){
     score = score+Math.round(getFrameRate()/30);
     cloudG.setVelocityXEach(-(4+3*score/100));//-(5+score/100)
@@ -1007,11 +1027,11 @@ function draw() {
         crouchbuttonbackgroundimage.position(width /2-35, -350);
       }
 
-      if(crouchbuttonHitbox.x !== crouchbutton.x + 34
-      ||crouchbuttonHitbox.y !== crouchbutton.y + 35){
-        crouchbuttonHitbox.x = crouchbutton.x + 34;
-        crouchbuttonHitbox.y = crouchbutton.y + 35;
-      }
+      //if(crouchbuttonHitbox.x !== crouchbutton.x + 34
+      //||crouchbuttonHitbox.y !== crouchbutton.y + 35){
+      //  crouchbuttonHitbox.x = crouchbutton.x + 34;
+      //  crouchbuttonHitbox.y = crouchbutton.y + 35;
+      //}
 
       if(TrexColorido == false){
         trex.visible = true;
@@ -1294,11 +1314,11 @@ function draw() {
     ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
     ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
   }
-  if(crouchbuttonHitbox.x !== crouchbutton.x + 34
-  ||crouchbuttonHitbox.y !== crouchbutton.y + 35){
-    crouchbuttonHitbox.x = crouchbutton.x + 34;
-    crouchbuttonHitbox.y = crouchbutton.y + 35;
-  }
+  //if(crouchbuttonHitbox.x !== crouchbutton.x + 34
+  //||crouchbuttonHitbox.y !== crouchbutton.y + 35){
+  //  crouchbuttonHitbox.x = crouchbutton.x + 34;
+  //  crouchbuttonHitbox.y = crouchbutton.y + 35;
+  //}
 
   drawSprites();
 }
@@ -2421,7 +2441,7 @@ function handleBestHighscores(){
   touches = [];
 }
 
-function getState() {
+function getState(){
   if(navigator.onLine == true){
     if(database !== null){
       if(getStateOrNot == true || gotStateOneTime == false){
