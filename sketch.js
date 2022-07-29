@@ -540,11 +540,11 @@ function draw() {
       reloadbuttonX = width/2+113;
       reloadbuttonYSubtract = +10;
     }
-    if(game == "Corrida Infinita" && TrexColorido !== true && reloadbuttonY == null
-    || game !== "Corrida Infinita" && reloadbuttonY == null){
+    //if(game == "Corrida Infinita" && TrexColorido !== true && reloadbuttonY == null
+    //|| game !== "Corrida Infinita" && reloadbuttonY == null){
       reloadbuttonY = height - 50;
-    }
-    else if(game == "Corrida Infinita" && TrexColorido == true && reloadbuttonY == null){
+    //}
+    /*else if(game == "Corrida Infinita" && TrexColorido == true && reloadbuttonY == null){
       reloadbuttonY = 140;
       if(isMobile == true && mostOfTheScreen == "height"){
         reloadbuttonYSubtract = +15;
@@ -553,7 +553,7 @@ function draw() {
         reloadbuttonYSubtract = +8;
       }
       
-    }
+    }*/
     reloadbuttonY = reloadbuttonY + reloadbuttonYSubtract;
     console.log('This is not the most Recent Version.');
     push();
@@ -569,14 +569,15 @@ function draw() {
     fill('red');
     textAlign("center");
     stroke('darkred');
-    if(game == "Corrida Infinita" && TrexColorido !== true
-    || game !== "Corrida Infinita"){
-      text("Esta versão não é a mais recente.", width/2-25, height - 25);
-    }else if(game == "Corrida Infinita" && TrexColorido == true){
-      text("Esta versão não é a mais recente.", width/2-25, 170);
-    }
-    if(game == "Corrida Infinita" && TrexColorido !== true
-    || game !== "Corrida Infinita"){
+    //The text is after drawSprites()
+    //if(game == "Corrida Infinita" && TrexColorido !== true
+    //|| game !== "Corrida Infinita"){
+      //text("Esta versão não é a mais recente.", width/2-25, height - 25);
+    //}else if(game == "Corrida Infinita" && TrexColorido == true){
+      //text("Esta versão não é a mais recente.", width/2-25, 170);
+    //}
+    //if(game == "Corrida Infinita" && TrexColorido !== true
+    //|| game !== "Corrida Infinita"){
       if(isMobile == false && isiPhoneXR == false){
         if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== reloadbuttonY){
           reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 265, height - 50
@@ -586,7 +587,7 @@ function draw() {
           reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 190, height - 50
         }
       }
-    }else if(game == "Corrida Infinita" && TrexColorido == true){
+    /*}*//*else if(game == "Corrida Infinita" && TrexColorido == true){
       if(isMobile == false && isiPhoneXR == false){
         if(reloadButton.x !== reloadbuttonX|| reloadButton.y !== reloadbuttonY){
           reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 265, 140
@@ -596,7 +597,7 @@ function draw() {
           reloadButton.position(reloadbuttonX, reloadbuttonY);//width/2 + 190, 140
         }
       }
-    }
+    }*/
     pop();
   }else{
     if(reloadButton.x !== width - width - width || reloadButton.y !== height - 25){
@@ -1328,7 +1329,29 @@ function draw() {
   //}
 
   drawSprites();
+
+  if(mostRecentVersion !== null && mostRecentVersion > version){
+    push();
+   
+    if(isMobile == false && isiPhoneXR == false){
+      textSize(35);
+    }else if(isMobile == true && mostOfTheScreen == "width" 
+    || isiPhoneXR == true && mostOfTheScreen == "width"){
+      textSize(25);
+    }else if(isMobile == true && mostOfTheScreen == "height"){
+      textSize(18);
+    }
+    textFont("default");
+
+    fill('red');
+    textAlign("center");
+    stroke('darkred');
+    text("Esta versão não é a mais recente.", width/2-25, height - 25);
+    pop();
+  }
+
 }
+
 function createclouds(){
   var cloudspawntime;
   if(game == "Corrida Infinita"){
