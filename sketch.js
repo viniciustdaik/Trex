@@ -86,6 +86,8 @@ var mostOfTheScreen;
 //var isTablet = /iPad/i.test(navigator.userAgent);
 
 function preload() {
+  soundFormats('mp3');
+
   //Carregar imagens em variáveis auxiliares.
   trex_running = loadAnimation("./trex/trex1-blink.png",  "./trex/trex3.png", "./trex/trex4.png", 
   "./trex/trex1.png", "./trex/trex3.png", "./trex/trex4.png");
@@ -147,9 +149,6 @@ function preload() {
   leftbuttonimg = loadImage("left_arrow.png");
   rightbuttonimg = loadImage("right_arrow.png");
   selectbuttonimg = loadImage("select.png");
-  jumpsound = loadSound("jump.mp3");
-  failsound = loadSound("fail.mp3");
-  checkpointsound = loadSound("checkPoint.mp3");
   birdanmleft = loadAnimation("./inimigos-obstaculos/birds/bird1(no borders)-left.png", 
   "./inimigos-obstaculos/birds/bird2(no borders)-left.png");
   greenbirdanmleft = loadAnimation("./inimigos-obstaculos/birds/greenbird1(no borders)-left.png", 
@@ -173,6 +172,15 @@ function preload() {
   staranim = loadAnimation("./imagens-de-fundo/star1.png", 
   "./imagens-de-fundo/star2.png", "./imagens-de-fundo/star3.png");
   trexfont = loadFont("./Trex.ttf");
+  
+  //Sounds
+  jumpsound = loadSound("jump.mp3");
+  failsound = loadSound("fail.mp3");
+  checkpointsound = loadSound("checkPoint.mp3");
+
+  jumpsound.setVolume(1);
+  checkpointsound.setVolume(2.5);
+  failsound.setVolume(2.5);
 }
 
 function setup() {
