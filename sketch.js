@@ -1136,7 +1136,7 @@ function draw() {
 
       //}*/
       if(trex.velocityY < 0 && trexIsCrouching == true){
-        trex.velocityY = 1;
+        trex.velocityY = 3;
         if(trexIsJumping == true && trexIsCrouching == true){
           trexIsJumping = false;
         }
@@ -2245,6 +2245,7 @@ function setBirdColor(){
 }
 
 function crouch(){
+  touches = [];
   if(trexIsCrouching == false && gamestate == PLAY && trexIsJumping == false){
     //trex.addAnimation("crouching", trex_crouching);
     trexIsCrouching = true;
@@ -2281,7 +2282,6 @@ function crouch(){
   }else{
 
   }
-  touches = [];
 }
 
 function turnColored(){
