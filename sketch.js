@@ -77,7 +77,7 @@ var isiPod = /iPod/i.test(navigator.userAgent);
 
 let isiPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio &&
 window.devicePixelRatio === 2 && window.screen.width === 414 &&
-window.screen.height === 896
+window.screen.height === 896;
 
 var browserName;
 
@@ -1071,11 +1071,15 @@ function draw() {
       && !mouseIsOver(crouchbuttonHitbox)){
       //&& !mousePressedOver(crouchbuttonbackground)){
       //&& !mouseIsOver(crouchbutton)){
-        touches = [];
-        trex.velocityY = -10;
-        //jumpsound.stop();
-        jumpsound.play();
-        //trexIsJumping = true;
+        if(trex.y >=150 && trexIsCrouching == false
+        ||isMobile == true && !mouseIsOver(ShowBestHighscoresButtonHitbox)
+        && !mouseIsOver(crouchbuttonHitbox)){
+          touches = [];
+          trex.velocityY = -10;
+          //jumpsound.stop();
+          jumpsound.play();
+          //trexIsJumping = true;
+        }
       }
       console.log(trexIsJumping);
       if(trex.y >= 150 ||trex.collide(invisibleground)){
