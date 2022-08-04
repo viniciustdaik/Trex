@@ -53,11 +53,11 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.2228997, mostRecentVersion = null, reloadButton;
+var version = 1.22290, mostRecentVersion = null, reloadButton;
 
 var gotStateOneTime = false;
 
-var initialHeight;//, newHeight;
+var initialHeight, newHeightAdded, initialWidth, newWidthAdded;
 
 var PcFeaturesOnMobile = false;
 
@@ -84,6 +84,8 @@ var browserName;
 var mostOfTheScreen;
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
+
+var scoreText, highscoreText;
 
 function preload() {
   soundFormats('mp3');
@@ -189,6 +191,7 @@ function setup() {
 
   database = firebase.database();
 
+  initialWidth = width;
   initialHeight = height;
 
   let userAgent = navigator.userAgent;
@@ -418,7 +421,8 @@ function setup() {
   bird.visible = false;
 
   //definindo limites
-  edges = createEdgeSprites();
+  //edges = createEdgeSprites();
+  //edges.setVisibleEach(false);
 
   cloudG = new Group();
   cactuG = new Group();
@@ -438,6 +442,20 @@ function setup() {
   invisibleground = createSprite(200, 190, 400, 10);
   invisibleground.visible = false;
 
+  //text test
+  //scoreText = createElement("h2");
+  //scoreText.position(highscoreS.x-45, -12.5);
+  //scoreText.html("PONTUAÇÃO: "+score);
+  //scoreText.style('@font-face', "font-family", "Trex", "src:url", "./Trex.ttf");
+  //scoreText.style('text-align', 'center');
+  //scoreText.style('font-size', '20px');
+  
+  //fill('gold');
+  //stroke('green');
+  //textSize(15);
+  //textFont(trexfont);
+  //text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);//500
+
   if(mostOfTheScreen == "height"){
     crouchbuttonHitbox.y = invisibleground.y + 50 + 35;
   }
@@ -453,7 +471,7 @@ function setup() {
   //trex.setCollider("rectangle", 0, 0, 400, trex.height);
   trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
   //trex.debug=true;
-
+  
   getState();
 }
 
@@ -479,11 +497,13 @@ function draw() {
     ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
     ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
   }
+  
   if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
   ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
     ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
     ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
   }
+
   //if(crouchbuttonHitbox.x !== crouchbutton.x + 34
   //||crouchbuttonHitbox.y !== crouchbutton.y + 35){
   //  crouchbuttonHitbox.x = crouchbutton.x + 34;
@@ -498,7 +518,33 @@ function draw() {
     //ground.velocityX = -2;
     ground.velocityX = -(4+3*score/100);//-(4+3*score/100)
     if(ground.x < 350){//< 0
-      ground.x = ground.width/2;
+      if(initialWidth == width){
+        ground.x = ground.width/2;
+      }else{
+        ground.x = ground.width/2 - newWidthAdded/2;
+      }
+      
+    }
+  }
+  if(game == "notselected"){
+    if(isMobile == false || isMobile == true && mostOfTheScreen == "width"){
+      if(infiniteracebutton.position.x !== width / 2 -415+15){
+        infiniteracebutton.position(width / 2 -415+15, height / 2 - 70);
+      }
+      if(infiniteflightbutton.position.x !== width / 2 + 255-15){
+        infiniteflightbutton.position(width / 2 + 255-15, height / 2 - 70);
+      }
+    }else if(isMobile == true && mostOfTheScreen == "height"){
+      if(infiniteracebutton.position.x !== width / 2 - 80){
+        infiniteracebutton.position(width / 2 - 80, 70);
+      }
+      if(infiniteflightbutton.position.x !== width / 2 - 80 - 35){
+        infiniteflightbutton.position(width / 2 - 80 , infiniteracebutton.y + 190);
+      }
+    }
+    if(initialWidth !== width){
+      gameover.x = width/2 - newWidthAdded/2;
+      restart.x = width/2 - newWidthAdded/2;
     }
   }
   if(game !== "notselected" && TrexColorido == "notselected"){
@@ -523,6 +569,11 @@ function draw() {
     }
     if(infiniteracebutton.position.x !== width - width - width){
       infiniteracebutton.position(width - width - width, infiniteracebutton.y);
+    }
+    
+    if(initialWidth !== width){
+      gameover.x = width/2 - newWidthAdded/2;
+      restart.x = width/2 - newWidthAdded/2;
     }
   }
   if(TrexColorido == true && Isday == true){
@@ -623,16 +674,21 @@ function draw() {
     stroke('green');
     textFont(trexfont);
     textAlign("center");
-    //if(initialHeight == height){
+    if(initialWidth == width){
       if(isMobile == false && isiPhoneXR == false){
         text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y + 185);
       }else if(isMobile == true || isiPhoneXR == true){
         text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y + 175);
       }
+    }else{
+      if(isMobile == false && isiPhoneXR == false){
+        text("Voo Infinito", infiniteflightbutton.x + 85 - newWidthAdded/2, infiniteflightbutton.y + 185);
+      }else if(isMobile == true || isiPhoneXR == true){
+        text("Voo Infinito", infiniteflightbutton.x + 85 - newWidthAdded/2, infiniteflightbutton.y + 175);
+      }
+    }
       
-    //}else{
-    //  text("Voo Infinito", infiniteflightbutton.x + 85, infiniteflightbutton.y - newHeight - 200);
-    //}
+
     /*if(isMobile && PcFeaturesOnMobile == false){
       push();
       fill('red');
@@ -645,11 +701,22 @@ function draw() {
       text("Não Disponível Em Celular", infiniteflightbutton.x + 85, infiniteflightbutton.y + 230);
       pop();
     }*/
-    if(isMobile == false && isiPhoneXR == false){
-      text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 185);
-    }else if(isMobile == true || isiPhoneXR == true){
-      text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 175);
+
+    if(initialWidth == width){
+      if(isMobile == false && isiPhoneXR == false){
+        text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 185);
+      }else if(isMobile == true || isiPhoneXR == true){
+        text("Corrida Infinita", infiniteracebutton.x + 85, infiniteracebutton.y + 175);
+      }
+    }else{
+      if(isMobile == false && isiPhoneXR == false){
+        text("Corrida Infinita", infiniteracebutton.x + 85 - newWidthAdded/2, infiniteracebutton.y + 185);
+      }else if(isMobile == true || isiPhoneXR == true){
+        text("Corrida Infinita", infiniteracebutton.x + 85 - newWidthAdded/2, infiniteracebutton.y + 175);
+      }
     }
+    
+    
   }
   fill('gold');
   stroke('green');
@@ -805,7 +872,6 @@ function draw() {
       }
       if(infiniteracebutton.x !== width / 2 -415){
         infiniteracebutton.position(width / 2 -415+15, infiniteracebutton.y);
-        
       }
       if(//browserName == "safari" && isMobile == true ||
       //browserName == "safari" && isiPhoneXR == true
@@ -817,9 +883,17 @@ function draw() {
       }
       
     }
+    if(initialWidth !== width){
+      highscoreS.x = 100 - newWidthAdded/2;
+      trex.x = 50 - newWidthAdded/2;
+    }
     text(highscore, highscoreS.x+25, 42);
     textAlign("center");
-    text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);//500
+    if(initialWidth == width){
+      text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);//500
+    }else{
+      text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);
+    }
   }
   textAlign("center");
   //if(Isnight == false){
@@ -864,9 +938,18 @@ function draw() {
     }
     if(mostOfTheScreen == "width" && isMobile == true || isMobile == false){
       if(game !== "notselected"){
-        text("Selecione Um Modo De Jogo.", width / 2, height/2-95);
+        if(initialWidth == width){
+          text("Selecione Um Modo De Jogo.", width / 2, height/2-95);
+        }else{
+          text("Selecione Um Modo De Jogo.", width / 2 - newWidthAdded/2, height/2-95);
+        }
+        
       }else{
-        text("Selecione Um Jogo.", width / 2, height/2-95);
+        if(initialWidth == width){
+          text("Selecione Um Jogo.", width / 2, height/2-95);
+        }else{
+          text("Selecione Um Jogo.", width / 2 - newWidthAdded/2, height/2-95);
+        }
       }
     }else if(mostOfTheScreen == "height" && isMobile == true){
       if(game !== "notselected"){
@@ -2547,34 +2630,42 @@ function getState(){
 
 function windowResized() {
   //if(gamestate == PLAY){
-    /*if(!isMobile && windowWidth < width){
-      resizeCanvas(width, windowHeight - 2.5);
+    if(!isMobile && windowWidth < width){
+      //resizeCanvas(width, windowHeight - 2.5);
     }else if(!isMobile && windowWidth > width){
       resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
+      newWidthAdded = width - initialWidth;
+      invisibleground.x = 200 - newWidthAdded/2;
     }
-    else *//*if(!isMobile && height !== windowHeight){
-      resizeCanvas(width, windowHeight - 2.5);
+    else if(!isMobile && height !== windowHeight){
+      //resizeCanvas(width, windowHeight - 2.5);
     }
     else if(isMobile){
-      resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
+      //resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
     }
     else{
 
     }
-    if(newHeight == undefined){
-      newHeight = height - initialHeight + height;
-    }
+    //if(newHeight == undefined){
+    //  newHeight = height - initialHeight + height;
+    //}
     
-    if(TrexColorido == true && Isday == true){
+    /*if(TrexColorido == true && Isday == true){
       background('cyan');
     }else if(TrexColorido == false && Isday == true){
       background('white');
     }else if(TrexColorido !== false && TrexColorido !== true && Isday == true){
       background('white');
+    }else if(gamestate == SELECTED){
+      background('white');
+    }*/
+    if(initialHeight !== height){
+      newHeightAdded = height - initialHeight;
     }
 
-
-  }*/
+    sand.width = width;
+    
+  //}
 }
 
 function reload(){
