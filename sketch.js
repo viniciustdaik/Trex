@@ -317,7 +317,8 @@ function setup() {
 
   if(//browserName == "safari" && isMobile == true ||
   //browserName == "safari" && isiPhoneXR == true
-  isMobile == true || isiPhoneXR == true){
+  mostOfTheScreen == "width" && isMobile == true 
+  || mostOfTheScreen == "width" && isiPhoneXR == true){
     //infiniteracebutton.size(100, 100);
     //infiniteflightbutton.size(100, 100);
     infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
@@ -527,7 +528,7 @@ function draw() {
     }
   }
   if(game == "notselected"){
-    if(isMobile == false || isMobile == true && mostOfTheScreen == "width"){
+    if(isMobile == false){
       if(infiniteracebutton.position.x !== width / 2 -415+15){
         infiniteracebutton.position(width / 2 -415+15, height / 2 - 70);
       }
@@ -541,7 +542,13 @@ function draw() {
       if(infiniteflightbutton.position.x !== width / 2 - 80 - 35){
         infiniteflightbutton.position(width / 2 - 80 , infiniteracebutton.y + 190);
       }
-    }
+    }else if(//browserName == "safari" && isMobile == true ||
+  //browserName == "safari" && isiPhoneXR == true
+  mostOfTheScreen == "width" && isMobile == true 
+  || mostOfTheScreen == "width" && isiPhoneXR == true){
+    infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
+    infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
+  }
     if(initialWidth !== width){
       gameover.x = width/2 - newWidthAdded/2;
       restart.x = width/2 - newWidthAdded/2;
