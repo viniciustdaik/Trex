@@ -543,12 +543,12 @@ function draw() {
         infiniteflightbutton.position(width / 2 - 80 , infiniteracebutton.y + 190);
       }
     }else if(//browserName == "safari" && isMobile == true ||
-  //browserName == "safari" && isiPhoneXR == true
-  mostOfTheScreen == "width" && isMobile == true 
-  || mostOfTheScreen == "width" && isiPhoneXR == true){
-    infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
-    infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
-  }
+    //browserName == "safari" && isiPhoneXR == true
+    mostOfTheScreen == "width" && isMobile == true 
+    || mostOfTheScreen == "width" && isiPhoneXR == true){
+      infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
+      infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
+    }
     if(initialWidth !== width){
       gameover.x = width/2 - newWidthAdded/2;
       restart.x = width/2 - newWidthAdded/2;
