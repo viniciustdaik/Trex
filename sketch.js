@@ -2640,7 +2640,7 @@ function windowResized() {
     if(!isMobile && windowWidth < width){
       //resizeCanvas(width, windowHeight - 2.5);
     }else if(!isMobile && windowWidth > width){
-      resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
+      resizeCanvas(windowWidth - 2.3, height)//, windowHeight - 2.5);
       newWidthAdded = width - initialWidth;
       invisibleground.x = 200 - newWidthAdded/2;
     }
