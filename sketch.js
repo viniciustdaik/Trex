@@ -53,11 +53,15 @@ BestHighscores4DeleteButton, BestHighscores5DeleteButton;
 
 var game = "notselected";
 
-var version = 1.22290, mostRecentVersion = null, reloadButton;
+var windowResizeX = true, windowResizeY = false;
+
+var version = 1.22291, mostRecentVersion = null, reloadButton;
+
+var infiniteflightbutton, infiniteracebutton;
 
 var gotStateOneTime = false;
 
-var initialHeight, newHeightAdded, initialWidth, newWidthAdded;
+var initialHeight, newHeightAdded, initialWidth, newWidthAdded, newHeight;
 
 var PcFeaturesOnMobile = false;
 
@@ -291,7 +295,7 @@ function setup() {
 
   coloridobutton = createButton("");
   coloridobutton.class("largebuttonC");
-  coloridobutton.position(width - width - width, height / 2 - 70);
+  coloridobutton.position(width - width - width - 1000, height / 2 - 70);
   coloridobutton.mousePressed(turnColored);
   
   infiniteflightbutton = createButton("");
@@ -307,7 +311,7 @@ function setup() {
   
   normalbutton = createButton("");
   normalbutton.class("largebuttonN");
-  normalbutton.position(width - width - width, height / 2 - 70);
+  normalbutton.position(width - width - width - 1000, height / 2 - 70);
   normalbutton.mousePressed(turnNormal);
 
   infiniteracebutton = createButton("");
@@ -493,16 +497,59 @@ function draw() {
     //crouchbuttonbackground.position(crouchbutton.x, crouchbutton.y);
     crouchbutton.class("crouchbutton");
   }*/
-  if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x
-  ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y){
-    ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
-    ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
-  }
-  
-  if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
-  ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
-    ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
-    ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
+
+  if(initialWidth == width){
+    if(initialHeight == height){
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
+      }
+    }else{
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25 - newHeightAdded/2){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25 - newHeightAdded/2;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24 - newHeightAdded/2){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24 - newHeightAdded/2;
+      }
+    }
+  }else{
+    if(initialHeight == height){
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25 - newWidthAdded/2
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25 - newWidthAdded/2;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24 - newWidthAdded/2
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24 - newWidthAdded/2;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
+      }
+    }else{
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25 - newWidthAdded/2
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25 - newHeightAdded/2){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25 - newWidthAdded/2;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25 - newHeightAdded/2;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24 - newWidthAdded/2
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24 - newHeightAdded/2){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24 - newWidthAdded/2;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24 - newHeightAdded/2;
+      }
+    }
   }
 
   //if(crouchbuttonHitbox.x !== crouchbutton.x + 34
@@ -528,7 +575,26 @@ function draw() {
     }
   }
   if(game == "notselected"){
+    var infiniteracebuttonX, infiniteracebuttonY, infiniteflightbuttonX, infiniteflightbuttonY;
+
     if(isMobile == false){
+      infiniteracebuttonX = width / 2 -415+15;
+      infiniteflightbuttonX = width / 2 + 255-15;
+      infiniteracebuttonY = height / 2 - 70;
+      infiniteflightbuttonY = height / 2 - 70;
+    }else if(mostOfTheScreen == "height" && isMobile == true){
+      infiniteracebuttonX = width / 2 - 80;
+      infiniteflightbuttonX = width / 2 - 80;
+      infiniteracebuttonY = 70;
+      infiniteflightbuttonY = infiniteracebutton.y + 190;
+    }else if(mostOfTheScreen == "width" && isMobile == true){
+      infiniteracebuttonX = width/2-415+55+125;
+      infiniteflightbuttonX = width / 2 + 255-65-85;
+      infiniteracebuttonY = infiniteracebutton.y;
+      infiniteflightbuttonY = infiniteflightbutton.y;
+    }
+
+    /*if(isMobile == false){
       if(infiniteracebutton.position.x !== width / 2 -415+15){
         infiniteracebutton.position(width / 2 -415+15, height / 2 - 70);
       }
@@ -540,7 +606,7 @@ function draw() {
         infiniteracebutton.position(width / 2 - 80, 70);
       }
       if(infiniteflightbutton.position.x !== width / 2 - 80 - 35){
-        infiniteflightbutton.position(width / 2 - 80 , infiniteracebutton.y + 190);
+        infiniteflightbutton.position(width / 2 - 80, infiniteracebutton.y + 190);
       }
     }else if(//browserName == "safari" && isMobile == true ||
     //browserName == "safari" && isiPhoneXR == true
@@ -548,10 +614,26 @@ function draw() {
     || mostOfTheScreen == "width" && isiPhoneXR == true){
       infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
       infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
+    }*/
+    
+    if(infiniteracebutton.position.x !== infiniteracebuttonX){
+      infiniteracebutton.position(infiniteracebuttonX, infiniteracebuttonY);
     }
+    if(infiniteflightbutton.position.x !== infiniteflightbuttonX){
+      infiniteflightbutton.position(infiniteflightbuttonX, infiniteflightbuttonY);
+    }
+
+
     if(initialWidth !== width){
       gameover.x = width/2 - newWidthAdded/2;
       restart.x = width/2 - newWidthAdded/2;
+    }
+    if(initialHeight == height){
+      gameover.y = 100;
+      restart.y = 140;
+    }else{
+      gameover.y = 100 - newHeightAdded/2;
+      restart.y = 140 - newHeightAdded/2;
     }
   }
   if(game !== "notselected" && TrexColorido == "notselected"){
@@ -581,6 +663,13 @@ function draw() {
     if(initialWidth !== width){
       gameover.x = width/2 - newWidthAdded/2;
       restart.x = width/2 - newWidthAdded/2;
+    }
+    if(initialHeight == height){
+      gameover.y = 100;
+      restart.y = 140;
+    }else{
+      gameover.y = 100 - newHeightAdded/2;
+      restart.y = 140 - newHeightAdded/2;
     }
   }
   if(TrexColorido == true && Isday == true){
@@ -741,36 +830,42 @@ function draw() {
     
     if(ShowBestHighscore == true){
       if(ShowBestHighscoreActive == true){
+        var textX;
+        if(initialWidth == width){
+          textX = BestHighscores.x;
+        }else{
+          textX = BestHighscores.x - newWidthAdded/2;
+        }
         push();
         textAlign("center");
         if(BestHighscores1 !== false){
-          text("HI 1:"+BestHighscores1, BestHighscores.x, BestHighscores.y);
+          text("HI 1:"+BestHighscores1, textX, BestHighscores.y);
         }else{
-          text("HI 1:Nenhum", BestHighscores.x, BestHighscores.y);
+          text("HI 1:Nenhum", textX, BestHighscores.y);
         }
 
         if(BestHighscores2 !== false){
-          text("HI 2:"+BestHighscores2, BestHighscores.x, BestHighscores.y+25);
+          text("HI 2:"+BestHighscores2, textX, BestHighscores.y+25);
         }else{
-          text("HI 2:Nenhum", BestHighscores.x, BestHighscores.y+25);
+          text("HI 2:Nenhum", textX, BestHighscores.y+25);
         }
 
         if(BestHighscores3 !== false){
-          text("HI 3:"+BestHighscores3, BestHighscores.x, BestHighscores.y+50);
+          text("HI 3:"+BestHighscores3, textX, BestHighscores.y+50);
         }else{
-          text("HI 3:Nenhum", BestHighscores.x, BestHighscores.y+50);
+          text("HI 3:Nenhum", textX, BestHighscores.y+50);
         }
 
         if(BestHighscores4 !== false){
-          text("HI 4:"+BestHighscores4, BestHighscores.x, BestHighscores.y+75);
+          text("HI 4:"+BestHighscores4, textX, BestHighscores.y+75);
         }else{
-          text("HI 4:Nenhum", BestHighscores.x, BestHighscores.y+75);
+          text("HI 4:Nenhum", textX, BestHighscores.y+75);
         }
 
         if(BestHighscores5 !== false){
-          text("HI 5:"+BestHighscores5, BestHighscores.x, BestHighscores.y+100);
+          text("HI 5:"+BestHighscores5, textX, BestHighscores.y+100);
         }else{
-          text("HI 5:Nenhum", BestHighscores.x, BestHighscores.y+100);
+          text("HI 5:Nenhum", textX, BestHighscores.y+100);
         }
         pop();
       }
@@ -890,16 +985,43 @@ function draw() {
       }
       
     }
+    if(game == "Corrida Infinita"){
+      if(initialHeight == height){
+        gameover.y = 100;
+        restart.y = 140;
+      }else{
+        gameover.y = 100 - newHeightAdded/2;
+        restart.y = 140 - newHeightAdded/2;
+      }
+    }else if(game == "Voo Infinito"){
+      if(initialHeight == height){
+        restart.y = height / 2 + 40;
+        gameover.y = height / 2;
+      }else{
+        restart.y = height / 2 + 40 - newHeightAdded/2;
+        gameover.y = height / 2 - newHeightAdded/2;
+      }
+    }
+    
     if(initialWidth !== width){
       highscoreS.x = 100 - newWidthAdded/2;
       trex.x = 50 - newWidthAdded/2;
     }
-    text(highscore, highscoreS.x+25, 42);
+    if(initialHeight == height){
+      highscoreS.y = 33;
+    }else{
+      highscoreS.y = 33 - newHeightAdded/2;
+    }
+    if(initialHeight == height){
+      text(highscore, highscoreS.x+25, 42);
+    }else{
+      text(highscore, highscoreS.x+25, 42 - newHeightAdded/2);
+    }
     textAlign("center");
-    if(initialWidth == width){
+    if(initialHeight == height){
       text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);//500
     }else{
-      text("PONTUAÇÃO: "+score, highscoreS.x+45, 20);
+      text("PONTUAÇÃO: "+score, highscoreS.x+45, 20 - newHeightAdded/2);
     }
   }
   textAlign("center");
@@ -1153,31 +1275,63 @@ function draw() {
       if(score>0&&score%100==0){
         checkpointsound.play();
       }
-      if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
-      keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
-      keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
-      touches.length > 0&&trex.y >=150&&trexIsCrouching==false
-      && !mouseIsOver(ShowBestHighscoresButtonHitbox)
-      && !mouseIsOver(crouchbuttonHitbox)){
-      //&& !mousePressedOver(crouchbuttonbackground)){
-      //&& !mouseIsOver(crouchbutton)){
-        if(trex.y >=150 && trexIsCrouching == false
-        ||isMobile == true && !mouseIsOver(ShowBestHighscoresButtonHitbox)
+      if(initialHeight == height){
+        if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+        keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+        keyDown("UP_ARROW")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+        touches.length > 0&&trex.y >=150&&trexIsCrouching==false
+        && !mouseIsOver(ShowBestHighscoresButtonHitbox)
         && !mouseIsOver(crouchbuttonHitbox)){
-          touches = [];
-          trex.velocityY = -10;
-          //jumpsound.stop();
-          jumpsound.play();
-          //trexIsJumping = true;
+        //&& !mousePressedOver(crouchbuttonbackground)){
+        //&& !mouseIsOver(crouchbutton)){
+          if(trex.y >=150 && trexIsCrouching == false
+          ||isMobile == true && !mouseIsOver(ShowBestHighscoresButtonHitbox)
+          && !mouseIsOver(crouchbuttonHitbox)){
+            touches = [];
+            trex.velocityY = -10;
+            //jumpsound.stop();
+            jumpsound.play();
+            //trexIsJumping = true;
+          }
+        }
+      }else{
+        if(keyDown("space")&&trex.y - newHeightAdded >=150 - newHeightAdded/2&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+        keyDown('W')&&trex.y - newHeightAdded >=150 - newHeightAdded/2&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+        keyDown("UP_ARROW")&&trex.y - newHeightAdded >=150 - newHeightAdded/2&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
+        touches.length > 0&&trex.y - newHeightAdded >=150 - newHeightAdded/2&&trexIsCrouching==false
+        && !mouseIsOver(ShowBestHighscoresButtonHitbox)
+        && !mouseIsOver(crouchbuttonHitbox)){
+        //&& !mousePressedOver(crouchbuttonbackground)){
+        //&& !mouseIsOver(crouchbutton)){
+          if(trex.y >=150 && trexIsCrouching == false
+          ||isMobile == true && !mouseIsOver(ShowBestHighscoresButtonHitbox)
+          && !mouseIsOver(crouchbuttonHitbox)){
+            touches = [];
+            trex.velocityY = -10;
+            //jumpsound.stop();
+            jumpsound.play();
+            //trexIsJumping = true;
+          }
         }
       }
+      
       console.log(trexIsJumping);
-      if(trex.y >= 150 ||trex.collide(invisibleground)){
-        trexIsJumping = false;
+      if(initialHeight == height){
+        if(trex.y >= 150 ||trex.collide(invisibleground)){
+          trexIsJumping = false;
+        }
+        if(trex.y < 150){
+          trexIsJumping = true;
+        }
+      }else{
+        if(trex.y >= 150 - newHeightAdded/2 ||trex.collide(invisibleground)){
+          trexIsJumping = false;
+        }
+        if(trex.y < 150 - newHeightAdded/2){
+          trexIsJumping = true;
+        }
       }
-      if(trex.y < 150){
-        trexIsJumping = true;
-      }
+      
       //console.log(trexIsJumping);
       //console.log(trex.y);
       if(keyWentDown("S") && trexIsJumping == false
@@ -1360,6 +1514,7 @@ function draw() {
       hitGround = true;
       failsound.play();
       gamestate = END;
+      bird.y = ground.y - 35;
       if(birdcolor !== "Cinza"){
         bird.y = bird.y + 11;
       }else{
@@ -1414,16 +1569,60 @@ function draw() {
     //}
   }
 
-  if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x
-  ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y){
-    ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
-    ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
+  if(initialWidth == width){
+    if(initialHeight == height){
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
+      }
+    }else{
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25 - newHeightAdded/2){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25 - newHeightAdded/2;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24 - newHeightAdded/2){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24 - newHeightAdded/2;
+      }
+    }
+  }else{
+    if(initialHeight == height){
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25 - newWidthAdded/2
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25 - newWidthAdded/2;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24 - newWidthAdded/2
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24 - newWidthAdded/2;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
+      }
+    }else{
+      if(ShowBestHighscoresButtonShadow.x !== ShowBestHighscoresButton.x + 25 - newWidthAdded/2
+      ||ShowBestHighscoresButtonShadow.y !== ShowBestHighscoresButton.y + 25 - newHeightAdded/2){
+        ShowBestHighscoresButtonShadow.x = ShowBestHighscoresButton.x + 25 - newWidthAdded/2;
+        ShowBestHighscoresButtonShadow.y = ShowBestHighscoresButton.y + 25 - newHeightAdded/2;
+      }
+
+      if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x + 24 - newWidthAdded/2
+      ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y + 24 - newHeightAdded/2){
+        ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24 - newWidthAdded/2;
+        ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24 - newHeightAdded/2;
+      }
+    }
   }
-  if(ShowBestHighscoresButtonHitbox.x !== ShowBestHighscoresButton.x
-  ||ShowBestHighscoresButtonHitbox.y !== ShowBestHighscoresButton.y){
-    ShowBestHighscoresButtonHitbox.x = ShowBestHighscoresButton.x + 24;
-    ShowBestHighscoresButtonHitbox.y = ShowBestHighscoresButton.y + 24;
-  }
+
   //if(crouchbuttonHitbox.x !== crouchbutton.x + 34
   //||crouchbuttonHitbox.y !== crouchbutton.y + 35){
   //  crouchbuttonHitbox.x = crouchbutton.x + 34;
@@ -2636,16 +2835,120 @@ function getState(){
 }
 
 function windowResized() {
-  //if(gamestate == PLAY){
+  //if(windowResize == false){
     if(!isMobile && windowWidth < width){
-      //resizeCanvas(width, windowHeight - 2.5);
+      if(windowResizeY == true){
+        if(windowHeight - 2.5 !== height){
+          resizeCanvas(width, windowHeight - 2.5);
+          newHeight = height;
+  
+          if(initialHeight !== height){
+            newHeightAdded = height - initialHeight;
+  
+            if(game == "Corrida Infinita"){
+              ground.y = 180 - newHeightAdded/2;
+              invisibleground.y = 190 - newHeightAdded/2;
+            }else if(game == "Voo Infinito"){
+              ground.y = height - 5 - newHeightAdded/2;
+              if(gamestate == PLAY){
+                //bird.y = bird.y;
+              }else if(gamestate == END){
+                /*if(initialHeight > newHeight){
+                  if(birdcolor !== "Cinza"){
+                    bird.y = ground.y - 35+ 11-newHeightAdded/2;
+                  }else{
+                    bird.y = ground.y - 35+ 7.5-newHeightAdded/2;
+                  }
+                }else if(newHeight < initialHeight){
+                  if(birdcolor !== "Cinza"){
+                    bird.y = ground.y - 35+ 11+newHeightAdded*12;
+                  }else{
+                    bird.y = ground.y - 35+ 7.5+newHeightAdded*12;
+                  }
+                }*/
+                //console.log(ground.y);
+                //if(birdcolor !== "Cinza"){
+                //  bird.y = ground.y - 35 + 11;
+                //}else{
+                //  bird.y = ground.y - 35 + 7.5;
+                //}
+                
+              }
+            }
+            
+            //if(trex.y  - newHeightAdded/2 > 160 
+            //&& trex.y - newHeightAdded/2 < 140){
+            //&& trexIsCrouching == false){
+              //trex.y = 160;
+              //trex.y = 160 - newHeightAdded/2;
+              //var e1 = 140-newHeightAdded/2;
+              //var e2 = 160-newHeightAdded/2;
+              //console.log(trex.y-newHeightAdded/2);
+              //console.log("140"+e1);
+              //console.log("160"+e2);
+              trex.y = trex.y - newHeightAdded/2;
+            //}
+            
+            if(TrexColorido == true){
+              sand.y = sand.y - newHeightAdded/2;
+            }
+          }else{
+            //if(trex.y > 160 && trexIsCrouching == false && trex.y < 140){
+            //||trexIsCrouching == true && trex.y > 180 && trex.y < 160){
+              //trex.y = 179;
+              trex.y = trex.y + newHeightAdded/2;
+            //}
+            if(game == "Corrida Infinita"){
+              invisibleground.y = 190;
+              ground.y = 180;
+            }else if(game == "Voo Infinito"){
+              ground.y = height - 5;
+              if(gamestate == PLAY){
+                //bird.y = bird.y - newHeightAdded/2;
+              }else if(gamestate == END){
+                if(birdcolor !== "Cinza"){
+                  //bird.y = ground.y - 35 + 11;
+                }else{
+                  //bird.y = ground.y - 35 + 7.5;
+                }
+              }
+            }
+            if(TrexColorido == true){
+              sand.y = height/2+180;
+            }
+          }
+  
+          if(game == "Voo Infinito"){
+            if(gamestate == END){
+              //console.log(ground.y);
+              if(initialHeight > newHeight){
+                bird.y = bird.y+newHeightAdded/2;
+  
+              }else{
+                bird.y = bird.y-newHeightAdded/2;
+              }
+              /*if(birdcolor !== "Cinza"){
+                //bird.y = ground.y - 35 + 11;
+                
+              }else{
+                //bird.y = ground.y - 35 + 7.5;
+              }*/
+            }
+          }
+  
+        }
+      }
     }else if(!isMobile && windowWidth > width){
-      resizeCanvas(windowWidth - 2.3, height)//, windowHeight - 2.5);
-      newWidthAdded = width - initialWidth;
-      invisibleground.x = 200 - newWidthAdded/2;
-    }
-    else if(!isMobile && height !== windowHeight){
-      //resizeCanvas(width, windowHeight - 2.5);
+      if(windowResizeX == true){
+        resizeCanvas(windowWidth - 2.3, height)//, windowHeight - 2.5);
+        if(initialWidth !== width){
+          newWidthAdded = width - initialWidth;
+          invisibleground.x = 200 - newWidthAdded/2;
+        }
+      }
+    }else if(!isMobile && windowHeight > height
+    ||!isMobile && windowHeight < height){
+      //soon
     }
     else if(isMobile){
       //resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
@@ -2655,7 +2958,7 @@ function windowResized() {
     }
     //if(newHeight == undefined){
     //  newHeight = height - initialHeight + height;
-    //}
+    //} 
     
     /*if(TrexColorido == true && Isday == true){
       background('cyan');
@@ -2666,9 +2969,6 @@ function windowResized() {
     }else if(gamestate == SELECTED){
       background('white');
     }*/
-    if(initialHeight !== height){
-      newHeightAdded = height - initialHeight;
-    }
 
     sand.width = width;
     
