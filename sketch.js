@@ -55,7 +55,7 @@ var game = "notselected";
 
 var windowResizeX = true, windowResizeY = false;
 
-var version = 1.22291, mostRecentVersion = null, reloadButton;
+var version = 1.22291, mostRecentVersion = null, reloadButton;//1.22291
 
 var infiniteflightbutton, infiniteracebutton;
 
@@ -1633,7 +1633,12 @@ function draw() {
 
   if(mostRecentVersion !== null && mostRecentVersion > version){
     push();
-   
+    var mostRecentVersionTextX;
+    if(initialWidth == width){
+      mostRecentVersionTextX = width/2-25;
+    }else if(initialWidth!== width){
+      mostRecentVersionTextX = width/2-25-newWidthAdded/2;
+    }
     if(isMobile == false && isiPhoneXR == false){
       textSize(35);
     }else if(isMobile == true && mostOfTheScreen == "width" 
@@ -1647,7 +1652,7 @@ function draw() {
     fill('red');
     textAlign("center");
     stroke('darkred');
-    text("Esta versão não é a mais recente.", width/2-25, height - 25);
+    text("Esta versão não é a mais recente.", mostRecentVersionTextX, height - 25);
     pop();
   }
 
