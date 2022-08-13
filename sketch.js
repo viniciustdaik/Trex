@@ -478,6 +478,10 @@ function setup() {
   //trex.debug=true;
   
   getState();
+
+  gameover.visible=true;
+  restart.visible=true;
+
 }
 
 function draw() {
@@ -2373,10 +2377,10 @@ function reset(){
       dinosaurcolor = "notselected";
     }
     trex.visible = false;
-    gameover.x = width / 2
-    gameover.y = 100;
-    restart.x = width / 2
-    restart.y = 140;
+    //gameover.x = width / 2;
+    //gameover.y = 100;
+    //restart.x = width / 2;
+    //restart.y = 140;
     trexIsCrouching = false;
     trexIsJumping = false;
   }
@@ -2390,8 +2394,8 @@ function reset(){
       bird.changeAnimation("birdright", birdanmright);
     }
     bird.y = 160;
-    restart.y = height / 2 + 40;
-    gameover.y = height / 2;
+    //restart.y = height / 2 + 40;
+    //gameover.y = height / 2;
   }
   restart.visible = false;
   gameover.visible = false;
