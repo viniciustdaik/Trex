@@ -1275,6 +1275,24 @@ function draw() {
       if(score>0&&score%100==0){
         checkpointsound.play();
       }
+
+      console.log(trexIsJumping);
+      if(initialHeight == height){
+        if(trex.y >= 150 ||trex.collide(invisibleground)){
+          trexIsJumping = false;
+        }
+        if(trex.y < 150){
+          trexIsJumping = true;
+        }
+      }else{
+        if(trex.y >= 150 - newHeightAdded/2 ||trex.collide(invisibleground)){
+          trexIsJumping = false;
+        }
+        if(trex.y < 150 - newHeightAdded/2){
+          trexIsJumping = true;
+        }
+      }
+
       if(initialHeight == height){
         if(keyDown("space")&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
         keyDown('W')&&trex.y >=150&&trexIsCrouching==false||//&&!mousePressedOver(crouchbutton)||
