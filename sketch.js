@@ -821,8 +821,16 @@ function draw() {
   if(gamestate !== SELECT){
     var BestHighscoresY = 25 - 35;
     var BestHighscoresX;
-    if(width >= 1533 && !isMobile){
-      BestHighscoresX = width/2 - 410;
+    if(initialWidth == width){
+      if(/*width >= 1533 && */!isMobile){
+        //BestHighscoresX = width/2 - 410; //356.85 é a posição que ficava(pc)
+        BestHighscoresX = highscoreS.x + 256.85;
+      }
+    }else{
+      if(/*width >= 1533 && */!isMobile){
+        //BestHighscoresX = width/2 - 410 - newWidthAdded/2;
+        BestHighscoresX = highscoreS.x + 256.85 + newWidthAdded/2;
+      }
     }
     if(isMobile){
       BestHighscoresX = ShowBestHighscoresButton.x - 110;
@@ -1276,7 +1284,8 @@ function draw() {
         checkpointsound.play();
       }
 
-      console.log(trexIsJumping);
+      //Outra verificação igual essa após o pulo
+      //console.log(trexIsJumping);
       if(initialHeight == height){
         if(trex.y >= 150 ||trex.collide(invisibleground)){
           trexIsJumping = false;
@@ -1333,6 +1342,7 @@ function draw() {
         }
       }
       
+      //Outra verificação igual essa antes do pulo
       console.log(trexIsJumping);
       if(initialHeight == height){
         if(trex.y >= 150 ||trex.collide(invisibleground)){
