@@ -478,6 +478,10 @@ function setup() {
   //trex.debug=true;
   
   getState();
+
+  gameover.visible=true;
+  restart.visible=true;
+
 }
 
 function draw() {
@@ -1352,8 +1356,55 @@ function draw() {
       
       //console.log(trexIsJumping);
       //console.log(trex.y);
-      if(keyWentDown("S") && trexIsJumping == false
-      ||keyWentDown(DOWN_ARROW) && trexIsJumping == false){
+      if(initialHeight == height){
+        if(keyWentDown("S") && trex.y >= 150// && trexIsJumping == false
+        ||keyWentDown(DOWN_ARROW) && trex.y >= 150){// && trexIsJumping == false){
+        //||mouseIsOver(crouchbutton) && trexIsJumping==false){
+          //crouch();
+          //trex.addAnimation("crouching", trex_crouching);
+          trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+          if(TrexColorido == true && dinosaurcolor == "Cinza"){
+            trex.changeAnimation("crouchingnb", trex_crouchingnb);
+          }
+          if(TrexColorido == false){
+            trex.changeAnimation("crouching", trex_crouching);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Marrom"){
+            trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Verde"){
+            trex.changeAnimation("crouching_green", trex_crouchinggreen);
+          }
+          trexIsCrouching = true;
+          
+          //trex.velocityX = 2;
+        }
+      }else{
+        if(keyWentDown("S") && trex.y >= 150 - newHeightAdded/2// && trexIsJumping == false
+        ||keyWentDown(DOWN_ARROW) && trex.y >= 150 - newHeightAdded/2){// && trexIsJumping == false){
+        //||mouseIsOver(crouchbutton) && trexIsJumping==false){
+          //crouch();
+          //trex.addAnimation("crouching", trex_crouching);
+          trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+          if(TrexColorido == true && dinosaurcolor == "Cinza"){
+            trex.changeAnimation("crouchingnb", trex_crouchingnb);
+          }
+          if(TrexColorido == false){
+            trex.changeAnimation("crouching", trex_crouching);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Marrom"){
+            trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Verde"){
+            trex.changeAnimation("crouching_green", trex_crouchinggreen);
+          }
+          trexIsCrouching = true;
+          
+          //trex.velocityX = 2;
+        }
+      }
+      if(keyWentDown("S") && trex.y >= 150// && trexIsJumping == false
+      ||keyWentDown(DOWN_ARROW) && trex.y >= 150){// && trexIsJumping == false){
       //||mouseIsOver(crouchbutton) && trexIsJumping==false){
         //crouch();
         //trex.addAnimation("crouching", trex_crouching);
