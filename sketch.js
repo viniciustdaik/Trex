@@ -478,10 +478,6 @@ function setup() {
   //trex.debug=true;
   
   getState();
-
-  gameover.visible=true;
-  restart.visible=true;
-
 }
 
 function draw() {
