@@ -30,7 +30,7 @@ var trexIsCrouching = false;
 var trexIsJumping = false;
 var highscoreS, highscoreimg;
 var Isnight = false, Isday = true;
-var dayMost = true, nightMost = false;
+var onlyDayOrNight = false;
 var trexIsInvencibleCactus = false;
 var trexIsInvencibleBirds = false;
 var crouchbutton, crouchbuttonclass = "crouchbutton", crouchbuttonOnPC = false, 
@@ -86,6 +86,8 @@ window.screen.height === 896;
 var browserName;
 
 var mostOfTheScreen;
+
+var AutoCrouchTime = 0750, MobileUnCrouchMode = "automatic", AutomaticCrouch = false;
 
 //var isTablet = /iPad/i.test(navigator.userAgent);
 
@@ -949,6 +951,7 @@ function draw() {
       BestHighscores3DeleteButton.position(width - width - width, -350);
       BestHighscores4DeleteButton.position(width - width - width, -350);
       BestHighscores5DeleteButton.position(width - width - width, -350);
+      AutomaticCrouch = false;
       BestHighscores.y = -350;
       background("white");
       gamestate = -1;
@@ -1272,14 +1275,14 @@ function draw() {
       if(TrexColorido == false){
         trex.visible = true;
       }
-      if(score%700==0){
+      /*if(score%700==0){
         if(Isnight == false&&dayMost == true){
           //turnnight();
         }
         if(Isday == false&&nightMost == true){
           //turnday();
         }
-      }
+      }*/
       if(score>0&&score%100==0){
         checkpointsound.play();
       }
@@ -1287,6 +1290,44 @@ function draw() {
       //Outra verificação igual essa após o pulo
       //console.log(trexIsJumping);
       if(initialHeight == height){
+        if(AutomaticCrouch == true && trex.y >= 150 && trexIsJumping == true){
+          AutomaticCrouch = false;
+          trexIsJumping = false;
+          
+          trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+          if(TrexColorido == true && dinosaurcolor == "Cinza"){
+            trex.changeAnimation("crouchingnb", trex_crouchingnb);
+          }
+          if(TrexColorido == false){
+            trex.changeAnimation("crouching", trex_crouching);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Marrom"){
+            trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Verde"){
+            trex.changeAnimation("crouching_green", trex_crouchinggreen);
+          }
+          trexIsCrouching = true;
+
+          console.log("automatic crouch done");
+
+          setTimeout(() => {
+            trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+            if(TrexColorido == true || dinosaurcolor == "Cinza"){
+              trex.changeAnimation("runningnb", trex_runningnb);
+            }
+            if(TrexColorido == false){
+              trex.changeAnimation("running", trex_running);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Marrom"){
+              trex.changeAnimation("running_brown", trex_runningbrown);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Verde"){
+              trex.changeAnimation("running_green", trex_runninggreen);
+            }
+            trexIsCrouching = false;
+          }, AutoCrouchTime);
+        }
         if(trex.y >= 150 ||trex.collide(invisibleground)){
           trexIsJumping = false;
         }
@@ -1294,6 +1335,44 @@ function draw() {
           trexIsJumping = true;
         }
       }else{
+        if(AutomaticCrouch == true && trex.y >= 150 - newHeightAdded/2 && trexIsJumping == true){
+          AutomaticCrouch = false;
+          trexIsJumping = false;
+          
+          trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+          if(TrexColorido == true && dinosaurcolor == "Cinza"){
+            trex.changeAnimation("crouchingnb", trex_crouchingnb);
+          }
+          if(TrexColorido == false){
+            trex.changeAnimation("crouching", trex_crouching);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Marrom"){
+            trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Verde"){
+            trex.changeAnimation("crouching_green", trex_crouchinggreen);
+          }
+          trexIsCrouching = true;
+
+          console.log("automatic crouch done");
+
+          setTimeout(() => {
+            trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+            if(TrexColorido == true || dinosaurcolor == "Cinza"){
+              trex.changeAnimation("runningnb", trex_runningnb);
+            }
+            if(TrexColorido == false){
+              trex.changeAnimation("running", trex_running);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Marrom"){
+              trex.changeAnimation("running_brown", trex_runningbrown);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Verde"){
+              trex.changeAnimation("running_green", trex_runninggreen);
+            }
+            trexIsCrouching = false;
+          }, AutoCrouchTime);
+        }
         if(trex.y >= 150 - newHeightAdded/2 ||trex.collide(invisibleground)){
           trexIsJumping = false;
         }
@@ -1345,14 +1424,90 @@ function draw() {
       //Outra verificação igual essa antes do pulo
       console.log(trexIsJumping);
       if(initialHeight == height){
-        if(trex.y >= 150 ||trex.collide(invisibleground)){
+        if(AutomaticCrouch == true && trex.y >= 150 && trexIsJumping == true){
+          AutomaticCrouch = false;
+          trexIsJumping = false;
+          
+          trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+          if(TrexColorido == true && dinosaurcolor == "Cinza"){
+            trex.changeAnimation("crouchingnb", trex_crouchingnb);
+          }
+          if(TrexColorido == false){
+            trex.changeAnimation("crouching", trex_crouching);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Marrom"){
+            trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Verde"){
+            trex.changeAnimation("crouching_green", trex_crouchinggreen);
+          }
+          trexIsCrouching = true;
+
+          console.log("automatic crouch done");
+
+          setTimeout(() => {
+            trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+            if(TrexColorido == true || dinosaurcolor == "Cinza"){
+              trex.changeAnimation("runningnb", trex_runningnb);
+            }
+            if(TrexColorido == false){
+              trex.changeAnimation("running", trex_running);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Marrom"){
+              trex.changeAnimation("running_brown", trex_runningbrown);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Verde"){
+              trex.changeAnimation("running_green", trex_runninggreen);
+            }
+            trexIsCrouching = false;
+          }, AutoCrouchTime);
+        }
+        if(trex.y >= 150 || trex.collide(invisibleground)){
           trexIsJumping = false;
         }
         if(trex.y < 150){
           trexIsJumping = true;
         }
       }else{
-        if(trex.y >= 150 - newHeightAdded/2 ||trex.collide(invisibleground)){
+        if(AutomaticCrouch == true && trex.y >= 150 - newHeightAdded/2 && trexIsJumping == true){
+          AutomaticCrouch = false;
+          trexIsJumping = false;
+          
+          trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+          if(TrexColorido == true && dinosaurcolor == "Cinza"){
+            trex.changeAnimation("crouchingnb", trex_crouchingnb);
+          }
+          if(TrexColorido == false){
+            trex.changeAnimation("crouching", trex_crouching);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Marrom"){
+            trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+          }
+          if(TrexColorido == true && dinosaurcolor == "Verde"){
+            trex.changeAnimation("crouching_green", trex_crouchinggreen);
+          }
+          trexIsCrouching = true;
+
+          console.log("automatic crouch done");
+
+          setTimeout(() => {
+            trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+            if(TrexColorido == true || dinosaurcolor == "Cinza"){
+              trex.changeAnimation("runningnb", trex_runningnb);
+            }
+            if(TrexColorido == false){
+              trex.changeAnimation("running", trex_running);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Marrom"){
+              trex.changeAnimation("running_brown", trex_runningbrown);
+            }
+            if(TrexColorido == true && dinosaurcolor == "Verde"){
+              trex.changeAnimation("running_green", trex_runninggreen);
+            }
+            trexIsCrouching = false;
+          }, AutoCrouchTime);
+        }
+        if(trex.y >= 150 - newHeightAdded/2 || trex.collide(invisibleground)){
           trexIsJumping = false;
         }
         if(trex.y < 150 - newHeightAdded/2){
@@ -1473,6 +1628,8 @@ function draw() {
       }
     }
     else if(gamestate == END){
+      AutomaticCrouch = false;
+
       crouchbutton.position(width / 2-35, -350);
       crouchbuttonbackgroundimage.position(width / 2-35, -350);
       trexIsCrouching = false;
@@ -2441,6 +2598,7 @@ function reset(){
     getState();
   //}
   bird.rotation = 0;
+  AutomaticCrouch = false;
   gamestate = PLAY;
   //setDinosaurColor();
   if(game == "Corrida Infinita"){
@@ -2525,8 +2683,19 @@ function turnnight(){
 }
 
 function turnday(){
-  Isnight = false;
-  Isday = true;
+  if(onlyDayOrNight !== false && Isday == false && Isnight == true){
+    Isnight = false;
+    Isday = true;
+  }
+}
+
+function inverseColor(r,g,b){
+  
+  r = 255 - r; //get the mathmatical inverse
+  g = 255 - g; //get the mathmatical inverse
+  b = 255 - b; //get the mathmatical inverse
+  
+  return color(r,g,b); //return a p5 color function containing our inverse color!
 }
 
 function setDinosaurColor(){
@@ -2615,6 +2784,9 @@ function setBirdColor(){
 
 function crouch(){
   touches = [];
+  if(MobileUnCrouchMode == "automatic" && trexIsJumping == true && trexIsCrouching == false){
+    AutomaticCrouch = true;
+  }
   if(trexIsCrouching == false && gamestate == PLAY && trexIsJumping == false){
     //trex.addAnimation("crouching", trex_crouching);
     trexIsCrouching = true;
