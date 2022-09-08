@@ -55,7 +55,7 @@ var game = "notselected";
 
 var windowResizeX = true, windowResizeY = false;
 
-var version = 1.22291, mostRecentVersion = null, reloadButton;//1.22291
+var version = 1.22292, mostRecentVersion = null, reloadButton;//1.22291
 
 var infiniteflightbutton, infiniteracebutton;
 
