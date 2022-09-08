@@ -1212,8 +1212,8 @@ function draw() {
           }
         }*/
       }
-      if(trexIsJumping == true && crouchbuttonOnPC == true && !isMobile
-      || isMobile && trexIsJumping == true){//crouchbutton.x !== width / 2-35 && trexIsJumping == true
+      if(trexIsJumping == true && crouchbuttonOnPC == true && !isMobile && MobileUnCrouchMode == "press"
+      || isMobile && trexIsJumping == true && MobileUnCrouchMode == "press"){//crouchbutton.x !== width / 2-35 && trexIsJumping == true
       //||crouchbutton.y !== -350 && trexIsJumping == true){
         crouchbutton.position(width / 2-35, -350);
         if(crouchbuttonbackgroundimage.y !== invisibleground.y + 50
@@ -1260,8 +1260,8 @@ function draw() {
         if(trexIsJumping == false){
           crouchbuttonbackgroundimage.position(width /2-35, -350);
         }
-      }else if(!isMobile && crouchbuttonOnPC == false && crouchbutton.x >= 0
-      ||!isMobile && crouchbuttonOnPC == false && crouchbutton.y >= 0){
+      }else if(!isMobile && crouchbuttonOnPC == false
+      ||!isMobile && crouchbuttonOnPC == false){
         crouchbutton.position(width / 2-35, -350);
         crouchbuttonbackgroundimage.position(width /2-35, -350);
       }
