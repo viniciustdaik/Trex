@@ -566,9 +566,9 @@ function draw() {
       playernum.addAnimation("birdimgright", birdimgright);
       playernum.addAnimation("greenbirdimgright", greenbirdimgright);
       playernum.addAnimation("brownbirdimgright", brownbirdimgright);*/
-  }else if(player2color === "Verde" && player !== undefined){
+  }else if(player2color === "Verde" && player !== undefined && TrexColorido === true){
     player2.changeAnimation("greenbirdright", greenbirdanmright);
-  }else if(player2color === "Marrom" && player !== undefined){
+  }else if(player2color === "Marrom" && player !== undefined && TrexColorido === true){
     player2.changeAnimation("brownbirdright", brownbirdanmright);
   }
 
