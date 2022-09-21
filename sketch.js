@@ -93,6 +93,15 @@ var AutoCrouchTime = 0750, MobileUnCrouchMode = "automatic", AutomaticCrouch = f
 
 var scoreText, highscoreText;
 
+var player, playerCount, database, MaxOfPlayers = 10, allPlayers;
+
+var player2, player3, player4, player5, player6, player7, player8, player9, player10, player2text, 
+player2color = "Cinza";
+
+var multiplayerToggle, multiplayerToggleValue = false;
+
+var allMultiplayerClientsReload = false;
+
 function preload() {
   soundFormats('mp3');
 
@@ -480,9 +489,190 @@ function setup() {
   //trex.debug=true;
   
   getState();
+
+  if(allMultiplayerClientsReload === true){
+    desactivateMultiplayerReload();
+  }
+
+  multiplayerToggle = createButton("");
+  multiplayerToggle.position(width - width - width - 1000, -500);
+  multiplayerToggle.class("multiplayerToggleFalse");
+
+  player2text = createElement("h2");
+  player2text.style("font-size", '15px');
+  player2text.style("color", 'gold');
+  player2text.position(-1000, -350);
 }
 
 function draw() {
+  if(allMultiplayerClientsReload === true && player !== undefined){
+    window.location.reload();
+  }
+
+  if(allMultiplayerClientsReload === true && player === undefined){
+    desactivateMultiplayerReload();
+  }
+
+  if(player !== undefined && game == "Voo Infinito"){
+    if(player.positionY !== bird.y){
+      player.positionY = bird.y;
+      player.update();
+    }
+    if(player.rotation !== bird.rotation){
+      player.rotation = bird.rotation;
+      player.update();
+    }
+    //if(player.color !== birdcolor){
+    //  player.color = birdcolor;
+    //  player.update();
+    //}
+  }
+  if(player !== undefined && game == "Voo Infinito"){
+    if(player.positionY !== trex.y){
+      player.positionY = trex.y;
+      player.update();
+    }
+    if(player.isCrouching !== trexIsCrouching){
+      player.isCrouching = trexIsCrouching;
+      player.update();
+    }
+    if(player.positionY !== bird.y){
+      player.positionY = bird.y;
+      player.update();
+    }
+    //Isso está na função setBirdColor
+    //if(player.color !== dinosaurcolor){
+    //  player.color = dinosaurcolor;
+    //  player.update();
+    //}
+  }
+  if(player !== undefined && game !== "notselected"){
+    if(player.score !== score){
+      player.score = score;
+      player.update();
+    }
+    if(player.highscore !== highscore){
+      player.highscore = highscore;
+      player.update();
+    }
+  }
+
+  if(player2color === "Cinza" && player !== undefined){
+    player2.changeAnimation("birdright", birdanmright);
+    //trex.changeAnimation("running", trex_running);
+    /*playernum.addAnimation("birdright", birdanmright);
+      playernum.addAnimation("greenbirdright", greenbirdanmright);
+      playernum.addAnimation("brownbirdright", brownbirdanmright);
+      playernum.addAnimation("birdimgright", birdimgright);
+      playernum.addAnimation("greenbirdimgright", greenbirdimgright);
+      playernum.addAnimation("brownbirdimgright", brownbirdimgright);*/
+  }else if(player2color === "Verde" && player !== undefined){
+    player2.changeAnimation("greenbirdright", greenbirdanmright);
+  }else if(player2color === "Marrom" && player !== undefined){
+    player2.changeAnimation("brownbirdright", brownbirdanmright);
+  }
+
+  if(playerCount === 1 && player2text.x !== -1000
+  ||playerCount === 1 && player2text.y !== -350){
+    player2text.position(-1000, -350);
+    player2.visible = false;
+    player2.y = 160;
+    player2.rotation = 0;
+    player2.changeAnimation("birdright", birdanmright);
+    console.log("Tchau Jogador.");
+  }else if(playerCount > 1 && playerCount === 2){
+    //for(var playeri = playerCount-playerCount+1; playeri <= playerCount; playeri = playeri+1){
+      //if(playeri !== player.index){
+        var otherPlayerIndex;
+        /*if(playeri === 1 && player.index === 1){
+          playeri = 2;
+        }else if(playeri === 2 && player.index === 2){
+          playeri = 1;
+        }*/
+        if(player.index === 1){
+          //otherPlayerIndex = 2;
+        }else if(player.index === 2){
+          //otherPlayerIndex = 1;
+        }
+
+        //otherPlayerIndex = 0;
+        
+        //var otherPlayerDataRef = database.ref("/Trex/player" + otherPlayerIndex);
+        //otherPlayerDataRef.on("value", data => {
+        //  otherPlayerData = data.val();
+        //  console.log(otherPlayerData);
+        //});
+        
+        //if(/*playeri === 1 || */playeri === 2){
+          //if(otherPlayerIndex !== undefined){
+            for (var plr in allPlayers) {
+              otherPlayerIndex = otherPlayerIndex + 1;
+              //var otherPlayer = "player"+otherPlayerIndex;//.toString();
+              //console.log("otherPlayer:"+otherPlayer, "otherPlayerIndex:"+otherPlayerIndex);
+              //console.log(allPlayers[otherPlayerIndex-1].positionY);
+
+              if(player.index === 2){
+                //console.log("plr:"+plr);
+                
+                plr = "player1";
+                console.log("plr:"+plr);
+                //console.log("plr = player1:"+plr);
+                var x = allPlayers[plr].positionX;
+                var y = allPlayers[plr].positionY;
+
+                var color = allPlayers[plr].color;
+                
+                player2.y = y;
+                player2.x = x;
+                player2.rotation = allPlayers[plr].rotation;
+                console.log("player2.y:"+player2.y, ", player2.rotation:"+player2.rotation);
+                
+                if(gamestate === PLAY){
+                  player2.visible = true;
+                  player2text.position(x - 25, y - 25);
+                  player2text.html(allPlayers[plr].score+"<br>HI "+allPlayers[plr].highscore);
+                }
+                if(color !== player2color){
+                  player2color = color;
+                }
+              }else if(player.index === 1){
+                var x = allPlayers[plr].positionX;
+                var y = allPlayers[plr].positionY;
+
+                var color = allPlayers[plr].color;
+                
+                //if(otherPlayerIndex === 2){
+                  //player2.y = height - allPlayers[plr].positionY;
+                  player2.y = y;
+                  player2.x = x;
+                  player2.rotation = allPlayers[plr].rotation;
+                  console.log("player2.y:"+player2.y, ", player2.rotation:"+player.rotation);
+                //}else if(otherPlayerIndex === 1){
+                  //player2.y = allPlayers[plr].positionY;
+                  //player2.rotation = allPlayers[plr].rotation;
+                  //console.log("player2.y:"+player2.y);
+                //}
+                
+                if(gamestate === PLAY){
+                  player2.visible = true;
+                  player2text.position(x - 25, y - 25);
+                  player2text.html(allPlayers[plr].score+"<br>HI "+allPlayers[plr].highscore);
+                }
+                if(color !== player2color){
+                  player2color = color;
+                }
+              }
+              
+            }
+          //}else{
+          //  console.log("Não Deu", "otherPlayerIndex:"+otherPlayerIndex);
+          //}
+          
+        //}
+      //}
+    //}
+  }
+  
   //console.log("x:"+crouchbuttonHitbox.x+" y:"+crouchbuttonHitbox.y);
   if(birdG.isTouching(cactuG) || birdG.isTouching(cactuhitboxG)){
     birdG.destroyEach();
@@ -993,6 +1183,9 @@ function draw() {
         //infiniteflightbutton.size(100, 100);
         infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
         infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
+      }
+      if(player !== undefined){
+        player.removeThisPlayer(false);
       }
       
     }
@@ -2780,6 +2973,13 @@ function setBirdColor(){
     //trex.scale = 0.5;
     bird.visible = true;
   }
+
+  if(player !== undefined){
+    if(player.color !== birdcolor){
+      player.color = birdcolor;
+      player.update();
+    }
+  }
 }
 
 function crouch(){
@@ -3081,6 +3281,13 @@ function getState(){
       mostRecentVersionRef.on("value", function (data) {
         mostRecentVersion = data.val();
       });
+      //if(allMultiplayerClientsReload === true && player === undefined||allMultiplayerClientsReload === false){
+        var allMultiplayerClientsReloadRef = database.ref("/Trex/allMultiplayerClientsReload/");
+        allMultiplayerClientsReloadRef.on("value", function (data) {
+          allMultiplayerClientsReload = data.val();
+        });
+      //}
+      
     }
   }
   
@@ -3228,6 +3435,69 @@ function windowResized() {
 }
 
 function reload(){
+  if(player !== undefined){
+    player.removeThisPlayer(true);
+  }
   location.reload();
 }
 
+function Multiplayer(){
+  player = new Player();
+
+  player2 = createSprite(50, 160, 20, 50);
+  player3 = createSprite(50, 160, 20, 50);
+  player4 = createSprite(50, 160, 20, 50);
+  player5 = createSprite(50, 160, 20, 50);
+  player6 = createSprite(50, 160, 20, 50);
+  player7 = createSprite(50, 160, 20, 50);
+  player8 = createSprite(50, 160, 20, 50);
+  player9 = createSprite(50, 160, 20, 50);
+  player10 = createSprite(50, 160, 20, 50);
+
+  for(p = 2; p <= 10; p = p+1){
+    var playernum;
+    if(p == 2){
+      playernum = player2;
+    }else if(p == 3){
+      playernum = player3;
+    }else if(p == 4){
+      playernum = player4;
+    }else if(p == 5){
+      playernum = player5;
+    }else if(p == 6){
+      playernum = player6;
+    }else if(p == 7){
+      playernum = player7;
+    }else if(p == 8){
+      playernum = player8;
+    }else if(p == 9){
+      playernum = player9;
+    }else if(p == 10){
+      playernum = player10;
+    }
+    if(playernum !== undefined){
+      //playernum = createSprite(50, 160, 20, 50);
+      playernum.addAnimation("birdright", birdanmright);
+      playernum.addAnimation("greenbirdright", greenbirdanmright);
+      playernum.addAnimation("brownbirdright", brownbirdanmright);
+      playernum.addAnimation("birdimgright", birdimgright);
+      playernum.addAnimation("greenbirdimgright", greenbirdimgright);
+      playernum.addAnimation("brownbirdimgright", brownbirdimgright);
+      playernum.setCollider("rectangle", 0, 0, 50, 50);
+      playernum.scale = 0.51 / 2 / 2 + 0.8;
+      playernum.visible = false;
+
+      console.log("player"+p+" Created!");
+    }
+    
+  }
+
+  Player.getPlayersInfo();
+  
+}
+
+function desactivateMultiplayerReload(){
+  database.ref("/Trex/").update({
+    allMultiplayerClientsReload: false
+  });
+}
