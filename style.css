@@ -14,7 +14,7 @@ canvas {
 }
 
 .crouchbutton{
-  width:70px;
+  width: 70px;
   height: 70px;
   border-radius: 35px;
   background-image: url('./trex/crouchimgbutton.png');
@@ -166,7 +166,7 @@ canvas {
   cursor: auto;
   -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
   transition-duration: 0.0s;/*0.4s*/
-  outline: auto;
+  outline: none;
   border-color: #000000;
   outline-color: #000000;
 }
@@ -202,5 +202,43 @@ canvas {
   cursor: pointer;
   -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
   transition-duration: 0.0s;/*0.4s*/
+  outline: none;
+}
+
+.multiplayerToggleFalse{
+  width: 360px;
+  height: 70px;
+  border-radius: 35px;
+  border-width: 1.5px;
+  border-color: #000000;
+  background-image: url('');/*./multiplayerImgFalse Ideia Da Imagem: Multi -Cinza player -Colorido, 2 Birds, 2 Trex*/ 
+  background-color: 'red';
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.multiplayerToggleTrue{
+  width: 360px;
+  height: 70px;
+  border-radius: 35px;
+  border-width: 1.5px;
+  border-color: #000000;
+  background-image: url('');/*./multiplayerImgTrue Ideia Da Imagem: Multi -Cinza player -Colorido, 2 Birds, 2 Trex*/
+  background-color: 'blue';
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
   outline: none;
 }
