@@ -93,10 +93,14 @@ var AutoCrouchTime = 0750, MobileUnCrouchMode = "automatic", AutomaticCrouch = f
 
 var scoreText, highscoreText;
 
-var player, playerCount, database, MaxOfPlayers = 10, allPlayers;
+var player, playerCount, database, MaxOfPlayers = 2, allPlayers;
 
-var player2, player3, player4, player5, player6, player7, player8, player9, player10, player2text, 
-player2color = "Cinza";
+var player2, player3, player4, player5, player6, player7, player8, player9, player10, 
+player2text, 
+player2color = "Cinza", 
+player2isCrouching = false, 
+player2isGameover = false, 
+player2gamePlaying;
 
 var multiplayerToggle, multiplayerToggleValue = false;
 
@@ -505,12 +509,36 @@ function setup() {
 }
 
 function draw() {
+  if(playerCount > MaxOfPlayers && player !== undefined
+  || player !== undefined && player.changedPlayerCountVerified !== playerCount
+  && player.changedPlayerCountVerified !== null){
+    /*console.log("Checking Players...");
+    for(var playeri = 1; playeri <= playerCount; playeri = playeri+1){
+      if(playeri > MaxOfPlayers && allPlayers["player"+playeri] !== undefined){
+          database.ref("/Trex/players/player"+playeri).remove();
+          console.log("Found Extra Player 'player"+playeri+"', Removed!");
+        }
+    }
+    if(allPlayers["playernull"] !== undefined){
+      database.ref("/Trex/players/playernull").remove();
+      console.log("Found playernull, Removed!");
+    }
+    if(playerCount > MaxOfPlayers){
+      playerCount = MaxOfPlayers;
+      player.updateCount(playerCount);
+    }*/
+    Player.checkAllPlayersAndPlayerCount();
+  }
   if(allMultiplayerClientsReload === true && player !== undefined){
     window.location.reload();
   }
 
   if(allMultiplayerClientsReload === true && player === undefined){
     desactivateMultiplayerReload();
+  }
+  
+  if(playerCount === undefined && player !== undefined){
+    player.getCount();
   }
 
   if(player !== undefined && game == "Voo Infinito"){
@@ -522,12 +550,42 @@ function draw() {
       player.rotation = bird.rotation;
       player.update();
     }
+    if(player2.scale !== 0.51 / 2 / 2 + 0.8){
+      player2.scale = 0.51 / 2 / 2 + 0.8;
+    }
+    if(player2color === "Cinza" && player !== undefined){
+      if(player2isGameover === false){
+        player2.changeAnimation("birdright", birdanmright);
+        //trex.changeAnimation("running", trex_running);
+        /*playernum.addAnimation("birdright", birdanmright);
+          playernum.addAnimation("greenbirdright", greenbirdanmright);
+          playernum.addAnimation("brownbirdright", brownbirdanmright);
+          playernum.addAnimation("birdimgright", birdimgright);
+          playernum.addAnimation("greenbirdimgright", greenbirdimgright);
+          playernum.addAnimation("brownbirdimgright", brownbirdimgright);*/
+      }else{
+        player2.changeAnimation("birdimgright", birdimgright);
+      }
+    }else if(player2color === "Verde" && player !== undefined && TrexColorido === true){
+      if(player2isGameover === false){
+        player2.changeAnimation("greenbirdright", greenbirdanmright);
+      }else{
+        player2.changeAnimation("greenbirdimgright", greenbirdimgright);
+      }
+    }else if(player2color === "Marrom" && player !== undefined && TrexColorido === true){
+      if(player2isGameover === false){
+        player2.changeAnimation("brownbirdright", brownbirdanmright);
+      }else{
+        player2.changeAnimation("brownbirdimgright", brownbirdimgright);
+      }
+    }
+    //Isso está na função setBirdColor
     //if(player.color !== birdcolor){
     //  player.color = birdcolor;
     //  player.update();
     //}
   }
-  if(player !== undefined && game == "Voo Infinito"){
+  if(player !== undefined && game == "Corrida Infinita"){
     if(player.positionY !== trex.y){
       player.positionY = trex.y;
       player.update();
@@ -536,9 +594,73 @@ function draw() {
       player.isCrouching = trexIsCrouching;
       player.update();
     }
-    if(player.positionY !== bird.y){
-      player.positionY = bird.y;
+    if(player.index === 1){
+      trex.x = 75;
+      player.positionX = trex.x;
       player.update();
+    }else if(player.index === 2){
+      trex.x = 30;
+      player.positionX = trex.x;
+      player.update();
+    }
+    if(player2.scale !== 0.5){
+      player2.scale = 0.5;
+    }
+    if(player2color === "Cinza" && player !== undefined){
+      if(TrexColorido === false){
+        if(player2isGameover === false){
+          if(player2isCrouching === false){
+            player2.changeAnimation("running", trex_running);
+          }else{
+            player2.changeAnimation("crouching", trex_crouching);
+          }
+        }else{
+          player2.changeAnimation("collided", trex_collided);
+        }
+      }else{
+        if(player2isGameover === false){
+          if(player2isCrouching === false){
+            player2.changeAnimation("runningnb", trex_runningnb);
+          }else{
+            player2.changeAnimation("crouchingnb", trex_crouchingnb);
+          }
+        }else{
+          player2.changeAnimation("collidednb", trex_collidednb);
+        }
+      }
+      //trex.changeAnimation("running", trex_running);
+      /*trex.addAnimation("running", trex_running);
+        trex.addAnimation("runningnb", trex_runningnb);
+        trex.addAnimation("collidednb", trex_collidednb);
+        trex.addAnimation("collided", trex_collided);
+        trex.addAnimation("crouching", trex_crouching);
+        trex.addAnimation("crouchingnb", trex_crouchingnb);
+        trex.addAnimation("running_green", trex_runninggreen);
+        trex.addAnimation("collided_green", trex_collidedgreen);
+        trex.addAnimation("crouching_green", trex_crouchinggreen);
+        trex.addAnimation("running_brown", trex_runningbrown);
+        trex.addAnimation("collided_brown", trex_collidedbrown);
+        trex.addAnimation("crouching_brown", trex_crouchingbrown);*/
+    }else if(player2color === "Verde" && player !== undefined && TrexColorido === true){
+      if(player2isGameover === false){
+        if(player2isCrouching === false){
+          player2.changeAnimation("running_green", trex_runninggreen);
+        }else{
+          player2.changeAnimation("crouching_green", trex_crouchinggreen);
+        }
+      }else{
+        player2.changeAnimation("collided_green", trex_collidedgreen);
+      }
+    }else if(player2color === "Marrom" && player !== undefined && TrexColorido === true){
+      if(player2isGameover === false){
+        if(player2isCrouching === false){
+          player2.changeAnimation("running_brown", trex_runningbrown);
+        }else{
+          player2.changeAnimation("crouching_brown", trex_crouchingbrown);
+        }
+      }else{
+        player2.changeAnimation("collided_brown", trex_collidedbrown);
+      }
     }
     //Isso está na função setBirdColor
     //if(player.color !== dinosaurcolor){
@@ -555,21 +677,18 @@ function draw() {
       player.highscore = highscore;
       player.update();
     }
+    if(gamestate === END && player.isGameover !== true){
+      player.isGameover = true;
+      player.update();
+    }else if(gamestate === PLAY && player.isGameover !== false){
+      player.isGameover = false;
+      player.update();
+    }
   }
 
-  if(player2color === "Cinza" && player !== undefined){
-    player2.changeAnimation("birdright", birdanmright);
-    //trex.changeAnimation("running", trex_running);
-    /*playernum.addAnimation("birdright", birdanmright);
-      playernum.addAnimation("greenbirdright", greenbirdanmright);
-      playernum.addAnimation("brownbirdright", brownbirdanmright);
-      playernum.addAnimation("birdimgright", birdimgright);
-      playernum.addAnimation("greenbirdimgright", greenbirdimgright);
-      playernum.addAnimation("brownbirdimgright", brownbirdimgright);*/
-  }else if(player2color === "Verde" && player !== undefined && TrexColorido === true){
-    player2.changeAnimation("greenbirdright", greenbirdanmright);
-  }else if(player2color === "Marrom" && player !== undefined && TrexColorido === true){
-    player2.changeAnimation("brownbirdright", brownbirdanmright);
+  if(player !== undefined && player.gamePlaying !== game){
+    player.gamePlaying = game;
+    player.update();
   }
 
   if(playerCount === 1 && player2text.x !== -1000
@@ -580,7 +699,7 @@ function draw() {
     player2.rotation = 0;
     player2.changeAnimation("birdright", birdanmright);
     console.log("Tchau Jogador.");
-  }else if(playerCount > 1 && playerCount === 2){
+  }else if(playerCount > 1 && playerCount === 2 && player !== undefined){
     //for(var playeri = playerCount-playerCount+1; playeri <= playerCount; playeri = playeri+1){
       //if(playeri !== player.index){
         var otherPlayerIndex;
@@ -612,57 +731,35 @@ function draw() {
               //console.log(allPlayers[otherPlayerIndex-1].positionY);
 
               if(player.index === 2){
-                //console.log("plr:"+plr);
-                
                 plr = "player1";
-                console.log("plr:"+plr);
-                //console.log("plr = player1:"+plr);
-                var x = allPlayers[plr].positionX;
-                var y = allPlayers[plr].positionY;
-
-                var color = allPlayers[plr].color;
-                
-                player2.y = y;
-                player2.x = x;
-                player2.rotation = allPlayers[plr].rotation;
-                console.log("player2.y:"+player2.y, ", player2.rotation:"+player2.rotation);
-                
-                if(gamestate === PLAY){
-                  player2.visible = true;
-                  player2text.position(x - 25, y - 25);
-                  player2text.html(allPlayers[plr].score+"<br>HI "+allPlayers[plr].highscore);
-                }
-                if(color !== player2color){
-                  player2color = color;
-                }
               }else if(player.index === 1){
-                var x = allPlayers[plr].positionX;
-                var y = allPlayers[plr].positionY;
-
-                var color = allPlayers[plr].color;
-                
-                //if(otherPlayerIndex === 2){
-                  //player2.y = height - allPlayers[plr].positionY;
-                  player2.y = y;
-                  player2.x = x;
-                  player2.rotation = allPlayers[plr].rotation;
-                  console.log("player2.y:"+player2.y, ", player2.rotation:"+player.rotation);
-                //}else if(otherPlayerIndex === 1){
-                  //player2.y = allPlayers[plr].positionY;
-                  //player2.rotation = allPlayers[plr].rotation;
-                  //console.log("player2.y:"+player2.y);
-                //}
-                
-                if(gamestate === PLAY){
-                  player2.visible = true;
-                  player2text.position(x - 25, y - 25);
-                  player2text.html(allPlayers[plr].score+"<br>HI "+allPlayers[plr].highscore);
-                }
-                if(color !== player2color){
-                  player2color = color;
-                }
+                plr = "player2";
               }
+              //console.log("plr:"+plr);
               
+              console.log("plr:"+plr);
+              //console.log("plr = player1:"+plr);
+              var x = allPlayers[plr].positionX;
+              var y = allPlayers[plr].positionY;
+
+              player2isCrouching = allPlayers[plr].isCrouching;
+              player2isGameover = allPlayers[plr].isGameover;
+              player2color = allPlayers[plr].color;
+              player2gamePlaying = allPlayers[plr].gamePlaying;
+              
+              player2.y = y;
+              if(initialWidth == width){
+                player2.x = x;
+              }else{
+                player2.x = x - newWidthAdded/2;
+              }
+              player2.rotation = allPlayers[plr].rotation;
+              console.log("player2.y:"+player2.y, ", player2.rotation:"+player2.rotation);
+              if(gamestate !== SELECT && player2gamePlaying === game){
+                player2.visible = true;
+                player2text.position(x - 25, y - 25);
+                player2text.html(allPlayers[plr].score+"<br>HI "+allPlayers[plr].highscore);
+              }
             }
           //}else{
           //  console.log("Não Deu", "otherPlayerIndex:"+otherPlayerIndex);
@@ -1209,7 +1306,16 @@ function draw() {
     
     if(initialWidth !== width){
       highscoreS.x = 100 - newWidthAdded/2;
-      trex.x = 50 - newWidthAdded/2;
+      if(player === undefined){
+        trex.x = 50 - newWidthAdded/2;
+      }else{
+        if(player.index === 1){
+          trex.x = 75 - newWidthAdded/2;
+        }else if(player.index === 2){
+          trex.x = 30 - newWidthAdded/2;
+        }
+      }
+      
     }
     if(initialHeight == height){
       highscoreS.y = 33;
@@ -2108,6 +2214,12 @@ function createclouds(){
     }
     cloud.depth = trex.depth;
     bird.depth = trex.depth;
+    if(player2 !== undefined && player !== undefined){
+      player2.depth = trex.depth;
+    }
+    if(player2 !== undefined && player !== undefined){
+      player2.depth = player2.depth+1;
+    }
     restart.depth = trex.depth;
     trex.depth = trex.depth+1;
     bird.depth = bird.depth+1;
@@ -2934,6 +3046,13 @@ function setDinosaurColor(){
     //trex.scale = 0.5;
     trex.visible = true;
   }
+
+  if(player !== undefined){
+    if(player.color !== dinosaurcolor){
+      player.color = dinosaurcolor;
+      player.update();
+    }
+  }
 }
 
 function setBirdColor(){
@@ -3403,6 +3522,17 @@ function windowResized() {
         if(initialWidth !== width){
           newWidthAdded = width - initialWidth;
           invisibleground.x = 200 - newWidthAdded/2;
+          if(game == "Voo Infinito"){
+            bird.x = 50 - newWidthAdded/2;
+            if(player !== undefined && playerCount === 2){
+              if(game === "Voo Infinito"){
+                player2.x = 50 - newWidthAdded/2;
+              }else if(game === "Corrida Infinita"){
+                
+              }
+              
+            }
+          }
         }
       }
     }else if(!isMobile && windowHeight > height
@@ -3483,8 +3613,25 @@ function Multiplayer(){
       playernum.addAnimation("birdimgright", birdimgright);
       playernum.addAnimation("greenbirdimgright", greenbirdimgright);
       playernum.addAnimation("brownbirdimgright", brownbirdimgright);
+      playernum.addAnimation("running", trex_running);
+      playernum.addAnimation("runningnb", trex_runningnb);
+      playernum.addAnimation("collidednb", trex_collidednb);
+      playernum.addAnimation("collided", trex_collided);
+      playernum.addAnimation("crouching", trex_crouching);
+      playernum.addAnimation("crouchingnb", trex_crouchingnb);
+      playernum.addAnimation("running_green", trex_runninggreen);
+      playernum.addAnimation("collided_green", trex_collidedgreen);
+      playernum.addAnimation("crouching_green", trex_crouchinggreen);
+      playernum.addAnimation("running_brown", trex_runningbrown);
+      playernum.addAnimation("collided_brown", trex_collidedbrown);
+      playernum.addAnimation("crouching_brown", trex_crouchingbrown);
       playernum.setCollider("rectangle", 0, 0, 50, 50);
-      playernum.scale = 0.51 / 2 / 2 + 0.8;
+      if(game === "Voo Infinito"){
+        playernum.scale = 0.51 / 2 / 2 + 0.8;
+      }else if(game === "Corrida Infinita"){
+        playernum.scale = 0.5;
+      }
+      
       playernum.visible = false;
 
       console.log("player"+p+" Created!");
