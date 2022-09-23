@@ -152,7 +152,7 @@ class Player {
     playerInfoRef.on("value", data => {
       allPlayers = data.val();
     });
-    Player.checkAllPlayersAndPlayerCount();
+    //Player.checkAllPlayersAndPlayerCount();
   }
 
   //getCarsAtEnd() {
