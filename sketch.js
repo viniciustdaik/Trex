@@ -3572,7 +3572,7 @@ function reload(){
 }
 
 function Multiplayer(){
-  if(player !== undefined){
+  if(player === undefined){
     player = new Player();
 
     player2 = createSprite(50, 160, 20, 50);
