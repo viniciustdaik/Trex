@@ -500,7 +500,9 @@ function setup() {
 
   multiplayerToggle = createButton("");
   multiplayerToggle.position(width - width - width - 1000, -500);
-  multiplayerToggle.class("multiplayerToggleFalse");
+  multiplayerToggle.class("multiplayerToggle");//multiplayerToggleFalse
+  multiplayerToggle.style("background-color", "darkred");
+  multiplayerToggle.mousePressed(handleMultiplayerToggle);
 
   player2text = createElement("h2");
   player2text.style("font-size", '15px');
@@ -2162,6 +2164,45 @@ function draw() {
 
   drawSprites();
 
+  //referencia para MULTI PLAYER
+  /*text("C", coloridobutton.x-115, coloridobutton.y+25);
+    fill('red');
+    text("O", coloridobutton.x-70, coloridobutton.y+25);
+    fill('orange');
+    text("L", coloridobutton.x-25, coloridobutton.y+25);
+    fill('lightgreen');
+    text("O", coloridobutton.x+20, coloridobutton.y+25);
+    fill('lightpink');
+    text("R", coloridobutton.x+65, coloridobutton.y+25);
+    fill('purple');
+    text("I", coloridobutton.x+105, coloridobutton.y+25);
+    fill('yellow');
+    text("D", coloridobutton.x+153, coloridobutton.y+25);
+    fill('lime');
+    text("O", coloridobutton.x+200, coloridobutton.y+25);
+    fill('gray');
+    text("N O R M A L", normalbutton.x+55, normalbutton.y+25);*/
+  stroke('white');
+  textSize(45);
+  //textAlign("center");
+  //text("N O R M A L")
+  /*var plusnum = 100;
+  textFont(trexfont);
+  fill("gray");
+  text("MULTI", 200, 125);
+  fill("red");
+  text("P", 260+plusnum, 125);
+  fill("orange");
+  text("L", 275+plusnum+22, 125);
+  fill("yellow");
+  text("A", 292+plusnum+48, 125);
+  fill("lime");
+  text("Y", 307+plusnum+72, 125);
+  fill("lightblue");  
+  text("E", 323+plusnum+100, 125);
+  fill("purple");
+  text("R", 339+plusnum+128, 125);*/
+
   if(mostRecentVersion !== null && mostRecentVersion > version){
     push();
     var mostRecentVersionTextX;
@@ -3171,6 +3212,11 @@ function turnColored(){
   }
   coloridobutton.position(-1250, coloridobutton.y);
   normalbutton.position(-1250, normalbutton.y);
+
+  multiplayerToggle.position(-1250, multiplayerToggle.y);
+  if(player === undefined && multiplayerToggleValue === true){
+    Multiplayer();
+  }
 }
 
 function turnNormal(){
@@ -3196,6 +3242,11 @@ function turnNormal(){
   }
   coloridobutton.position(-1250, coloridobutton.y);
   normalbutton.position(-1250, normalbutton.y);
+  
+  multiplayerToggle.position(-1250, multiplayerToggle.y);
+  if(player === undefined && multiplayerToggleValue === true){
+    Multiplayer();
+  }
 }
 
 function turnCorridaInfinita(){
@@ -3646,6 +3697,19 @@ function Multiplayer(){
     console.log("Você Já está no Multiplayer.");
   }
   
+}
+
+function handleMultiplayerToggle(){
+  if(multiplayerToggleValue === false){
+    //changedValue = true;
+    multiplayerToggleValue = true;
+    multiplayerToggle.style("background-color", "blue");
+  }else if(multiplayerToggleValue === true){
+    //changedValue = true;
+    multiplayerToggleValue = false;
+    multiplayerToggle.style("background-color", "darkred");
+  }
+  console.log("MultiplayerToggleValue: "+multiplayerToggleValue);
 }
 
 function desactivateMultiplayerReload(){
