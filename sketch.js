@@ -3567,8 +3567,9 @@ function windowResized() {
 function reload(){
   if(player !== undefined){
     player.removeThisPlayer(true);
+  }else if(player === undefined){
+    location.reload();
   }
-  location.reload();
 }
 
 function Multiplayer(){
@@ -3641,6 +3642,8 @@ function Multiplayer(){
     }
 
     Player.getPlayersInfo();
+  }else{
+    console.log("Já está no Multiplayer.");
   }
   
 }
