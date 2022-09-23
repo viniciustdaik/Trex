@@ -3572,74 +3572,76 @@ function reload(){
 }
 
 function Multiplayer(){
-  player = new Player();
+  if(player !== undefined){
+    player = new Player();
 
-  player2 = createSprite(50, 160, 20, 50);
-  player3 = createSprite(50, 160, 20, 50);
-  player4 = createSprite(50, 160, 20, 50);
-  player5 = createSprite(50, 160, 20, 50);
-  player6 = createSprite(50, 160, 20, 50);
-  player7 = createSprite(50, 160, 20, 50);
-  player8 = createSprite(50, 160, 20, 50);
-  player9 = createSprite(50, 160, 20, 50);
-  player10 = createSprite(50, 160, 20, 50);
+    player2 = createSprite(50, 160, 20, 50);
+    player3 = createSprite(50, 160, 20, 50);
+    player4 = createSprite(50, 160, 20, 50);
+    player5 = createSprite(50, 160, 20, 50);
+    player6 = createSprite(50, 160, 20, 50);
+    player7 = createSprite(50, 160, 20, 50);
+    player8 = createSprite(50, 160, 20, 50);
+    player9 = createSprite(50, 160, 20, 50);
+    player10 = createSprite(50, 160, 20, 50);
 
-  for(p = 2; p <= 10; p = p+1){
-    var playernum;
-    if(p == 2){
-      playernum = player2;
-    }else if(p == 3){
-      playernum = player3;
-    }else if(p == 4){
-      playernum = player4;
-    }else if(p == 5){
-      playernum = player5;
-    }else if(p == 6){
-      playernum = player6;
-    }else if(p == 7){
-      playernum = player7;
-    }else if(p == 8){
-      playernum = player8;
-    }else if(p == 9){
-      playernum = player9;
-    }else if(p == 10){
-      playernum = player10;
-    }
-    if(playernum !== undefined){
-      //playernum = createSprite(50, 160, 20, 50);
-      playernum.addAnimation("birdright", birdanmright);
-      playernum.addAnimation("greenbirdright", greenbirdanmright);
-      playernum.addAnimation("brownbirdright", brownbirdanmright);
-      playernum.addAnimation("birdimgright", birdimgright);
-      playernum.addAnimation("greenbirdimgright", greenbirdimgright);
-      playernum.addAnimation("brownbirdimgright", brownbirdimgright);
-      playernum.addAnimation("running", trex_running);
-      playernum.addAnimation("runningnb", trex_runningnb);
-      playernum.addAnimation("collidednb", trex_collidednb);
-      playernum.addAnimation("collided", trex_collided);
-      playernum.addAnimation("crouching", trex_crouching);
-      playernum.addAnimation("crouchingnb", trex_crouchingnb);
-      playernum.addAnimation("running_green", trex_runninggreen);
-      playernum.addAnimation("collided_green", trex_collidedgreen);
-      playernum.addAnimation("crouching_green", trex_crouchinggreen);
-      playernum.addAnimation("running_brown", trex_runningbrown);
-      playernum.addAnimation("collided_brown", trex_collidedbrown);
-      playernum.addAnimation("crouching_brown", trex_crouchingbrown);
-      playernum.setCollider("rectangle", 0, 0, 50, 50);
-      if(game === "Voo Infinito"){
-        playernum.scale = 0.51 / 2 / 2 + 0.8;
-      }else if(game === "Corrida Infinita"){
-        playernum.scale = 0.5;
+    for(p = 2; p <= 10; p = p+1){
+      var playernum;
+      if(p == 2){
+        playernum = player2;
+      }else if(p == 3){
+        playernum = player3;
+      }else if(p == 4){
+        playernum = player4;
+      }else if(p == 5){
+        playernum = player5;
+      }else if(p == 6){
+        playernum = player6;
+      }else if(p == 7){
+        playernum = player7;
+      }else if(p == 8){
+        playernum = player8;
+      }else if(p == 9){
+        playernum = player9;
+      }else if(p == 10){
+        playernum = player10;
+      }
+      if(playernum !== undefined){
+        //playernum = createSprite(50, 160, 20, 50);
+        playernum.addAnimation("birdright", birdanmright);
+        playernum.addAnimation("greenbirdright", greenbirdanmright);
+        playernum.addAnimation("brownbirdright", brownbirdanmright);
+        playernum.addAnimation("birdimgright", birdimgright);
+        playernum.addAnimation("greenbirdimgright", greenbirdimgright);
+        playernum.addAnimation("brownbirdimgright", brownbirdimgright);
+        playernum.addAnimation("running", trex_running);
+        playernum.addAnimation("runningnb", trex_runningnb);
+        playernum.addAnimation("collidednb", trex_collidednb);
+        playernum.addAnimation("collided", trex_collided);
+        playernum.addAnimation("crouching", trex_crouching);
+        playernum.addAnimation("crouchingnb", trex_crouchingnb);
+        playernum.addAnimation("running_green", trex_runninggreen);
+        playernum.addAnimation("collided_green", trex_collidedgreen);
+        playernum.addAnimation("crouching_green", trex_crouchinggreen);
+        playernum.addAnimation("running_brown", trex_runningbrown);
+        playernum.addAnimation("collided_brown", trex_collidedbrown);
+        playernum.addAnimation("crouching_brown", trex_crouchingbrown);
+        playernum.setCollider("rectangle", 0, 0, 50, 50);
+        if(game === "Voo Infinito"){
+          playernum.scale = 0.51 / 2 / 2 + 0.8;
+        }else if(game === "Corrida Infinita"){
+          playernum.scale = 0.5;
+        }
+        
+        playernum.visible = false;
+
+        console.log("player"+p+" Created!");
       }
       
-      playernum.visible = false;
-
-      console.log("player"+p+" Created!");
     }
-    
-  }
 
-  Player.getPlayersInfo();
+    Player.getPlayersInfo();
+  }
   
 }
 
