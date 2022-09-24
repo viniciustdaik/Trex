@@ -882,8 +882,8 @@ function draw() {
     }else if(mostOfTheScreen == "width" && isMobile == true){
       infiniteracebuttonX = width/2-415+55+125;
       infiniteflightbuttonX = width / 2 + 255-65-85;
-      infiniteracebuttonY = infiniteracebutton.y;
-      infiniteflightbuttonY = infiniteflightbutton.y;
+      infiniteracebuttonY = height / 2 - 70;
+      infiniteflightbuttonY = height / 2 - 70;
     }
 
     /*if(isMobile == false){
