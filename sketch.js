@@ -1955,6 +1955,16 @@ function draw() {
       }
     }
     else if(gamestate == END){
+      cactuhitboxG.setVelocityXEach(0);
+      cactuG.setLifetimeEach(-1);
+      birdG.setLifetimeEach(-1);
+      cloudG.setLifetimeEach(-1);
+      cactuG.setVelocityXEach(0);
+      cloudG.setVelocityXEach(0);
+      birdG.setVelocityXEach(0);
+      //birdG.addAnimation("bird", birdimg);
+      //birdG.changeAnimation("bird", birdimg);
+
       crouchAfterJumping = false;
 
       crouchbutton.position(width / 2-35, -350);
@@ -1979,14 +1989,7 @@ function draw() {
       }
       trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
       trex.velocityY = 0;
-      cactuG.setLifetimeEach(-1);
-      birdG.setLifetimeEach(-1);
-      cloudG.setLifetimeEach(-1);
-      cactuG.setVelocityXEach(0);
-      cloudG.setVelocityXEach(0);
-      birdG.setVelocityXEach(0);
-      //birdG.addAnimation("bird", birdimg);
-      //birdG.changeAnimation("bird", birdimg);
+      
       restart.visible = true;
       gameover.visible = true;
       if(mousePressedOver(restart)
