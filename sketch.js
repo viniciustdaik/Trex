@@ -2955,14 +2955,10 @@ function resetBestHighscoreFive(){
 }
 
 function handleBestHighscores(){
-  var changed = false;
-  if(ShowBestHighscoreActive == false && changed == false){
+  if(ShowBestHighscoreActive == false){
     ShowBestHighscoreActive = true;
-    changed = true;
-  }
-  if(ShowBestHighscoreActive == true && changed == false){
+  }else if(ShowBestHighscoreActive == true){
     ShowBestHighscoreActive = false;
-    changed = true;
   }
   touches = [];
 }
