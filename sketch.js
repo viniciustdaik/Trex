@@ -3274,11 +3274,9 @@ function Multiplayer(){
 
 function handleMultiplayerToggle(){
   if(multiplayerToggleValue === false){
-    //changedValue = true;
     multiplayerToggleValue = true;
     multiplayerToggle.style("background-color", "blue");
   }else if(multiplayerToggleValue === true){
-    //changedValue = true;
     multiplayerToggleValue = false;
     multiplayerToggle.style("background-color", "darkred");
   }
