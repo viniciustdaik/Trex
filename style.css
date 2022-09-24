@@ -205,14 +205,13 @@ canvas {
   outline: none;
 }
 
-.multiplayerToggle/*False*/{
+.multiplayerToggle{
   width: 360px;
   height: 70px;
   border-radius: 25px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./multiplayer.png');/*./multiplayerImgFalse Ideia Da Imagem: Multi -Cinza player -Colorido, 2 Birds, 2 Trex*/ 
-  /*background-color: 'darkred';*/
+  background-image: url('./multiplayer.png');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -223,22 +222,3 @@ canvas {
   transition-duration: 0.0s;
   outline: none;
 }
-
-/*.multiplayerToggleTrue{
-  width: 360px;
-  height: 70px;
-  border-radius: 25px;
-  border-width: 1.5px;
-  border-color: #000000;
-  background-image: url('./multiplayer.png');/*./multiplayerImgTrue Ideia Da Imagem: Multi -Cinza player -Colorido, 2 Birds, 2 Trex*/
-  /*background-color: 'blue';*/
-/*  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  padding: 10px;
-  display: inline-block;
-  cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */
-  /*transition-duration: 0.0s;
-  outline: none;
-}*/
