@@ -55,7 +55,8 @@ var game = "notselected";
 
 var windowResizeX = true, windowResizeY = false;
 
-var version = 1.22293, mostRecentVersion = null, reloadButton;//1.22293
+var version = 1.22293, mostRecentVersion = null, reloadButton, 
+LatestUpdatePlatformsAimed = ""/* PC, Mobile, Android, iPhone, iPad, iPhoneXR, All */;//1.22293
 
 var infiniteflightbutton, infiniteracebutton;
 
@@ -972,6 +973,21 @@ function draw() {
     background('white');
   }
   if(mostRecentVersion !== null && mostRecentVersion > version){
+    console.log('This is not the most Recent Version.');
+  }
+  if(mostRecentVersion !== null && mostRecentVersion > version && LatestUpdatePlatformsAimed === "All"
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("PC") && isMobile === false
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("Mobile") && isMobile === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("iPhone") && isiPhone === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("iPhoneXR") && isiPhoneXR === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("Android") && isAndroid === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("iPad") && isiPad === true){
     var reloadbuttonX = null;
     var reloadbuttonY = null;
     var reloadbuttonYSubtract = null;
@@ -1002,7 +1018,6 @@ function draw() {
       
     }*/
     reloadbuttonY = reloadbuttonY + reloadbuttonYSubtract;
-    console.log('This is not the most Recent Version.');
     push();
     if(isMobile == false && isiPhoneXR == false){
       textSize(35);
@@ -2214,7 +2229,19 @@ function draw() {
   fill("purple");
   text("R", 339+plusnum+128, 125);*/
 
-  if(mostRecentVersion !== null && mostRecentVersion > version){
+  if(mostRecentVersion !== null && mostRecentVersion > version && LatestUpdatePlatformsAimed === "All"
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("PC") && isMobile === false
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("Mobile") && isMobile === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("iPhone") && isiPhone === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("iPhoneXR") && isiPhoneXR === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("Android") && isAndroid === true
+  || mostRecentVersion !== null && mostRecentVersion > version 
+  && LatestUpdatePlatformsAimed.includes("iPad") && isiPad === true){
     push();
     var mostRecentVersionTextX;
     if(initialWidth == width){
@@ -3468,7 +3495,11 @@ function getState(){
           allMultiplayerClientsReload = data.val();
         });
       //}
-      
+      var LatestUpdatePlatformsAimedRef = database.ref("/Trex/LatestUpdatePlatformsAimed/");
+      LatestUpdatePlatformsAimedRef.on("value", function (data) {
+        LatestUpdatePlatformsAimed = data.val();
+      });
+      gotStateOneTime = true;
     }
   }
   
