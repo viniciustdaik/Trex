@@ -215,6 +215,50 @@ canvas {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.nameInput{
+  width: 338px;
+  height: 20px;
+  border-radius: 13px;
+  border-width: 1.5px;
+  font-size: 30px;
+  color: #ABC201;
+  border-color: lavender;/*#AB4920*/
+  background: #AB4920;/*lavender*/
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  display: inline-block;
+  -webkit-transition-duration: 0.0s; /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.backButton{
+  border-radius: 5px;
+  border-width: 1.5px;
+  border-color: #000000;
+  background-image: url('./backDoorImgNoBGReallySmall.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
   padding: 10px;
   display: inline-block;
   cursor: pointer;
