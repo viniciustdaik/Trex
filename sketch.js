@@ -104,9 +104,11 @@ player2isCrouching = false,
 player2isGameover = false, 
 player2gamePlaying;
 
-var multiplayerToggle, multiplayerToggleValue = false;
+var multiplayerToggle, multiplayerToggleValue = false, nameInput;
 
 var allMultiplayerClientsReload = false;
+
+var backButton, backButtonOnPC = false;
 
 function preload() {
   soundFormats('mp3');
@@ -493,6 +495,12 @@ function setup() {
   //trex.setCollider("rectangle", 0, 0, 400, trex.height);
   trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
   //trex.debug=true;
+
+  backButton = createButton("");
+  backButton.position(width - width - width - 1000, -500);
+  backButton.class("backButton");
+  backButton.size(50, 50);
+  backButton.mousePressed(handleBack);
   
   getState();
 
@@ -506,16 +514,33 @@ function setup() {
   multiplayerToggle.style("background-color", "darkred");
   multiplayerToggle.mousePressed(handleMultiplayerToggle);
 
+  nameInput = createInput("").attribute("placeholder", "Nome");
+  nameInput.position(width - width - width - 1000, -500);
+  /* nameInput.height - 7 if using javascript style*/
+
+  //javascript style
+  /*nameInput.style('width', '353px');
+  nameInput.style('height', '30px');
+  nameInput.style('font-size', '20px');
+  nameInput.style('background', 'lavender');
+  nameInput.style('border-radius', '13px');*/
+  nameInput.class("nameInput");
+
   player2text = createElement("h2");
   player2text.style("font-size", '15px');
-  player2text.style("color", 'gold');
+  player2text.style("color", 'darkgray');//gold
   player2text.position(-1000, -350);
 }
 
 function draw() {
+  if(backButtonOnPC === true && !isMobile && backButton.x !== width - 55 && gamestate !== SELECT){
+    backButton.position(width - 55, height - 55);
+  }
+
   if(playerCount > MaxOfPlayers && player !== undefined
   || player !== undefined && player.changedPlayerCountVerified !== playerCount
-  && player.changedPlayerCountVerified !== null){
+  && player.changedPlayerCountVerified !== null
+  || playerCount < 0){
     /*console.log("Checking Players...");
     for(var playeri = 1; playeri <= playerCount; playeri = playeri+1){
       if(playeri > MaxOfPlayers && allPlayers["player"+playeri] !== undefined){
@@ -761,8 +786,13 @@ function draw() {
               console.log("player2.y:"+player2.y, ", player2.rotation:"+player2.rotation);
               if(gamestate !== SELECT && player2gamePlaying === game){
                 player2.visible = true;
-                player2text.position(x - 25, y - 25);
-                player2text.html(allPlayers[plr].score+"<br>HI "+allPlayers[plr].highscore);
+                if(game === "Voo Infinito"){
+                  player2text.position(x - 25, y - 30);
+                }else if(game === "Corrida Infinita"){
+                  player2text.position(x - 20, y - 35);
+                }
+                player2text.html(allPlayers[plr].name+"<br>"+allPlayers[plr].score+"<br>HI "
+                +allPlayers[plr].highscore);
               }
             }
           //}else{
@@ -931,25 +961,37 @@ function draw() {
   }
   if(game !== "notselected" && TrexColorido == "notselected"){
     if(isMobile == false || isMobile == true && mostOfTheScreen == "width"){
-      if(normalbutton.position.x !== width / 2 -415){
-        normalbutton.position(width / 2 -415 + 30, normalbutton.y);//width / 2 -415, height / 2 - 30
+      if(normalbutton.x !== width / 2 -415){
+        normalbutton.position(width / 2 -415 + 30, height / 2 - 70);//width / 2 -415, height / 2 - 30
       }
-      if(coloridobutton.position.x !== width / 2 + 135 - 35){//width / 2 + 135
-        coloridobutton.position(width / 2 + 135 - 105, coloridobutton.y);//width / 2 + 135, height / 2 - 30
+      if(coloridobutton.x !== width / 2 + 135 - 35){//width / 2 + 135
+        coloridobutton.position(width / 2 + 135 - 105, height / 2 - 70);//width / 2 + 135, height / 2 - 30
+      }
+      if(multiplayerToggle.x !== width / 2 - 170){
+        multiplayerToggle.position(width / 2 - 170, coloridobutton.y + 120);
+      }
+      if(nameInput.x !== width / 2 - 170){
+        nameInput.position(width / 2 - 170, multiplayerToggle.y-44);
       }
     }else if(isMobile == true && mostOfTheScreen == "height"){
-      if(normalbutton.position.x !== width / 2 -415){
+      if(normalbutton.x !== width / 2 -415){
         normalbutton.position(width / 2 - 185, 70);//width / 2 -415, height / 2 - 30
       }
-      if(coloridobutton.position.x !== width / 2 + 135 - 35){//width / 2 + 135
+      if(coloridobutton.x !== width / 2 + 135 - 35){//width / 2 + 135
         coloridobutton.position(width / 2 - 185, 160);//width / 2 + 135, height / 2 - 30
+      }
+      if(multiplayerToggle.x !== width / 2 - 185){
+        multiplayerToggle.position(width / 2 - 185, coloridobutton.y + 120);
+      }
+      if(nameInput.x !== width / 2 - 185){
+        nameInput.position(width / 2 - 185, multiplayerToggle.y-44);
       }
     }
 
-    if(infiniteflightbutton.position.x !== width - width - width){
+    if(infiniteflightbutton.x !== width - width - width){
       infiniteflightbutton.position(width - width - width, infiniteflightbutton.y);
     }
-    if(infiniteracebutton.position.x !== width - width - width){
+    if(infiniteracebutton.x !== width - width - width){
       infiniteracebutton.position(width - width - width, infiniteracebutton.y);
     }
     
@@ -1249,6 +1291,8 @@ function draw() {
     if(key == "Escape"){
       key = null;
       keyCode = null;
+      handleBack();
+      /*
       ShowBestHighscoresButton.position(width - width - width, 5);
       BestHighscores.x = width - width - width;
       BestHighscores1DeleteButton.position(width - width - width, -350);
@@ -1282,6 +1326,9 @@ function draw() {
       birdIsFlying = false;
       bird.rotation = 0;
       bird.y = 160;
+      multiplayerToggleValue = false;
+      multiplayerToggle.style("background-color", "darkred");
+      backButton.position(width - width - width - 1000, -500);
       if(crouchbutton.y !== -350){
         crouchbutton.position(width / 2-35, -350);
       }
@@ -1301,8 +1348,7 @@ function draw() {
       }
       if(player !== undefined){
         player.removeThisPlayer(false);
-      }
-      
+      }*/
     }
     if(game == "Corrida Infinita"){
       if(initialHeight == height){
@@ -2072,7 +2118,7 @@ function draw() {
         bird.changeAnimation("birdimgright", birdimgright);
       }
     }
-    else if(bird.collide(ground) && birdIsInvencibleGround == false){
+    else if(bird.collide(invisibleground) && birdIsInvencibleGround == false){
       hitGround = true;
       failsound.play();
       gamestate = END;
@@ -2192,27 +2238,9 @@ function draw() {
   //}
 
   drawSprites();
-
-  //referencia para MULTI PLAYER
-  /*text("C", coloridobutton.x-115, coloridobutton.y+25);
-    fill('red');
-    text("O", coloridobutton.x-70, coloridobutton.y+25);
-    fill('orange');
-    text("L", coloridobutton.x-25, coloridobutton.y+25);
-    fill('lightgreen');
-    text("O", coloridobutton.x+20, coloridobutton.y+25);
-    fill('lightpink');
-    text("R", coloridobutton.x+65, coloridobutton.y+25);
-    fill('purple');
-    text("I", coloridobutton.x+105, coloridobutton.y+25);
-    fill('yellow');
-    text("D", coloridobutton.x+153, coloridobutton.y+25);
-    fill('lime');
-    text("O", coloridobutton.x+200, coloridobutton.y+25);
-    fill('gray');
-    text("N O R M A L", normalbutton.x+55, normalbutton.y+25);*/
-  stroke('white');
-  textSize(45);
+  
+  //stroke('white');
+  //textSize(45);
   //textAlign("center");
   //text("N O R M A L")
   /*var plusnum = 100;
@@ -2787,8 +2815,12 @@ function turnColored(){
   normalbutton.position(-1250, normalbutton.y);
 
   multiplayerToggle.position(-1250, multiplayerToggle.y);
+  nameInput.position(-1250, nameInput.y);
   if(player === undefined && multiplayerToggleValue === true){
     Multiplayer();
+  }
+  if(isMobile || !isMobile && backButtonOnPC === true){
+    backButton.position(width - 55, height - 55);
   }
 }
 
@@ -2817,8 +2849,12 @@ function turnNormal(){
   normalbutton.position(-1250, normalbutton.y);
   
   multiplayerToggle.position(-1250, multiplayerToggle.y);
+  nameInput.position(-1250, nameInput.y);
   if(player === undefined && multiplayerToggleValue === true){
     Multiplayer();
+  }
+  if(isMobile || !isMobile && backButtonOnPC === true){
+    backButton.position(width - 55, height - 55);
   }
 }
 
@@ -2826,6 +2862,7 @@ function turnCorridaInfinita(){
   game = "Corrida Infinita";
   trex.y = 160;
   ground.y = 180;
+  invisibleground.y = 190;
   gameover.x = width / 2;
   gameover.y = 100;
   restart.x = width / 2;
@@ -2838,6 +2875,7 @@ function turnVooInfinito(){
     bird.y = 160;
     bird.velocityY = 0;
     ground.y = height - 5;
+    invisibleground.y = height - 5 + 10;
     restart.y = height / 2 + 40;
     gameover.y = height / 2;
   //}
@@ -3052,6 +3090,7 @@ function windowResized() {
               invisibleground.y = 190 - newHeightAdded/2;
             }else if(game == "Voo Infinito"){
               ground.y = height - 5 - newHeightAdded/2;
+              invisibleground.y = height - 5 + 10 - newHeightAdded/2;
               if(gamestate == PLAY){
                 //bird.y = bird.y;
               }else if(gamestate == END){
@@ -3105,6 +3144,7 @@ function windowResized() {
               ground.y = 180;
             }else if(game == "Voo Infinito"){
               ground.y = height - 5;
+              invisibleground.y = height - 5 + 10;
               if(gamestate == PLAY){
                 //bird.y = bird.y - newHeightAdded/2;
               }else if(gamestate == END){
@@ -3146,8 +3186,9 @@ function windowResized() {
         if(initialWidth !== width){
           newWidthAdded = width - initialWidth;
           invisibleground.x = 200 - newWidthAdded/2;
+          ground.x = ground.x - newWidthAdded/2;
+          bird.x = 50 - newWidthAdded/2;
           if(game == "Voo Infinito"){
-            bird.x = 50 - newWidthAdded/2;
             if(player !== undefined && playerCount === 2){
               if(game === "Voo Infinito"){
                 player2.x = 50 - newWidthAdded/2;
@@ -3287,4 +3328,68 @@ function desactivateMultiplayerReload(){
   database.ref("/Trex/").update({
     allMultiplayerClientsReload: false
   });
+}
+
+function handleBack(){
+  if(gamestate !== SELECT){
+    console.log("function handleBack called.");
+    key = null;
+    keyCode = null;
+    ShowBestHighscoresButton.position(width - width - width, 5);
+    BestHighscores.x = width - width - width;
+    BestHighscores1DeleteButton.position(width - width - width, -350);
+    BestHighscores2DeleteButton.position(width - width - width, -350);
+    BestHighscores3DeleteButton.position(width - width - width, -350);
+    BestHighscores4DeleteButton.position(width - width - width, -350);
+    BestHighscores5DeleteButton.position(width - width - width, -350);
+    crouchAfterJumping = false;
+    BestHighscores.y = -350;
+    background("white");
+    gamestate = -1;
+    score = 0;
+    highscore = 0;
+    birdG.destroyEach();
+    cactuG.destroyEach();
+    cloudG.destroyEach();
+    bird.visible = false;
+    ground.visible = false;
+    sand.visible = false;
+    trex.visible = false;
+    highscoreS.visible = false;
+    gameover.visible = false;
+    restart.visible = false;
+    game = "notselected";
+    dinosaurcolor = "notselected";
+    birdcolor = "notselected";
+    TrexColorido = "notselected";
+    trexIsCrouching = false;
+    trexIsJumping = false;
+    birdIsFalling = false;
+    birdIsFlying = false;
+    bird.rotation = 0;
+    bird.y = 160;
+    multiplayerToggleValue = false;
+    multiplayerToggle.style("background-color", "darkred");
+    backButton.position(width - width - width - 1000, -500);
+    if(crouchbutton.y !== -350){
+      crouchbutton.position(width / 2-35, -350);
+    }
+    if(infiniteflightbutton.x !== width / 2 + 255){
+      infiniteflightbutton.position(width / 2 + 255-15, infiniteflightbutton.y);
+    }
+    if(infiniteracebutton.x !== width / 2 -415){
+      infiniteracebutton.position(width / 2 -415+15, infiniteracebutton.y);
+    }
+    if(//browserName == "safari" && isMobile == true ||
+    //browserName == "safari" && isiPhoneXR == true
+    isMobile == true || isiPhoneXR == true){
+      //infiniteracebutton.size(100, 100);
+      //infiniteflightbutton.size(100, 100);
+      infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
+      infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
+    }
+    if(player !== undefined){
+      player.removeThisPlayer(false);
+    }
+  }
 }
