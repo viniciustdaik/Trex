@@ -54,7 +54,7 @@ class Player {
 
       console.log("Player Added!");
 
-      //Player.checkAllPlayersAndPlayerCount();
+      Player.checkAllPlayersAndPlayerCount();
     }else{
       console.log("The Max("+MaxOfPlayers+") Of Players Was Reached.");
     }
@@ -103,7 +103,11 @@ class Player {
             console.log(playerCount);
             this.addPlayer();
             this.updateCount(playerCount);
-            this.name = "Player" + this.index;
+            if(nameInput.value() === ""){
+              this.name = "Player" + this.index;
+            }else{
+              this.name = nameInput.value();
+            }
             this.changedPlayerCountVerified = playerCount;
           }else{
             this.playerAlreadyStarted = true;
@@ -112,7 +116,11 @@ class Player {
             this.index = playerCount;
             this.addPlayer();
             this.updateCount(playerCount);
-            this.name = "Player" + this.index;
+            if(nameInput.value() === ""){
+              this.name = "Player" + this.index;
+            }else{
+              this.name = nameInput.value();
+            }
             this.changedPlayerCountVerified = playerCount;
           }
         }
@@ -123,7 +131,11 @@ class Player {
         this.index = playerCount;
         this.addPlayer();
         this.updateCount(playerCount);
-        this.name = "Player" + this.index;
+        if(nameInput.value() === ""){
+          this.name = "Player" + this.index;
+        }else{
+          this.name = nameInput.value();
+        }
         this.changedPlayerCountVerified = playerCount;
       }
     }
@@ -152,7 +164,7 @@ class Player {
     playerInfoRef.on("value", data => {
       allPlayers = data.val();
     });
-    //Player.checkAllPlayersAndPlayerCount();
+    Player.checkAllPlayersAndPlayerCount();
   }
 
   //getCarsAtEnd() {
@@ -226,62 +238,69 @@ class Player {
   }
 
   static checkAllPlayersAndPlayerCount(){
-    var thingToWorkVerification;
-    if(playerCount !== undefined){
-      thingToWorkVerification = player;
-    }else{
-      thingToWorkVerification = this;
-    }
-    if(playerCount > MaxOfPlayers){
-      console.log("Checking Players...");
-      for(var playeri = 1; playeri <= playerCount; playeri = playeri+1){
-        if(playeri > MaxOfPlayers && allPlayers["player"+playeri] !== undefined){
-          database.ref("/Trex/players/player"+playeri).remove();
-          console.log("Found Extra Player 'player"+playeri+"', Removed!");
+    if(player !== undefined){
+      var thingToWorkVerification;
+      if(playerCount !== undefined){
+        thingToWorkVerification = player;
+      }else{
+        thingToWorkVerification = this;
+      }
+      //if(playerCount > MaxOfPlayers
+      //|| playerCount < 0){
+        console.log("Checking Players...");
+        for(var playeri = 1; playeri <= playerCount; playeri = playeri+1){
+          if(playeri > MaxOfPlayers && allPlayers["player"+playeri] !== undefined){
+            database.ref("/Trex/players/player"+playeri).remove();
+            console.log("Found Extra Player 'player"+playeri+"', Removed!");
+          }
         }
-      }
-      if(allPlayers["playernull"] !== undefined){
-        database.ref("/Trex/players/playernull").remove();
-        console.log("Found playernull, Removed!");
-      }
-      if(player.index > MaxOfPlayers){
-        thingToWorkVerification.removeThisPlayer(false);
-      }
-    }else{
-      console.log("No Players To Check At The Moment.");
-    }
-    //if(playerCount > MaxOfPlayers){
-      if(MaxOfPlayers === 2 && playerCount > MaxOfPlayers){
-        playerCount = MaxOfPlayers;
-        thingToWorkVerification.updateCount(playerCount);
-        console.log(playerCount);
-      }else if(MaxOfPlayers > 2 && playerCount <= MaxOfPlayers
-      || MaxOfPlayers > 2 && playerCount > MaxOfPlayers
-      || this.changedPlayerCountVerified !== playerCount){
-        for(var playeri = 2; playeri <= MaxOfPlayers; playeri = playeri+1){
-          if(this.playeriVerification === false){
-            console.log(allPlayers["player"+playeri]);
-            console.log("playeri: "+playeri);
-            if(playeri === MaxOfPlayers){
-              thingToWorkVerification.updateCount(playeri);
-              playerCount = playeri;
-              console.log(playerCount);
-            }else if(allPlayers["player"+playeri] === undefined){
-              thingToWorkVerification.updateCount(playeri-1);
-              playerCount = playeri-1;
-              console.log(playerCount);
-              this.playeriVerification = true;
-            }
-          }else{
-            if(playeri === MaxOfPlayers){
-              this.playeriVerification = false;
+        if(allPlayers !== undefined && allPlayers["playernull"] !== undefined){
+          database.ref("/Trex/players/playernull").remove();
+          allPlayers["playernull"] = undefined;
+          //Player.getPlayersInfo();
+          console.log(allPlayers["playernull"]);
+          console.log("Found playernull, Removed!");
+        }
+        if(player !== undefined && player.index > MaxOfPlayers){
+          thingToWorkVerification.removeThisPlayer(false);
+        }
+      //}else{
+      //  console.log("No Players To Check At The Moment.");
+      //}
+      if(playerCount > MaxOfPlayers
+      || playerCount < 0 || playerCount <= MaxOfPlayers){
+        /*if(MaxOfPlayers === 2 && playerCount > MaxOfPlayers){
+          playerCount = MaxOfPlayers;
+          thingToWorkVerification.updateCount(playerCount);
+          console.log(playerCount);
+        }else */if(/*MaxOfPlayers > 2 &&*/ playerCount <= MaxOfPlayers
+        || /*MaxOfPlayers > 2 &&*/ playerCount > MaxOfPlayers
+        || this.changedPlayerCountVerified !== playerCount){
+          for(var playeri = 1; playeri <= MaxOfPlayers; playeri = playeri+1){
+            if(this.playeriVerification === false){
+              console.log(allPlayers["player"+playeri]);
+              console.log("playeri: "+playeri);
+              if(allPlayers["player"+playeri] === undefined){
+                thingToWorkVerification.updateCount(playeri-1);
+                playerCount = playeri-1;
+                console.log(playerCount);
+                this.playeriVerification = true;
+              }else if(playeri === MaxOfPlayers){
+                thingToWorkVerification.updateCount(playeri);
+                playerCount = playeri;
+                console.log(playerCount);
+              }
+            }else{
+              if(playeri === MaxOfPlayers){
+                this.playeriVerification = false;
+              }
             }
           }
         }
       }
-    //}
-    if(player !== undefined && thingToWorkVerification.changedPlayerCountVerified !== playerCount){
-      thingToWorkVerification.changedPlayerCountVerified = playerCount;
+      if(player !== undefined && thingToWorkVerification.changedPlayerCountVerified !== playerCount){
+        thingToWorkVerification.changedPlayerCountVerified = playerCount;
+      }
     }
   }
 
