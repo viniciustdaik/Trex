@@ -16,8 +16,6 @@ class Player {
     this.color = "Cinza";
     this.gamePlaying = game;
 
-    this.playeriVerification = false;
-
     this.changedPlayerCountVerified = null;
 
     Player.getPlayersInfo();
@@ -55,6 +53,7 @@ class Player {
       console.log("Player Added!");
 
       Player.checkAllPlayersAndPlayerCount();
+      Player.availablePlayerIndexs();
     }else{
       console.log("The Max("+MaxOfPlayers+") Of Players Was Reached.");
     }
@@ -90,6 +89,7 @@ class Player {
 
   startPlayer(){
     if(this.playerAlreadyStarted === false && playerCount !== undefined){
+      Player.availablePlayerIndexs();
       if(playerCount === 1){
         for(var plr in allPlayers){
           plr = "player2";
@@ -98,7 +98,9 @@ class Player {
           if(/*playerCount === 1 && */allPlayers[plr] !== undefined){
             this.playerAlreadyStarted = true;
             //playerCount = 1;
-            this.index = playerCount;
+            
+            //this.index = playerCount;
+            this.givePlayerIndex();
             playerCount += 1;
             console.log(playerCount);
             this.addPlayer();
@@ -113,7 +115,9 @@ class Player {
             this.playerAlreadyStarted = true;
             playerCount += 1;
             console.log(playerCount);
-            this.index = playerCount;
+
+            //this.index = playerCount;
+            this.givePlayerIndex();
             this.addPlayer();
             this.updateCount(playerCount);
             if(nameInput.value() === ""){
@@ -128,7 +132,9 @@ class Player {
         this.playerAlreadyStarted = true;
         playerCount += 1;
         console.log(playerCount);
-        this.index = playerCount;
+
+        //this.index = playerCount;
+        this.givePlayerIndex();
         this.addPlayer();
         this.updateCount(playerCount);
         if(nameInput.value() === ""){
@@ -191,6 +197,23 @@ class Player {
     if(reload === true){
       window.location.reload();
     }else if(reload === false){
+      for(var playerNum = 2; playerNum <= MaxOfPlayers; playerNum = playerNum+1){
+        var otherPlayer;
+        var otherPlayerText;
+        if(playerNum === 2){
+          otherPlayer = player2;
+          otherPlayerText = player2text;
+        }else if(playerNum === 3){
+          otherPlayer = player3;
+          otherPlayerText = player3text;
+        }
+        otherPlayerText.position(-1000, -350);
+        otherPlayer.visible = false;
+        otherPlayer.y = 160;
+        otherPlayer.rotation = 0;
+        otherPlayer.changeAnimation("birdright", birdanmright);
+        console.log("Tchau Jogador.");
+      }
       player = undefined;
       player2.visible = false;
       player3.visible = false;
@@ -245,7 +268,6 @@ class Player {
       thingToWorkVerification = this;
     }
     if(player !== undefined){
-      
       //if(playerCount > MaxOfPlayers
       //|| playerCount < 0){
         console.log("Checking Players...");
@@ -270,6 +292,7 @@ class Player {
       //}
       if(playerCount > MaxOfPlayers
       || playerCount < 0 || playerCount <= MaxOfPlayers){
+        var newPlayerCount = MaxOfPlayers;
         /*if(MaxOfPlayers === 2 && playerCount > MaxOfPlayers){
           playerCount = MaxOfPlayers;
           thingToWorkVerification.updateCount(playerCount);
@@ -278,23 +301,15 @@ class Player {
         || /*MaxOfPlayers > 2 &&*/ playerCount > MaxOfPlayers
         || this.changedPlayerCountVerified !== playerCount){
           for(var playeri = 1; playeri <= MaxOfPlayers; playeri = playeri+1){
-            if(this.playeriVerification === false){
-              console.log(allPlayers["player"+playeri]);
-              console.log("playeri: "+playeri);
-              if(allPlayers["player"+playeri] === undefined){
-                thingToWorkVerification.updateCount(playeri-1);
-                playerCount = playeri-1;
-                console.log(playerCount);
-                this.playeriVerification = true;
-              }else if(playeri === MaxOfPlayers){
-                thingToWorkVerification.updateCount(playeri);
-                playerCount = playeri;
-                console.log(playerCount);
-              }
-            }else{
-              if(playeri === MaxOfPlayers){
-                this.playeriVerification = false;
-              }
+            console.log(allPlayers["player"+playeri]);
+            console.log("playeri: "+playeri);
+            if(allPlayers["player"+playeri] === undefined){
+              newPlayerCount = newPlayerCount-1;
+            }
+            if(playeri === MaxOfPlayers){
+              thingToWorkVerification.updateCount(newPlayerCount);
+              playerCount = newPlayerCount;
+              console.log(playerCount);
             }
           }
         }
@@ -305,18 +320,31 @@ class Player {
     }
   }
 
-  availablePlayerIndexs(){
+  static availablePlayerIndexs(){
     allPlayerIndexsAvailable = "";
-    if(playerCount <= MaxOfPlayers
-    ||playerCount > MaxOfPlayers){
+    if(allPlayers !== undefined){
       for(var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex+1){
-        console.log(allPlayers["player"+plrindex]);
+        //console.log(allPlayers["player"+plrindex]);
         console.log("playeri: "+plrindex);
-        if(allPlayers["player"+plrindex] !== undefined){
+        if(allPlayers["player"+plrindex] == undefined){
           allPlayerIndexsAvailable = allPlayerIndexsAvailable+""+plrindex;
-          console.log(allPlayerIndexsAvailable);
+          console.log("allPlayersIndexsAvailable: "+allPlayerIndexsAvailable);
         }
       }
+    }else{
+      console.log("allPlayers = undefined, can't define available player indexs");
+    }
+  }
+
+  givePlayerIndex(){
+    if(allPlayerIndexsAvailable !== ""){
+      for(var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex+1){
+        if(allPlayerIndexsAvailable.includes(plrindex) && this.index === null){
+          this.index = plrindex;
+        }
+      }
+    }else{
+      console.log("allPlayerIndexsAvailable = '', can't give player index");
     }
   }
 
