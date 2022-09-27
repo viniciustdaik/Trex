@@ -238,13 +238,14 @@ class Player {
   }
 
   static checkAllPlayersAndPlayerCount(){
+    var thingToWorkVerification;
+    if(playerCount !== undefined){
+      thingToWorkVerification = player;
+    }else{
+      thingToWorkVerification = this;
+    }
     if(player !== undefined){
-      var thingToWorkVerification;
-      if(playerCount !== undefined){
-        thingToWorkVerification = player;
-      }else{
-        thingToWorkVerification = this;
-      }
+      
       //if(playerCount > MaxOfPlayers
       //|| playerCount < 0){
         console.log("Checking Players...");
@@ -300,6 +301,21 @@ class Player {
       }
       if(player !== undefined && thingToWorkVerification.changedPlayerCountVerified !== playerCount){
         thingToWorkVerification.changedPlayerCountVerified = playerCount;
+      }
+    }
+  }
+
+  availablePlayerIndexs(){
+    allPlayerIndexsAvailable = "";
+    if(playerCount <= MaxOfPlayers
+    ||playerCount > MaxOfPlayers){
+      for(var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex+1){
+        console.log(allPlayers["player"+plrindex]);
+        console.log("playeri: "+plrindex);
+        if(allPlayers["player"+plrindex] !== undefined){
+          allPlayerIndexsAvailable = allPlayerIndexsAvailable+""+plrindex;
+          console.log(allPlayerIndexsAvailable);
+        }
       }
     }
   }
