@@ -542,6 +542,10 @@ function setup() {
 }
 
 function draw() {
+  if(player !== undefined && playerCount === 2 && player.index === 3){
+    player.changePlayerIndex();
+  }
+
   if(backButtonOnPC === true && !isMobile && backButton.x !== width - 55 && gamestate !== SELECT){
     backButton.position(width - 55, height - 55);
   }
@@ -765,6 +769,15 @@ function draw() {
     player.update();
   }
 
+  /*if(playerCount === 2 && player !== undefined && player3.visible !== true){
+    player3text.position(-1000, -350);
+    player3.visible = false;
+    player3.y = 160;
+    player3.rotation = 0;
+    player3.changeAnimation("birdright", birdanmright);
+    console.log("Tchau Jogador.");
+  }*/
+
   if(playerCount > 1/* && playerCount === 2 */&& player !== undefined){
     if(playerCount === 2 || playerCount === 3){
       for (var plr in allPlayers) {
@@ -776,32 +789,34 @@ function draw() {
           plr = "player2";
         }
         //console.log("plr:"+plr);
-        
-        var x = allPlayers[plr].positionX;
-        var y = allPlayers[plr].positionY;
-        
-        player2isCrouching = allPlayers[plr].isCrouching;
-        player2isGameover = allPlayers[plr].isGameover;
-        player2color = allPlayers[plr].color;
-        player2gamePlaying = allPlayers[plr].gamePlaying;
-        
-        otherPlayer.y = y;
-        if(initialWidth == width){
-          otherPlayer.x = x;
-        }else{
-          otherPlayer.x = x - newWidthAdded/2;
-        }
-        otherPlayer.rotation = allPlayers[plr].rotation;
-        console.log("player2.y:"+otherPlayer.y, ", player2.rotation:"+otherPlayer.rotation);
-        if(gamestate !== SELECT && player2gamePlaying === game){
-          otherPlayer.visible = true;
-          if(game === "Voo Infinito"){
-            player2text.position(x - 25, y - 30);
-          }else if(game === "Corrida Infinita"){
-            player2text.position(x - 20, y - 35);
+
+        if(allPlayers[plr] !== undefined){
+          var x = allPlayers[plr].positionX;
+          var y = allPlayers[plr].positionY;
+          
+          player2isCrouching = allPlayers[plr].isCrouching;
+          player2isGameover = allPlayers[plr].isGameover;
+          player2color = allPlayers[plr].color;
+          player2gamePlaying = allPlayers[plr].gamePlaying;
+          
+          otherPlayer.y = y;
+          if(initialWidth == width){
+            otherPlayer.x = x;
+          }else{
+            otherPlayer.x = x - newWidthAdded/2;
           }
-          player2text.html(allPlayers[plr].name+"<br>"+allPlayers[plr].score+"<br>HI "
-          +allPlayers[plr].highscore);
+          otherPlayer.rotation = allPlayers[plr].rotation;
+          //console.log("player2.y:"+otherPlayer.y, ", player2.rotation:"+otherPlayer.rotation);
+          if(gamestate !== SELECT && player2gamePlaying === game){
+            otherPlayer.visible = true;
+            if(game === "Voo Infinito"){
+              player2text.position(x - 25, y - 30);
+            }else if(game === "Corrida Infinita"){
+              player2text.position(x - 20, y - 35);
+            }
+            player2text.html(allPlayers[plr].name+"<br>"+allPlayers[plr].score+"<br>HI "
+            +allPlayers[plr].highscore);
+          }
         }
       }
     }
@@ -815,32 +830,34 @@ function draw() {
           plr = "player2";
         }
         //console.log("plr:"+plr);
-        
-        var x = allPlayers[plr].positionX;
-        var y = allPlayers[plr].positionY;
-        
-        player3isCrouching = allPlayers[plr].isCrouching;
-        player3isGameover = allPlayers[plr].isGameover;
-        player3color = allPlayers[plr].color;
-        player3gamePlaying = allPlayers[plr].gamePlaying;
-        
-        otherPlayer.y = y;
-        if(initialWidth == width){
-          otherPlayer.x = x;
-        }else{
-          otherPlayer.x = x - newWidthAdded/2;
-        }
-        otherPlayer.rotation = allPlayers[plr].rotation;
-        console.log("player3.y:"+otherPlayer.y, ", player3.rotation:"+otherPlayer.rotation);
-        if(gamestate !== SELECT && player3gamePlaying === game){
-          otherPlayer.visible = true;
-          if(game === "Voo Infinito"){
-            player3text.position(x - 25, y - 30);
-          }else if(game === "Corrida Infinita"){
-            player3text.position(x - 20, y - 35);
+
+        if(allPlayers[plr] !== undefined){
+          var x = allPlayers[plr].positionX;
+          var y = allPlayers[plr].positionY;
+          
+          player3isCrouching = allPlayers[plr].isCrouching;
+          player3isGameover = allPlayers[plr].isGameover;
+          player3color = allPlayers[plr].color;
+          player3gamePlaying = allPlayers[plr].gamePlaying;
+          
+          otherPlayer.y = y;
+          if(initialWidth == width){
+            otherPlayer.x = x;
+          }else{
+            otherPlayer.x = x - newWidthAdded/2;
           }
-          player3text.html(allPlayers[plr].name+"<br>"+allPlayers[plr].score+"<br>HI "
-          +allPlayers[plr].highscore);
+          otherPlayer.rotation = allPlayers[plr].rotation;
+          //console.log("player3.y:"+otherPlayer.y, ", player3.rotation:"+otherPlayer.rotation);
+          if(gamestate !== SELECT && player2gamePlaying === game){
+            otherPlayer.visible = true;
+            if(game === "Voo Infinito"){
+              player3text.position(x - 25, y - 30);
+            }else if(game === "Corrida Infinita"){
+              player3text.position(x - 20, y - 35);
+            }
+            player3text.html(allPlayers[plr].name+"<br>"+allPlayers[plr].score+"<br>HI "
+            +allPlayers[plr].highscore);
+          }
         }
       }
     }
