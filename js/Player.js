@@ -314,8 +314,10 @@ class Player {
           }
         }
       }
+      
       if(player !== undefined && thingToWorkVerification.changedPlayerCountVerified !== playerCount){
         thingToWorkVerification.changedPlayerCountVerified = playerCount;
+        thingToWorkVerification.hideRemovedPlayers();
       }
     }
   }
@@ -326,7 +328,7 @@ class Player {
       for(var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex+1){
         //console.log(allPlayers["player"+plrindex]);
         console.log("playeri: "+plrindex);
-        if(allPlayers["player"+plrindex] == undefined){
+        if(allPlayers["player"+plrindex] === undefined){
           allPlayerIndexsAvailable = allPlayerIndexsAvailable+""+plrindex;
           console.log("allPlayersIndexsAvailable: "+allPlayerIndexsAvailable);
         }
@@ -345,6 +347,63 @@ class Player {
       }
     }else{
       console.log("allPlayerIndexsAvailable = '', can't give player index");
+    }
+  }
+
+  changePlayerIndex(){
+    var changedIndex = false;
+    if(playerCount === 2 && player.index === 3){
+      for(var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex+1){
+        if(allPlayers["player"+plrindex] === undefined && plrindex !== this.index && changedIndex === false){
+          changedIndex = true;
+          database.ref("/Trex/").update({
+            playerCount: playerCount-1
+          });
+          console.log(playerCount, this.index);
+          database.ref("/Trex/players/player"+this.index).remove();
+
+          this.index = plrindex;
+          this.playerAlreadyStarted = false;
+
+          this.startPlayer();
+
+          player3.visible = false;
+          player3.y = 160;
+          player3.rotation = 0;
+          player3.changeAnimation("birdright", birdanmright);
+          player3text.position(-1000, -350);
+
+          console.log("Changed Player Index.");
+        }
+      }
+    }
+  }
+
+  hideRemovedPlayers(){
+    for(var plr = 1; plr <= MaxOfPlayers; plr = plr+1){
+      if(allPlayers["player"+plr] === undefined && plr !== this.index){
+        var otherPlayer;
+        var otherPlayerText;
+        if(plr === 2 && this.index === 1 && player2.visible === true
+        || plr === 2 && this.index === 2 && player2.visible === true
+        || plr === 1 && this.index === 2 && player2.visible === true){
+          otherPlayer = player2;
+          otherPlayerText = player2text;
+        }else if(plr === 3 && this.index === 1 && player3.visible === true
+        || plr === 3 && this.index === 2 && player3.visible === true){
+          otherPlayer = player3;
+          otherPlayerText = player3text;
+        }
+        if(otherPlayer !== undefined && otherPlayerText !== undefined){
+          console.log("otherPlayer: "+otherPlayer, "otherPlayerText: "+otherPlayerText);
+          otherPlayerText.position(-1000, -350);
+          otherPlayer.visible = false;
+          otherPlayer.y = 160;
+          otherPlayer.rotation = 0;
+          otherPlayer.changeAnimation("birdright", birdanmright);
+          console.log("Tchau Jogador.");
+        }
+      }
     }
   }
 
