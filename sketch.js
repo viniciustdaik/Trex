@@ -542,6 +542,10 @@ function setup() {
 }
 
 function draw() {
+  if(player !== undefined && player.playerAlreadyStarted === false){
+    player.startPlayer();
+  }
+
   if(player !== undefined && playerCount === 2 && player.index === 3){
     player.changePlayerIndex();
   }
@@ -848,7 +852,7 @@ function draw() {
           }
           otherPlayer.rotation = allPlayers[plr].rotation;
           //console.log("player3.y:"+otherPlayer.y, ", player3.rotation:"+otherPlayer.rotation);
-          if(gamestate !== SELECT && player2gamePlaying === game){
+          if(gamestate !== SELECT && player3gamePlaying === game){
             otherPlayer.visible = true;
             if(game === "Voo Infinito"){
               player3text.position(x - 25, y - 30);
@@ -1355,63 +1359,6 @@ function draw() {
       key = null;
       keyCode = null;
       handleBack();
-      /*
-      ShowBestHighscoresButton.position(width - width - width, 5);
-      BestHighscores.x = width - width - width;
-      BestHighscores1DeleteButton.position(width - width - width, -350);
-      BestHighscores2DeleteButton.position(width - width - width, -350);
-      BestHighscores3DeleteButton.position(width - width - width, -350);
-      BestHighscores4DeleteButton.position(width - width - width, -350);
-      BestHighscores5DeleteButton.position(width - width - width, -350);
-      crouchAfterJumping = false;
-      BestHighscores.y = -350;
-      background("white");
-      gamestate = -1;
-      score = 0;
-      highscore = 0;
-      birdG.destroyEach();
-      cactuG.destroyEach();
-      cloudG.destroyEach();
-      bird.visible = false;
-      ground.visible = false;
-      sand.visible = false;
-      trex.visible = false;
-      highscoreS.visible = false;
-      gameover.visible = false;
-      restart.visible = false;
-      game = "notselected";
-      dinosaurcolor = "notselected";
-      birdcolor = "notselected";
-      TrexColorido = "notselected";
-      trexIsCrouching = false;
-      trexIsJumping = false;
-      birdIsFalling = false;
-      birdIsFlying = false;
-      bird.rotation = 0;
-      bird.y = 160;
-      multiplayerToggleValue = false;
-      multiplayerToggle.style("background-color", "darkred");
-      backButton.position(width - width - width - 1000, -500);
-      if(crouchbutton.y !== -350){
-        crouchbutton.position(width / 2-35, -350);
-      }
-      if(infiniteflightbutton.x !== width / 2 + 255){
-        infiniteflightbutton.position(width / 2 + 255-15, infiniteflightbutton.y);
-      }
-      if(infiniteracebutton.x !== width / 2 -415){
-        infiniteracebutton.position(width / 2 -415+15, infiniteracebutton.y);
-      }
-      if(//browserName == "safari" && isMobile == true ||
-      //browserName == "safari" && isiPhoneXR == true
-      isMobile == true || isiPhoneXR == true){
-        //infiniteracebutton.size(100, 100);
-        //infiniteflightbutton.size(100, 100);
-        infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
-        infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
-      }
-      if(player !== undefined){
-        player.removeThisPlayer(false);
-      }*/
     }
     if(game == "Corrida Infinita"){
       if(initialHeight == height){
@@ -3007,7 +2954,6 @@ function updateBestHighscore(number){
       BestHighscore5: BestHighscores5
     });
   }
-  
 }
 
 function resetBestHighscoreOne(){
@@ -3294,7 +3240,7 @@ function windowResized() {
 
 function reload(){
   if(player !== undefined){
-    player.removeThisPlayer(true);
+    player.removeThisPlayer(true, true);
   }else if(player === undefined){
     location.reload();
   }
@@ -3452,7 +3398,7 @@ function handleBack(){
       infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
     }
     if(player !== undefined){
-      player.removeThisPlayer(false);
+      player.removeThisPlayer(false, true);
     }
   }
 }
