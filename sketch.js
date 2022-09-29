@@ -3214,12 +3214,7 @@ function windowResized() {
       //soon
     }
     else if(isMobile){
-      resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
-      if(width > height){
-        mostOfTheScreen = "width";
-      }else{
-        mostOfTheScreen = "height";
-      }
+      //resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
     }
     else{
 
