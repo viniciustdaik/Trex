@@ -3344,6 +3344,9 @@ function handleBack(){
     console.log("function handleBack called.");
     key = null;
     keyCode = null;
+    if(player !== undefined){
+      player.removeThisPlayer(false, true);
+    }
     ShowBestHighscoresButton.position(width - width - width, 5);
     BestHighscores.x = width - width - width;
     BestHighscores1DeleteButton.position(width - width - width, -350);
@@ -3377,6 +3380,8 @@ function handleBack(){
     birdIsFlying = false;
     bird.rotation = 0;
     bird.y = 160;
+    trex.y = 160;
+    trex.x = 50;
     multiplayerToggleValue = false;
     multiplayerToggle.style("background-color", "darkred");
     backButton.position(width - width - width - 1000, -500);
@@ -3396,9 +3401,6 @@ function handleBack(){
       //infiniteflightbutton.size(100, 100);
       infiniteracebutton.position(width/2-415+55+125, infiniteracebutton.y);
       infiniteflightbutton.position(width / 2 + 255-65-85, infiniteflightbutton.y);
-    }
-    if(player !== undefined){
-      player.removeThisPlayer(false, true);
     }
   }
 }
