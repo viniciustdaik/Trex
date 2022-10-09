@@ -902,7 +902,7 @@ function draw() {
             otherPlayer.x = x - newWidthAdded / 2;
           }
 
-          if (player3hitGround === true && player3gamePlaying === "Voo Infinito") {
+          if (player3hitGround === true && player3gamePlaying === "Voo Infinito" && isMobile) {
             if (player3color === "Cinza") {
               otherPlayer.y = ground.y - 35 + 11;
             } else {
