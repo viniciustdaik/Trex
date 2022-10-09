@@ -234,7 +234,7 @@ function setup() {
   if (invisibleGroundPositionOfTheScreen === "top") {
     invisibleGroundPosY = 190;
   } else if (invisibleGroundPositionOfTheScreen === "bottom") {
-    invisibleGroundPosY = height - 5 + 10 - 25;//height - 5 + 10
+    invisibleGroundPosY = height - 5 + 10 - 75;//height - 5 + 10 //height - 5 + 25
   }
 
   console.log("invisibleGroundPosY: " + invisibleGroundPosY);
@@ -1555,10 +1555,10 @@ function draw() {
     }*/
     //console.log(trex.y);
     if (gamestate == PLAY) {
-      if (crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && !isMobile// && mostOfTheScreen == "width"
-        || crouchbutton.y !== 5 && trexIsJumping == false && !isMobile// && mostOfTheScreen == "width"
-        || crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && isMobile// && mostOfTheScreen == "width"
-        || crouchbutton.y !== 5 && trexIsJumping == false && isMobile) {// && mostOfTheScreen == "width") {
+      if (crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && !isMobile && mostOfTheScreen == "width"
+        || crouchbutton.y !== 5 && trexIsJumping == false && !isMobile && mostOfTheScreen == "width"
+        || crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"
+        || crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen == "width") {
         if (isMobile || !isMobile && crouchbuttonOnPC == true) {
           crouchbuttonHitbox.x = width / 2 - 35 + 34;
           crouchbuttonHitbox.y = 5 + 35;
@@ -1579,36 +1579,37 @@ function draw() {
           }*/
         }//below was the code that made the crouch button go under the invisibleground when mostofthescreen
         // === "height"
-      } /*else if (crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false
+      } else if (crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false
         && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
         || crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && isMobile == true
         && mostOfTheScreen == "height" //isIPhoneXR
         || crouchbutton.x !== width / 2 - 35 && !isMobile && crouchbuttonOnPC == true
         && mostOfTheScreen == "height"
-        || crouchbutton.y !== invisibleground.y + 50 && !isMobile && crouchbuttonOnPC == true
+        || crouchbutton.y !== invisibleground.y + 0 /* invisibleground.y + 50 */
+        && !isMobile && crouchbuttonOnPC == true
         && mostOfTheScreen == "height") {
         crouchbuttonHitbox.x = width / 2 - 35 + 34;
         crouchbuttonHitbox.y = invisibleground.y + 50 + 35;
-        crouchbutton.position(width / 2 - 35, invisibleground.y + 50);
+        crouchbutton.position(width / 2 - 35, invisibleground.y + 0);
         if (crouchbuttonHitbox.x !== crouchbutton.x + 34 || crouchbuttonHitbox.y !== crouchbutton.y + 35) {
           crouchbuttonHitbox.x = crouchbutton.x + 34;
           crouchbuttonHitbox.y = crouchbutton.y + 35;
-        }*/
-
-
-
-      //this was already commented
-      /*if(crouchbuttonclass == "crouchbuttonbackground"){
-        crouchbuttonclass = "crouchbutton";
-        if(dinosaurcolor == "Cinza"){
-          crouchbutton.class("crouchbutton");
-        }else if(dinosaurcolor == "Verde"){
-          crouchbutton.class("crouchbuttongreentrex");
-        }else if(dinosaurcolor == "Marrom"){
-          crouchbutton.class("crouchbuttonbrowntrex");
         }
-      }*/
-      //}
+
+
+
+        //this was already commented
+        /*if(crouchbuttonclass == "crouchbuttonbackground"){
+          crouchbuttonclass = "crouchbutton";
+          if(dinosaurcolor == "Cinza"){
+            crouchbutton.class("crouchbutton");
+          }else if(dinosaurcolor == "Verde"){
+            crouchbutton.class("crouchbuttongreentrex");
+          }else if(dinosaurcolor == "Marrom"){
+            crouchbutton.class("crouchbuttonbrowntrex");
+          }
+        }*/
+      }
 
       if (trexIsJumping == true && crouchbuttonOnPC == true && !isMobile
         && MobileCrouchMode == "ifNotJumpingAndPressed"
