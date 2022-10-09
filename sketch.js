@@ -568,6 +568,14 @@ function draw() {
     background('white');
   }
 
+  if (keyCode == "116" && player !== undefined
+    || key == "F5" && player !== undefined) {
+    player.removeThisPlayer(false, true);
+    console.log("F5 pressed, removing player.");
+    key = null;
+    keyCode = null;
+  }
+
   if (player !== undefined && player.playerAlreadyStarted === false) {
     player.startPlayer();
   }
