@@ -641,7 +641,7 @@ function draw() {
       player.hitGround = hitGround;
       player.update();
     }
-    if (player.positionY !== bird.y && !hitGround) {
+    if (player.positionY !== bird.y) {
       player.positionY = bird.y;
       player.update();
     }
@@ -851,7 +851,7 @@ function draw() {
             otherPlayer.x = x - newWidthAdded / 2;
           }
 
-          if (player2hitGround === true && player2gamePlaying === "Voo Infinito") {
+          if (player2hitGround === true && player2gamePlaying === "Voo Infinito" && isMobile) {
             if (player2color === "Cinza") {
               otherPlayer.y = ground.y - 35 + 11;
             } else {
