@@ -55,7 +55,7 @@ var game = "notselected";
 
 var windowResizeX = true, windowResizeY = false;
 
-var version = 1.22296, mostRecentVersion = null, reloadButton,
+var version = 1.22297, mostRecentVersion = null, reloadButton,
   LatestUpdatePlatformsAimed = ""/* PC, Mobile, Android, iPhone, iPad, iPhoneXR, All */;//1.22295
 
 var infiniteflightbutton, infiniteracebutton;
@@ -95,14 +95,15 @@ var AutoCrouchTime = 0750, MobileUnCrouchMode = "press"/* press, automatic */, c
 
 var scoreText, highscoreText;
 
-var player, playerCount, database, MaxOfPlayers = 3, allPlayers;
+var player, playerCount, MultiplayerCircleColor = "blue", database, MaxOfPlayers = 3, allPlayers;
 
 var player2, player3, player4, player5, player6, player7, player8, player9, player10,
   player2text, player3text,
   player2color = "Cinza", player3color = "Cinza",
   player2isCrouching = false, player3isCrouching = false,
   player2isGameover = false, player3isGameover = false,
-  player2gamePlaying, player3gamePlaying;
+  player2gamePlaying, player3gamePlaying,
+  player2hitGround, player3hitGround;
 
 var multiplayerToggle, multiplayerToggleValue = false, nameInput;
 
@@ -237,7 +238,7 @@ function setup() {
     invisibleGroundPosY = height - 5 + 10 - 75;//height - 5 + 10 //height - 5 + 25
   }
 
-  console.log("invisibleGroundPosY: " + invisibleGroundPosY);
+  //console.log("invisibleGroundPosY: " + invisibleGroundPosY);
 
   if (userAgent.match(/chrome|chromium|crios/i)) {
     //browserName = "chrome";
@@ -559,6 +560,14 @@ function setup() {
 }
 
 function draw() {
+  if (TrexColorido == true && Isday == true) {
+    background('cyan');
+  } else if (TrexColorido == false && Isday == true) {
+    background('white');
+  } else if (TrexColorido !== false && TrexColorido !== true && Isday == true) {
+    background('white');
+  }
+
   if (player !== undefined && player.playerAlreadyStarted === false) {
     player.startPlayer();
   }
@@ -604,8 +613,35 @@ function draw() {
     player.getCount();
   }
 
+  if (player !== undefined && player.gamePlaying !== game) {
+    player.gamePlaying = game;
+    player.update();
+  }
+
+  if (player !== undefined && game !== "notselected") {
+    if (player.score !== score) {
+      player.score = score;
+      player.update();
+    }
+    if (player.highscore !== highscore) {
+      player.highscore = highscore;
+      player.update();
+    }
+    if (gamestate === END && player.isGameover !== true) {
+      player.isGameover = true;
+      player.update();
+    } else if (gamestate === PLAY && player.isGameover !== false) {
+      player.isGameover = false;
+      player.update();
+    }
+  }
+
   if (player !== undefined && game == "Voo Infinito") {
-    if (player.positionY !== bird.y) {
+    if (player.hitGround !== hitGround) {
+      player.hitGround = hitGround;
+      player.update();
+    }
+    if (player.positionY !== bird.y && !hitGround) {
       player.positionY = bird.y;
       player.update();
     }
@@ -767,27 +803,14 @@ function draw() {
     //  player.update();
     //}
   }
-  if (player !== undefined && game !== "notselected") {
-    if (player.score !== score) {
-      player.score = score;
-      player.update();
-    }
-    if (player.highscore !== highscore) {
-      player.highscore = highscore;
-      player.update();
-    }
-    if (gamestate === END && player.isGameover !== true) {
-      player.isGameover = true;
-      player.update();
-    } else if (gamestate === PLAY && player.isGameover !== false) {
-      player.isGameover = false;
-      player.update();
-    }
-  }
 
-  if (player !== undefined && player.gamePlaying !== game) {
-    player.gamePlaying = game;
-    player.update();
+  if (player !== undefined && playerCount > 1 && game === "Voo Infinito") {
+    push();
+    fill(MultiplayerCircleColor);
+    stroke("white");
+    strokeWeight(1);
+    ellipse(bird.x - 5, bird.y, 50, 50);
+    pop();
   }
 
   /*if(playerCount === 2 && player !== undefined && player3.visible !== true){
@@ -819,6 +842,7 @@ function draw() {
           player2isGameover = allPlayers[plr].isGameover;
           player2color = allPlayers[plr].color;
           player2gamePlaying = allPlayers[plr].gamePlaying;
+          player2hitGround = allPlayers[plr].hitGround;
 
           otherPlayer.y = y;
           if (initialWidth == width) {
@@ -826,6 +850,15 @@ function draw() {
           } else {
             otherPlayer.x = x - newWidthAdded / 2;
           }
+
+          if (player2hitGround === true && player2gamePlaying === "Voo Infinito") {
+            if (player2color === "Cinza") {
+              otherPlayer.y = ground.y - 35 + 11;
+            } else {
+              otherPlayer.y = ground.y - 35 + 7.5;
+            }
+          }
+
           otherPlayer.rotation = allPlayers[plr].rotation;
           //console.log("player2.y:"+otherPlayer.y, ", player2.rotation:"+otherPlayer.rotation);
           if (gamestate !== SELECT && player2gamePlaying === game) {
@@ -860,6 +893,7 @@ function draw() {
           player3isGameover = allPlayers[plr].isGameover;
           player3color = allPlayers[plr].color;
           player3gamePlaying = allPlayers[plr].gamePlaying;
+          player3hitGround = allPlayers[plr].hitGround;
 
           otherPlayer.y = y;
           if (initialWidth == width) {
@@ -867,6 +901,15 @@ function draw() {
           } else {
             otherPlayer.x = x - newWidthAdded / 2;
           }
+
+          if (player3hitGround === true && player3gamePlaying === "Voo Infinito") {
+            if (player3color === "Cinza") {
+              otherPlayer.y = ground.y - 35 + 11;
+            } else {
+              otherPlayer.y = ground.y - 35 + 7.5;
+            }
+          }
+
           otherPlayer.rotation = allPlayers[plr].rotation;
           //console.log("player3.y:"+otherPlayer.y, ", player3.rotation:"+otherPlayer.rotation);
           if (gamestate !== SELECT && player3gamePlaying === game) {
@@ -1091,13 +1134,15 @@ function draw() {
       restart.y = invisibleGroundPosY - 50 - newHeightAdded / 2;//140 - newHeightAdded / 2
     }
   }
-  if (TrexColorido == true && Isday == true) {
+
+  /*if (TrexColorido == true && Isday == true) {
     background('cyan');
   } else if (TrexColorido == false && Isday == true) {
     background('white');
   } else if (TrexColorido !== false && TrexColorido !== true && Isday == true) {
     background('white');
-  }
+  }*/
+
   if (mostRecentVersion !== null && mostRecentVersion > version) {
     console.log('This is not the most Recent Version.');
   }
@@ -2209,7 +2254,7 @@ function draw() {
   } else if (game == "Voo Infinito" && gamestate == END) {
     if (hitGround == true) {
       bird.rotation = 0;
-      hitGround = false;
+      //hitGround = false;
     }
     if (TrexColorido == false) {
       //birdG.setAnimationEach("birdimgleft", birdimgleft);
@@ -2613,6 +2658,7 @@ function reset() {
   getState();
   //}
   bird.rotation = 0;
+  hitGround = false;
   crouchAfterJumping = false;
   gamestate = PLAY;
   //setDinosaurColor();
