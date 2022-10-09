@@ -864,9 +864,9 @@ function draw() {
           if (gamestate !== SELECT && player2gamePlaying === game) {
             otherPlayer.visible = true;
             if (game === "Voo Infinito") {
-              player2text.position(x - 25, y - 30);
+              player2text.position(x - 25, otherPlayer.y - 30);
             } else if (game === "Corrida Infinita") {
-              player2text.position(x - 20, y - 35);
+              player2text.position(x - 20, otherPlayer.y - 35);
             }
             player2text.html(allPlayers[plr].name + "<br>" + allPlayers[plr].score + "<br>HI "
               + allPlayers[plr].highscore);
@@ -915,9 +915,9 @@ function draw() {
           if (gamestate !== SELECT && player3gamePlaying === game) {
             otherPlayer.visible = true;
             if (game === "Voo Infinito") {
-              player3text.position(x - 25, y - 30);
+              player3text.position(x - 25, otherPlayer.y - 30);
             } else if (game === "Corrida Infinita") {
-              player3text.position(x - 20, y - 35);
+              player3text.position(x - 20, otherPlayer.y - 35);
             }
             player3text.html(allPlayers[plr].name + "<br>" + allPlayers[plr].score + "<br>HI "
               + allPlayers[plr].highscore);
