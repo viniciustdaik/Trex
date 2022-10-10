@@ -41,7 +41,6 @@ var TrexColorido = "notselected", sand;
 var coloridobuttonover = false, normalbuttonover = true;
 var trexfont;
 
-
 var ShowBestHighscore = false, ShowBestHighscoresButton,
   ShowBestHighscoreActive = false, BestHighscores, ShowBestHighscoresButtonShadow,
   ShowBestHighscoresButtonHitbox;
@@ -218,15 +217,7 @@ function preload() {
 
 function setup() {
   //Criação da área do jogo.
-  var windowOrDisplayWidth, windowOrDisplayHeight;
-  if (isMobile) {
-    windowOrDisplayWidth = displayWidth;
-    windowOrDisplayHeight = displayHeight;
-  } else {
-    windowOrDisplayWidth = windowWidth;
-    windowOrDisplayHeight = windowHeight;
-  }
-  createCanvas(windowOrDisplayWidth - 2.3, windowOrDisplayHeight - 2.5);
+  createCanvas(windowWidth - 2.3, windowHeight - 2.5);
   //600, 200 //windowWidth - 2.3, windowHeight - 2.5
 
   database = firebase.database();
