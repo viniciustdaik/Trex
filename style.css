@@ -1,13 +1,10 @@
 html,
-
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   overflow-block: hidden;
   overflow-y: hidden;
-  height: -webkit-fill-available;
-  width: -webkit-fill-available;
 }
 
 ::-webkit-scrollbar {
