@@ -1,10 +1,14 @@
-html, body {
+html,
+body {
   margin: 0;
-  padding:0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 ::-webkit-scrollbar {
   display: none;
+
 }
 
 canvas {
@@ -13,7 +17,7 @@ canvas {
 
 }
 
-.crouchbutton{
+.crouchbutton {
   width: 70px;
   height: 70px;
   border-radius: 35px;
@@ -25,12 +29,15 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
-  transition-duration: 0.0s;/*0.4s*/
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  /*0.4s*/
+  transition-duration: 0.0s;
+  /*0.4s*/
   outline: none;
 }
 
-.largebuttonC{
+.largebuttonC {
   width: 360px;
   height: 70px;
   border-radius: 35px;
@@ -44,12 +51,13 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   outline: none;
 }
 
-.largebuttonN{
+.largebuttonN {
   width: 360px;
   height: 70px;
   border-radius: 35px;
@@ -63,12 +71,13 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   outline: none;
 }
 
-.squarebuttonIR{
+.squarebuttonIR {
   width: 150px;
   height: 150px;
   border-radius: 35px;
@@ -82,12 +91,13 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   outline: none;
 }
 
-.squarebuttonIF{
+.squarebuttonIF {
   width: 150px;
   height: 150px;
   border-radius: 35px;
@@ -101,12 +111,13 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   outline: none;
 }
 
-.BestHighscoresButton{
+.BestHighscoresButton {
   background-image: url('./imagens-de-pontuacao/highscore.png');
   border-width: 1.5px;
   border-color: #000000;
@@ -115,7 +126,7 @@ canvas {
   background-repeat: no-repeat;
 }
 
-.TrashButton{
+.TrashButton {
   background-image: url('./trash.png');
   border-width: 1.5px;
   border-color: #000000;
@@ -124,20 +135,21 @@ canvas {
   background-repeat: no-repeat;
 }
 
-.reloadButton{
+.reloadButton {
   border-radius: 5%;
   border-width: 1.5px;
   border-color: #000000;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   color: red;
   background-color: #000000;
 }
 
-.crouchbuttonBackground{
+.crouchbuttonBackground {
   width: 70px;
   height: 70px;
   border-radius: 35px;
@@ -148,12 +160,15 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: auto;
-  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
-  transition-duration: 0.0s;/*0.4s*/
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  /*0.4s*/
+  transition-duration: 0.0s;
+  /*0.4s*/
   outline: none;
 }
 
-.crouchbuttonBackgroundIMG{
+.crouchbuttonBackgroundIMG {
   width: 50px;
   height: 50px;
   border-radius: 35px;
@@ -164,15 +179,18 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: auto;
-  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
-  transition-duration: 0.0s;/*0.4s*/
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  /*0.4s*/
+  transition-duration: 0.0s;
+  /*0.4s*/
   outline: none;
   border-color: #000000;
   outline-color: #000000;
 }
 
-.crouchbuttongreentrex{
-  width:70px;
+.crouchbuttongreentrex {
+  width: 70px;
   height: 70px;
   border-radius: 35px;
   background-image: url('./trex/greencrouchimgbutton.png');
@@ -183,13 +201,16 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
-  transition-duration: 0.0s;/*0.4s*/
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  /*0.4s*/
+  transition-duration: 0.0s;
+  /*0.4s*/
   outline: none;
 }
 
-.crouchbuttonbrowntrex{
-  width:70px;
+.crouchbuttonbrowntrex {
+  width: 70px;
   height: 70px;
   border-radius: 35px;
   background-image: url('./trex/browncrouchimgbutton.png');
@@ -200,18 +221,21 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */ /*0.4s*/
-  transition-duration: 0.0s;/*0.4s*/
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  /*0.4s*/
+  transition-duration: 0.0s;
+  /*0.4s*/
   outline: none;
 }
 
-.multiplayerToggle{
+.multiplayerToggle {
   width: 360px;
   height: 70px;
   border-radius: 25px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./multiplayer1.png');
+  background-image: url('./multiplayer2.png');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -221,20 +245,23 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   outline: none;
 }
 
-.nameInput{
+.nameInput {
   width: 338px;
   height: 20px;
   border-radius: 13px;
   border-width: 1.5px;
   font-size: 30px;
   color: #ABC201;
-  border-color: lavender;/*#AB4920*/
-  background: #AB4920;/*lavender*/
+  border-color: lavender;
+  /*#AB4920*/
+  background: #AB4920;
+  /*lavender*/
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -243,12 +270,13 @@ canvas {
   justify-content: center;
   padding: 10px;
   display: inline-block;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   outline: none;
 }
 
-.backButton{
+.backButton {
   border-radius: 5px;
   border-width: 1.5px;
   border-color: #000000;
@@ -262,7 +290,8 @@ canvas {
   padding: 10px;
   display: inline-block;
   cursor: pointer;
-  -webkit-transition-duration: 0.0s; /* Safari */
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
   transition-duration: 0.0s;
   outline: none;
 }
