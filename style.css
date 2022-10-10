@@ -5,6 +5,8 @@ body {
   overflow-x: hidden;
   overflow-block: hidden;
   overflow-y: hidden;
+  height: -webkit-fill-available;
+  width: -webkit-fill-available;
 }
 
 ::-webkit-scrollbar {
