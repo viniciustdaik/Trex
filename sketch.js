@@ -225,15 +225,13 @@ function setup() {
     windowOrDisplayWidth = windowWidth;
     windowOrDisplayHeight = windowHeight;
   }
-  createCanvas(windowOrDisplayWidth - 2.3, windowOrDisplayWidth - 2.5);
+  createCanvas(windowOrDisplayWidth - 2.3, windowOrDisplayHeight - 2.5);
   //600, 200 //windowWidth - 2.3, windowHeight - 2.5
 
   database = firebase.database();
 
   initialWidth = width;
   initialHeight = height;
-
-  let userAgent = navigator.userAgent;
 
   if (width > height) {
     mostOfTheScreen = "width";
@@ -248,6 +246,8 @@ function setup() {
   }
 
   //console.log("invisibleGroundPosY: " + invisibleGroundPosY);
+
+  let userAgent = navigator.userAgent;
 
   if (userAgent.match(/chrome|chromium|crios/i)) {
     //browserName = "chrome";
