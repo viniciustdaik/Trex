@@ -41,6 +41,7 @@ var TrexColorido = "notselected", sand;
 var coloridobuttonover = false, normalbuttonover = true;
 var trexfont;
 
+
 var ShowBestHighscore = false, ShowBestHighscoresButton,
   ShowBestHighscoreActive = false, BestHighscores, ShowBestHighscoresButtonShadow,
   ShowBestHighscoresButtonHitbox;
