@@ -217,7 +217,7 @@ function preload() {
 
 function setup() {
   //Criação da área do jogo.
-  createCanvas(windowWidth - 2.3, windowHeight - 2.5);//600, 200
+  createCanvas(windowWidth - 2.3, windowHeight - 2.5);//600, 200 //windowWidth - 2.3, windowHeight - 2.5
 
   database = firebase.database();
 
@@ -560,20 +560,20 @@ function setup() {
 }
 
 function draw() {
-  if (TrexColorido == true && Isday == true) {
-    background('cyan');
-  } else if (TrexColorido == false && Isday == true) {
-    background('white');
-  } else if (TrexColorido !== false && TrexColorido !== true && Isday == true) {
-    background('white');
-  }
-
   if (keyCode == "116" && player !== undefined
     || key == "F5" && player !== undefined) {
     player.removeThisPlayer(false, true);
     console.log("F5 pressed, removing player.");
     key = null;
     keyCode = null;
+  }
+
+  if (TrexColorido == true && Isday == true) {
+    background('cyan');
+  } else if (TrexColorido == false && Isday == true) {
+    background('white');
+  } else if (TrexColorido !== false && TrexColorido !== true && Isday == true) {
+    background('white');
   }
 
   if (player !== undefined && player.playerAlreadyStarted === false) {
