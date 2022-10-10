@@ -217,7 +217,16 @@ function preload() {
 
 function setup() {
   //Criação da área do jogo.
-  createCanvas(windowWidth - 2.3, windowHeight - 2.5);//600, 200 //windowWidth - 2.3, windowHeight - 2.5
+  var windowOrDisplayWidth, windowOrDisplayHeight;
+  if (isMobile) {
+    windowOrDisplayWidth = displayWidth;
+    windowOrDisplayHeight = displayHeight;
+  } else {
+    windowOrDisplayWidth = windowWidth;
+    windowOrDisplayHeight = windowHeight;
+  }
+  createCanvas(windowOrDisplayWidth - 2.3, windowOrDisplayWidth - 2.5);
+  //600, 200 //windowWidth - 2.3, windowHeight - 2.5
 
   database = firebase.database();
 
