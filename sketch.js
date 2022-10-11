@@ -577,16 +577,18 @@ function draw() {
     background('white');
   }
 
+  if (backButtonOnPC === true && !isMobile && backButton.x !== width - 55 && gamestate !== SELECT) {
+    backButton.position(width - 55, height - 55);
+  } else if (backButtonOnPC === false && !isMobile && backButton.x !== width - width - width - 1000) {
+    backButton.position(width - width - width - 1000, -500);
+  }
+
   if (player !== undefined && player.playerAlreadyStarted === false) {
     player.startPlayer();
   }
 
   if (player !== undefined && playerCount === 2 && player.index === 3) {
     player.changePlayerIndex();
-  }
-
-  if (backButtonOnPC === true && !isMobile && backButton.x !== width - 55 && gamestate !== SELECT) {
-    backButton.position(width - 55, height - 55);
   }
 
   if (playerCount > MaxOfPlayers && player !== undefined
@@ -2183,14 +2185,12 @@ function draw() {
     if (dinosaurcolor == "notselected" && game == "Voo Infinito") {
       setBirdColor();
     }
-    if (keyDown("space") ||//&&!mouseIsOver(crouchbutton)||
-      keyDown('W') ||//&&!mouseIsOver(crouchbutton)||
-      keyDown("UP_ARROW") ||//&&!mouseIsOver(crouchbutton)||
+    if (keyDown("space") ||
+      keyDown('W') ||
+      keyDown("UP_ARROW") ||
       touches.length > 0) {
-      //&& !mouseIsOver(crouchbutton)){
       touches = [];
       bird.velocityY = -10;
-      //trexIsJumping = true;
     }
     bird.velocityY = bird.velocityY + 0.8;
     if (birdIsFalling == false && bird.velocityY > 0) {
@@ -2458,6 +2458,7 @@ function createclouds() {
     cloud.depth = gameover.depth;
     gameover.depth = gameover.depth + 1;
     trex.depth = gameover.depth;
+    bird.depth = gameover.depth;
     gameover.depth = gameover.depth + 1;
     cloudG.add(cloud);
     if (game == "Corrida Infinita") {
