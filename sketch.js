@@ -117,6 +117,12 @@ var canPlayMultiplayer = true;
 
 var invisibleGroundPositionOfTheScreen = "bottom", invisibleGroundPosY;
 
+var hearts = [], fullHeartImg, halfHeartImg, emptyHeartImg, heartsSprite, heartsNumber = 3, heartsLeft = 0,
+  canSurpassHeartsSpriteArea = false, showTheOnlyOneHeart = false, showHearts = true, invencible = false,
+  invencibleDuration = 0650;
+
+var lobbyCodeInput, lobbyCodeButton, lobbyIndex;
+
 function preload() {
   soundFormats('mp3');
 
@@ -203,6 +209,11 @@ function preload() {
   //crouchbuttonimg = loadImage("down_arrow.png");
   staranim = loadAnimation("./imagens-de-fundo/star1.png",
     "./imagens-de-fundo/star2.png", "./imagens-de-fundo/star3.png");
+
+  emptyHeartImg = loadImage("./hearts/emptyHeart.png");
+  halfHeartImg = loadImage("./hearts/halfHeart.png");
+  fullHeartImg = loadImage("./hearts/fullHeart.png");
+
   trexfont = loadFont("./Trex.ttf");
 
   //Sounds
@@ -525,6 +536,12 @@ function setup() {
   backButton.size(50, 50);
   backButton.mousePressed(handleBack);
 
+  //x: invisibleground.x //110
+  heartsSprite = createSprite(invisibleground.x - 80, invisibleGroundPosY + 35, 200, 65);
+  heartsSprite.visible = false;
+
+  handleHearts(/*3, */true);
+
   getState();
 
   if (allMultiplayerClientsReload === true) {
@@ -548,7 +565,17 @@ function setup() {
   nameInput.style('background', 'lavender');
   nameInput.style('border-radius', '13px');*/
   nameInput.class("nameInput");
-
+  /*
+    lobbyCodeInput = createInput("").attribute("placeholder", "Código");
+    //lobbyCodeInput.position(width - width - width - 1000, -500);
+    lobbyCodeInput.position(width / 2, height - 100);
+    lobbyCodeInput.class("nameInput");
+  
+    lobbyCodeButton = createButton("Play");
+    //lobbyCodeButton.position(width - width - width - 1000, -500);
+    lobbyCodeButton.position(width / 2, height - 250);
+    lobbyCodeButton.class("lobbyCodeButton");
+  */
   player2text = createElement("h2");
   player2text.style("font-size", '15px');
   player2text.style("color", 'darkgray');//gold
@@ -567,6 +594,43 @@ function draw() {
     console.log("F5 pressed, removing player.");
     key = null;
     keyCode = null;
+  }
+
+  if (initialWidth !== width) {
+    if (game === "Corrida Infinita" && heartsSprite.x !== invisibleground.x - 80) {// - newWidthAdded / 2) {
+      heartsSprite.x = invisibleground.x - 80;// - newWidthAdded / 2;
+      if (hearts !== []) {
+        for (var h = 0; h < hearts.length; h = h + 1) {
+          hearts[h].x = hearts[h].x - newWidthAdded / 2;
+          console.log("EEEE");
+        }
+      }
+    } else if (game === "Voo Infinito" && heartsSprite.x !== invisibleground.x + 20) {// - newWidthAdded / 2) {
+      heartsSprite.x = invisibleground.x + 20;// - newWidthAdded / 2;
+      if (hearts !== []) {
+        for (var h = 0; h < hearts.length; h = h + 1) {
+          hearts[h].x = hearts[h].x - newWidthAdded / 2;
+          console.log("EEE");
+        }
+      }
+    }
+
+    if (/*heartsXFixed === false && */newWidthAdded !== undefined) {
+      //handleHearts(false, true);
+      //in windowResized function
+
+      /*for (var h = 0; h < hearts.length; h = h + 1) {
+        //heartsXFixed = true
+
+        //if (game === "Corrida Infinita") {
+        //  hearts[h].x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.45;// -
+        //newWidthAdded / h * 7.5;
+        //} else if (game === "Voo Infinito") {
+        hearts[h].x = hearts[h].x - newWidthAdded / 2;// -
+        //newWidthAdded * h / 5.2;
+        //}
+      }*/
+    }
   }
 
   if (TrexColorido == true && Isday == true) {
@@ -643,6 +707,10 @@ function draw() {
       player.update();
     } else if (gamestate === PLAY && player.isGameover !== false) {
       player.isGameover = false;
+      player.update();
+    }
+    if (player.hearts !== heartsLeft) {
+      player.hearts = heartsLeft;
       player.update();
     }
   }
@@ -907,7 +975,7 @@ function draw() {
           player3hitGround = allPlayers[plr].hitGround;
 
           otherPlayer.y = y;
-          if (initialWidth == width) {
+          if (initialWidth === width) {
             otherPlayer.x = x;
           } else {
             otherPlayer.x = x - newWidthAdded / 2;
@@ -1308,6 +1376,8 @@ function draw() {
   textSize(15);
   textFont(trexfont);
   if (gamestate !== SELECT) {
+    handleHearts(false);
+
     var BestHighscoresY = 25 - 35;
     var BestHighscoresX;
     if (initialWidth == width) {
@@ -1441,8 +1511,8 @@ function draw() {
         gameover.y = invisibleGroundPosY - 90 - newHeightAdded / 2;//100 - newHeightAdded / 2
         restart.y = invisibleGroundPosY - 50 - newHeightAdded / 2;//140 - newHeightAdded / 2
       }
-    } else if (game == "Voo Infinito") {
-      if (initialHeight == height) {
+    } else if (game === "Voo Infinito") {
+      if (initialHeight === height) {
         restart.y = height / 2 + 40;
         gameover.y = height / 2;
       } else {
@@ -1451,8 +1521,20 @@ function draw() {
       }
     }
 
-    if (initialWidth !== width) {
-      highscoreS.x = 50 - newWidthAdded / 2;//100 - newWidthAdded / 2;
+    if (initialWidth === width) {
+      if (game === "Corrida Infinita") {
+        highscoreS.x = 50;//100 - newWidthAdded / 2;
+      } else if (game === "Voo Infinito") {
+        highscoreS.x = width / 2 - 17;
+      }
+
+    } else {
+      if (game === "Corrida Infinita") {
+        highscoreS.x = 50 - newWidthAdded / 2;//100 - newWidthAdded / 2;
+      } else if (game === "Voo Infinito") {
+        highscoreS.x = width / 2 - newWidthAdded / 2 - 17;
+      }
+
       if (player === undefined) {
         trex.x = 50 - newWidthAdded / 2;
       } else {
@@ -1462,26 +1544,9 @@ function draw() {
           trex.x = 30 - newWidthAdded / 2;
         }
       }
+    }
 
-    }
-    if (initialHeight == height) {
-      highscoreS.y = 33;
-    } else {
-      highscoreS.y = 33 - newHeightAdded / 2;
-    }
-    if (initialHeight == height) {
-      text(highscore, highscoreS.x + 25, 42);
-    } else {
-      text(highscore, highscoreS.x + 25, 42 - newHeightAdded / 2);
-    }
-    textAlign("center");
-    if (initialHeight == height) {
-      //text("PONTUAÇÃO: "+score)
-      text("PONTOS: " + score, highscoreS.x + 45, 20);//500
-    } else {
-      //text("PONTUAÇÃO: "+score)
-      text("PONTOS: " + score, highscoreS.x + 45, 20 - newHeightAdded / 2);
-    }
+    //textAlign("center");
   }
   textAlign("center");
   //if(Isnight == false){
@@ -1611,14 +1676,26 @@ function draw() {
     }*/
     //console.log(trex.y);
     if (gamestate == PLAY) {
-      if (crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && !isMobile && mostOfTheScreen == "width"
-        || crouchbutton.y !== 5 && trexIsJumping == false && !isMobile && mostOfTheScreen == "width"
-        || crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && isMobile && mostOfTheScreen == "width"
-        || crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen == "width") {
+      var crouchButtonX;
+      if (showHearts === false
+        || showHearts === true && showTheOnlyOneHeart === true && heartsNumber === 1) {
+        crouchButtonX = width / 2 - 35;
+      } else if (showHearts === true && heartsNumber > 2 && mostOfTheScreen === "height"
+        && hearts !== []) {
+        if (hearts.length === 3) {
+          crouchButtonX = width / 2 - 35 + 35;
+        } else if (hearts.length > 3) {
+          crouchButtonX = hearts[hearts.length - 1].x + 35;
+        }
+      }
+      if (crouchbutton.x !== crouchButtonX && trexIsJumping == false && !isMobile && mostOfTheScreen === "width"
+        || crouchbutton.y !== 5 && trexIsJumping == false && !isMobile && mostOfTheScreen === "width"
+        || crouchbutton.x !== crouchButtonX && trexIsJumping == false && isMobile && mostOfTheScreen === "width"
+        || crouchbutton.y !== 5 && trexIsJumping == false && isMobile && mostOfTheScreen === "width") {
         if (isMobile || !isMobile && crouchbuttonOnPC == true) {
-          crouchbuttonHitbox.x = width / 2 - 35 + 34;
+          crouchbuttonHitbox.x = crouchButtonX + 34;
           crouchbuttonHitbox.y = 5 + 35;
-          crouchbutton.position(width / 2 - 35, 5);
+          crouchbutton.position(crouchButtonX, 5);
           if (crouchbuttonHitbox.x !== crouchbutton.x + 34 || crouchbuttonHitbox.y !== crouchbutton.y + 35) {
             crouchbuttonHitbox.x = crouchbutton.x + 34;
             crouchbuttonHitbox.y = crouchbutton.y + 35;
@@ -1637,16 +1714,16 @@ function draw() {
         // === "height"
       } else if (crouchbutton.x !== invisibleground.y + 50 && trexIsJumping == false
         && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
-        || crouchbutton.x !== width / 2 - 35 && trexIsJumping == false && isMobile == true
+        || crouchbutton.x !== crouchButtonX && trexIsJumping == false && isMobile == true
         && mostOfTheScreen == "height" //isIPhoneXR
-        || crouchbutton.x !== width / 2 - 35 && !isMobile && crouchbuttonOnPC == true
+        || crouchbutton.x !== crouchButtonX && !isMobile && crouchbuttonOnPC == true
         && mostOfTheScreen == "height"
         || crouchbutton.y !== invisibleground.y + 0 /* invisibleground.y + 50 */
         && !isMobile && crouchbuttonOnPC == true
         && mostOfTheScreen == "height") {
-        crouchbuttonHitbox.x = width / 2 - 35 + 34;
+        crouchbuttonHitbox.x = crouchButtonX + 34;
         crouchbuttonHitbox.y = invisibleground.y + 50 + 35;
-        crouchbutton.position(width / 2 - 35, invisibleground.y + 0);
+        crouchbutton.position(crouchButtonX, invisibleground.y + 0);
         if (crouchbuttonHitbox.x !== crouchbutton.x + 34 || crouchbuttonHitbox.y !== crouchbutton.y + 35) {
           crouchbuttonHitbox.x = crouchbutton.x + 34;
           crouchbuttonHitbox.y = crouchbutton.y + 35;
@@ -1672,26 +1749,26 @@ function draw() {
         || isMobile && trexIsJumping == true
         && MobileCrouchMode == "ifNotJumpingAndPressed") {//crouchbutton.x !== width / 2-35 && trexIsJumping == true
         //||crouchbutton.y !== -350 && trexIsJumping == true){
-        crouchbutton.position(width / 2 - 35, -350);
+        crouchbutton.position(crouchButtonX, -350);
         if (crouchbuttonbackgroundimage.y !== invisibleground.y + 50
           && isMobile == true && mostOfTheScreen == "height" //isIPhoneXR
-          || crouchbuttonbackgroundimage.x !== width / 2 - 35 && isMobile == true
+          || crouchbuttonbackgroundimage.x !== crouchButtonX && isMobile == true
           && mostOfTheScreen == "height"
-          || crouchbuttonbackgroundimage.x !== width / 2 - 35 && !isMobile && crouchbuttonOnPC == true
+          || crouchbuttonbackgroundimage.x !== crouchButtonX && !isMobile && crouchbuttonOnPC == true
           && mostOfTheScreen == "height"
           || crouchbuttonbackgroundimage.y !== invisibleground.y + 50 && !isMobile && crouchbuttonOnPC == true
           && mostOfTheScreen == "height") {
-          crouchbuttonbackgroundimage.position(width / 2 - 35, invisibleground.y + 50);
+          crouchbuttonbackgroundimage.position(crouchButtonX, invisibleground.y + 50);
         }
-        if (crouchbuttonbackgroundimage.x !== width / 2 - 35 && !isMobile && mostOfTheScreen == "width"
+        if (crouchbuttonbackgroundimage.x !== crouchButtonX && !isMobile && mostOfTheScreen == "width"
           && crouchbuttonOnPC == true
           || crouchbuttonbackgroundimage.y !== 5 && !isMobile && mostOfTheScreen == "width"
           && crouchbuttonOnPC == true
-          || crouchbuttonbackgroundimage.x !== width / 2 - 35 && isMobile
+          || crouchbuttonbackgroundimage.x !== crouchButtonX && isMobile
           && mostOfTheScreen == "width"
           || crouchbuttonbackgroundimage.y !== 5 && isMobile
           && mostOfTheScreen == "width") {
-          crouchbuttonbackgroundimage.position(width / 2 - 35, 5);
+          crouchbuttonbackgroundimage.position(crouchButtonX, 5);
         }
         if (crouchbuttonclass == "crouchbutton") {
           //crouchbutton.class("crouchbuttonBackground");
@@ -1702,7 +1779,7 @@ function draw() {
         || crouchbuttonclass == "crouchbuttongreentrex" && dinosaurcolor !== "Verde"
         || crouchbuttonclass == "crouchbuttonbrowntrex" && dinosaurcolor !== "Marrom"
         || trexIsJumping == false && crouchbuttonbackgroundimage.y !== -350
-        || trexIsJumping == false && crouchbuttonbackgroundimage.x !== width / 2 - 35) {
+        || trexIsJumping == false && crouchbuttonbackgroundimage.x !== crouchButtonX) {
         if (dinosaurcolor == "Cinza") {
           crouchbutton.class("crouchbutton");
           crouchbuttonclass = "crouchbutton";
@@ -1715,12 +1792,12 @@ function draw() {
         }
         //crouchbuttonclass = "crouchbutton";
         if (trexIsJumping == false) {
-          crouchbuttonbackgroundimage.position(width / 2 - 35, -350);
+          crouchbuttonbackgroundimage.position(crouchButtonX, -350);
         }
       } else if (!isMobile && crouchbuttonOnPC == false
         || !isMobile && crouchbuttonOnPC == false) {
-        crouchbutton.position(width / 2 - 35, -350);
-        crouchbuttonbackgroundimage.position(width / 2 - 35, -350);
+        crouchbutton.position(crouchButtonX, -350);
+        crouchbuttonbackgroundimage.position(crouchButtonX, -350);
       }
 
       //if(crouchbuttonHitbox.x !== crouchbutton.x + 34
@@ -2112,12 +2189,27 @@ function draw() {
       createcactu();
       createclouds();
       createbird();
-      if (cactuG.isTouching(trex) && trexIsInvencibleCactus == false
-        || birdG.isTouching(trex) && trexIsInvencibleBirds == false) {
+      if (cactuG.isTouching(trex) && trexIsInvencibleCactus === false && invencible === false
+        || birdG.isTouching(trex) && trexIsInvencibleBirds === false && invencible === false) {
+        invencible = true;
+
+
         //trex.velocityY = -10;
         //jumpsound.play();
-        gamestate = END;
-        failsound.play();
+
+        heartsLeft = heartsLeft - 1;
+        console.log("heartsLeft: " + heartsLeft);
+
+        setTimeout(() => {
+          if (invencible === true) {
+            invencible = false;
+          }
+        }, invencibleDuration);
+
+        if (heartsLeft <= 0) {
+          gamestate = END;
+          failsound.play();
+        }
       }
     }
     else if (gamestate == END) {
@@ -2214,50 +2306,86 @@ function draw() {
     }
     console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
     //console.log("Flying: "+birdIsFlying);
-    if (bird.isTouching(birdG) && birdIsInvencibleBirds == false || bird.y < -10) {
-      failsound.play();
+    if (bird.isTouching(birdG) && birdIsInvencibleBirds === false && invencible === false
+      || bird.y < -10 && invencible === false) {
+      invencible = true;
+      console.log("invencible: " + invencible);
+
+      if (bird.y < -10) {
+        bird.y = 160;
+      }
+
+      heartsLeft = heartsLeft - 1;
+      console.log("heartsLeft: " + heartsLeft);
+
+      setTimeout(() => {
+        if (invencible === true) {
+          invencible = false;
+        }
+      }, invencibleDuration);
+
       //if(birdcolor !== "Cinza"){//!== "Cinza"
       //bird.y = bird.y + 11;
       //}//else{
       //bird.y = bird.y + 7.5;
       //}
-      gamestate = END;
-      if (TrexColorido == true) {
-        if (birdcolor == "Cinza") {
+
+      if (heartsLeft <= 0) {
+        failsound.play();
+        gamestate = END;
+
+        if (TrexColorido == true) {
+          if (birdcolor == "Cinza") {
+            bird.changeAnimation("birdimgright", birdimgright);
+          }
+          if (birdcolor == "Verde") {
+            bird.changeAnimation("greenbirdimgright", greenbirdimgright);
+          }
+          if (birdcolor == "Marrom") {
+            bird.changeAnimation("brownbirdimgright", brownbirdimgright);
+          }
+        } else {
           bird.changeAnimation("birdimgright", birdimgright);
         }
-        if (birdcolor == "Verde") {
-          bird.changeAnimation("greenbirdimgright", greenbirdimgright);
-        }
-        if (birdcolor == "Marrom") {
-          bird.changeAnimation("brownbirdimgright", brownbirdimgright);
-        }
-      } else {
-        bird.changeAnimation("birdimgright", birdimgright);
       }
     }
-    else if (bird.collide(invisibleground) && birdIsInvencibleGround == false) {
-      hitGround = true;
-      failsound.play();
-      gamestate = END;
-      bird.y = ground.y - 35;
-      if (birdcolor !== "Cinza") {
-        bird.y = bird.y + 11;
-      } else {
-        bird.y = bird.y + 7.5;
-      }
-      if (TrexColorido == true) {
-        if (birdcolor == "Cinza") {
+    else if (bird.collide(invisibleground) && birdIsInvencibleGround === false && invencible === false) {
+      invencible = true;
+      bird.y = 160;
+      console.log("invencible: " + invencible);
+
+      heartsLeft = heartsLeft - 1;
+      console.log("heartsLeft: " + heartsLeft);
+
+      setTimeout(() => {
+        if (invencible === true) {
+          invencible = false;
+        }
+      }, invencibleDuration);
+
+      if (heartsLeft <= 0) {
+        hitGround = true;
+        failsound.play();
+        gamestate = END;
+        bird.y = ground.y - 35;
+        if (birdcolor !== "Cinza") {
+          bird.y = bird.y + 11;
+        } else {
+          bird.y = bird.y + 7.5;
+        }
+        if (TrexColorido == true) {
+          if (birdcolor == "Cinza") {
+            bird.changeAnimation("birdimgright", birdimgright);
+          }
+          if (birdcolor == "Verde") {
+            bird.changeAnimation("greenbirdimgright", greenbirdimgright);
+          }
+          if (birdcolor == "Marrom") {
+            bird.changeAnimation("brownbirdimgright", brownbirdimgright);
+          }
+        } else {
           bird.changeAnimation("birdimgright", birdimgright);
         }
-        if (birdcolor == "Verde") {
-          bird.changeAnimation("greenbirdimgright", greenbirdimgright);
-        }
-        if (birdcolor == "Marrom") {
-          bird.changeAnimation("brownbirdimgright", brownbirdimgright);
-        }
-      } else {
-        bird.changeAnimation("birdimgright", birdimgright);
       }
     }
   } else if (game == "Voo Infinito" && gamestate == END) {
@@ -2356,6 +2484,111 @@ function draw() {
   //}
 
   drawSprites();
+
+  if (gamestate !== SELECT) {
+    if (initialHeight === height) {
+      if (game === "Corrida Infinita") {
+        highscoreS.y = 33;
+      } else if (game === "Voo Infinito") {
+        highscoreS.y = 33 + 40;
+      }
+
+      if (game === "Corrida Infinita") {
+        text(highscore, highscoreS.x + 25, 42);
+      } else if (game === "Voo Infinito") {
+        text(highscore, highscoreS.x + 25, 42 + 40);
+      }
+
+      //text("PONTUAÇÃO: "+score)
+      if (game === "Corrida Infinita") {
+        push();
+        textAlign("center");
+        text("PONTOS: " + score, highscoreS.x + 45, 20);//500
+        pop();
+      } else if (game === "Voo Infinito") {
+        push();
+        textAlign("center");
+        textSize(45);
+        text(score, highscoreS.x + 17, 50);
+        pop();
+      }
+    } else {
+      if (game === "Corrida Infinita") {
+        highscoreS.y = 33 - newHeightAdded / 2;;
+      } else if (game === "Voo Infinito") {
+        highscoreS.y = 33 + 40 - newHeightAdded / 2;
+      }
+
+      if (game === "Corrida Infinita") {
+        text(highscore, highscoreS.x + 25, 42 - newHeightAdded / 2);
+      } else if (game === "Voo Infinito") {
+        text(highscore, highscoreS.x + 25, 42 + 40 - newHeightAdded / 2);
+      }
+
+      if (game === "Corrida Infinita") {
+        push();
+        textAlign("center");
+        text("PONTOS: " + score, highscoreS.x + 45, 20 - newHeightAdded / 2);//500
+        pop();
+      } else if (game === "Voo Infinito") {
+        push();
+        textAlign("center");
+        textSize(45);
+        text(score, highscoreS.x + 17, 50 - newHeightAdded / 2);
+        pop();
+      }
+
+      /*push();
+      textAlign("center");
+      //text("PONTUAÇÃO: "+score)
+      text("PONTOS: " + score, highscoreS.x + 45, 20 - newHeightAdded / 2);
+      pop();*/
+    }
+  }
+
+  if (invencible === true && heartsNumber > 1 && heartsLeft > 0 && gamestate === PLAY) {
+    var x, y, w, h;
+    if (game === "Corrida Infinita") {
+      x = trex.x - trex.x * 0.5;
+      y = trex.y - trex.x * 0.5;
+      w = 50;
+      h = 50;
+    } else if (game === "Voo Infinito") {
+      x = bird.x - bird.x * 1;
+      y = bird.y - bird.x * 1;
+      w = 100;
+      h = 100;
+    }
+    setTimeout(() => {
+      if (invencible === true && heartsNumber > 1 && heartsLeft > 0 && gamestate === PLAY) {
+        push();
+        noStroke();
+        fill("white");
+        rect(x, y, w, h);
+        pop();
+        //setTimeout(() => {
+        // if (trex.opacity !== 1) {
+        //    trex.opacity = 1;
+        //  }
+        //}, 0750);
+      }
+    }, 0150);
+
+    setTimeout(() => {
+      if (invencible === true && heartsNumber > 1 && heartsLeft > 1 && gamestate === PLAY) {
+        push();
+        noStroke();
+        fill("white");
+        rect(x, y, w, h);
+        pop();
+        //setTimeout(() => {
+        //  if (trex.opacity !== 0.65) {
+        //    trex.opacity = 0.65;
+        //  }
+        //}, 0250);
+      }
+    }, 0800);
+  }
 
   //stroke('white');
   //textSize(45);
@@ -2460,6 +2693,12 @@ function createclouds() {
     trex.depth = gameover.depth;
     bird.depth = gameover.depth;
     gameover.depth = gameover.depth + 1;
+    if (hearts !== [] && showHearts === true ||
+      hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
+      for (var h = 0; h < hearts.length; h = h + 1) {
+        hearts[h].depth = cloud.depth + 1;
+      }
+    }
     cloudG.add(cloud);
     if (game == "Corrida Infinita") {
       //cloud.y = Math.round(random(50, 100));
@@ -2670,7 +2909,14 @@ function reset() {
   bird.rotation = 0;
   hitGround = false;
   crouchAfterJumping = false;
+
+  invencible = false;
+
   gamestate = PLAY;
+
+  invencible = false;
+  handleHearts(true);
+
   //setDinosaurColor();
   if (game == "Corrida Infinita") {
     if (TrexColorido == true) {
@@ -2946,6 +3192,8 @@ function turnColored() {
   if (isMobile || !isMobile && backButtonOnPC === true) {
     backButton.position(width - 55, height - 55);
   }
+
+  handleHearts(true);
 }
 
 function turnNormal() {
@@ -2980,10 +3228,15 @@ function turnNormal() {
   if (isMobile || !isMobile && backButtonOnPC === true) {
     backButton.position(width - 55, height - 55);
   }
+
+  handleHearts(true);
 }
 
 function turnCorridaInfinita() {
   game = "Corrida Infinita";
+  heartsSprite.x = invisibleground.x - 80;
+  heartsSprite.y = invisibleGroundPosY + 35;
+  handleHearts(true);
   trex.y = invisibleGroundPosY - 30;//160
   ground.y = invisibleGroundPosY - 10;//180
   invisibleground.y = invisibleGroundPosY;//190
@@ -2996,6 +3249,9 @@ function turnCorridaInfinita() {
 function turnVooInfinito() {
   //if(!isMobile || isMobile && PcFeaturesOnMobile == true){
   game = "Voo Infinito";
+  heartsSprite.x = invisibleground.x + 20;
+  heartsSprite.y = invisibleGroundPosY + 28.5;//35 //invisibleground.y + 32.5
+  handleHearts(true);
   bird.y = 160;
   bird.velocityY = 0;
   ground.y = height - 5;
@@ -3311,6 +3567,8 @@ function windowResized() {
         invisibleground.x = 200 - newWidthAdded / 2;
         ground.x = ground.x - newWidthAdded / 2;
         bird.x = 50 - newWidthAdded / 2;
+
+        //handleHearts(true);
         if (game == "Voo Infinito") {
           if (player !== undefined && playerCount === 2) {
             if (game === "Voo Infinito") {
@@ -3471,7 +3729,8 @@ function handleBack() {
     crouchAfterJumping = false;
     BestHighscores.y = -350;
     background("white");
-    gamestate = -1;
+    gamestate = -1;//SELECT
+    handleHearts(false);
     score = 0;
     highscore = 0;
     birdG.destroyEach();
@@ -3517,4 +3776,172 @@ function handleBack() {
       infiniteflightbutton.position(width / 2 + 255 - 65 - 85, infiniteflightbutton.y);
     }
   }
+}
+
+function handleHearts(createHearts, newHeartsNumber) {
+  if (newHeartsNumber !== undefined) {
+    heartsNumber = newHeartsNumber;
+
+    console.log("newHeartsNumber: " + newHeartsNumber);
+    console.log("heartsNumber: " + heartsNumber);
+  }
+
+  //console.log("newHeartsNumber: " + newHeartsNumber);
+  //console.log("heartsNumber: " + heartsNumber);
+
+  if (showTheOnlyOneHeart === false && heartsNumber === 1 || showHearts === false) {
+    if (createHearts === true) {
+      heartsLeft = heartsNumber;
+      console.log("heartsLeft: " + heartsLeft);
+    }
+  } else if (showTheOnlyOneHeart === true && showHearts === true
+    || showTheOnlyOneHeart === false && heartsNumber > 1 && showHearts === true) {
+    if (createHearts === true) {
+      for (var h = hearts.length - 1; h >= 0; h = h - 1) {
+        hearts[h].destroy();
+        hearts.pop();
+        var hnum = h + 1;
+        console.log("heart " + hnum + "(" + h + ")" + " Destroyed!");
+        heartsLeft = 0;
+      }
+
+
+
+      /*for (var h = 0; h < hearts.length; h = h + 1) {
+        if (hearts[h] === undefined) {
+          hearts.pop();
+          console.log("undefined popped!");
+        }
+      }*/
+
+      for (var h = 0; h < heartsNumber && h < 100; h = h + 1) {
+        var heart = createSprite(heartsSprite.x, heartsSprite.y, 20, 20);
+        heart.shapeColor = "red";
+        heart.addImage("fullHeartImg", fullHeartImg);
+        heart.addImage("emptyHeartImg", emptyHeartImg);
+        heart.scale = 0.8;
+        if (h === 0) {
+          //heart.x = heartsSprite.x - heartsSprite.x / 3; + heartsSprite.x / 3 * h;
+        } else if (h === 3) {
+          //heart.x = heartsSprite.x + heartsSprite.x / 3;
+        }
+
+        if (initialWidth === width) {
+          if (game === "Corrida Infinita") {
+            heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.5;
+          } else if (game === "Voo Infinito") {
+            heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2;
+          }
+        } else {
+          if (game === "Corrida Infinita") {
+            heart.x = heartsSprite.x + 60 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.8;
+          } else if (game === "Voo Infinito") {
+            heart.x = heartsSprite.x - 295 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2;
+          }
+        }
+
+        /*if (game === "Corrida Infinita") {
+          heart.x = heartsSprite.x - 80 + newWidthAdded / 75 - heartsSprite.x / 3 + heartsSprite.x / 3 *
+            h * 1.5;
+        } else if (game === "Voo Infinito") {
+          heart.x = heartsSprite.x - 80 + newWidthAdded / 75 - heartsSprite.x / 3 + heartsSprite.x / 3 *
+            h / 1.2;
+        }
+      }*/
+
+        /*if (game === "Corrida Infinita") {
+          heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.5
+            * 2;
+        } else if (game === "Voo Infinito") {
+          heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2
+            * 2;
+        }
+      }*/
+
+        /*if (initialWidth !== width) {
+          if (game === "Corrida Infinita") {
+            heart.x = heart.x + newWidthAdded / 6 + heartsSprite.x - 80 / 3 - heartsSprite.x / 3 +
+              heartsSprite.x / 3 * h * 6.5;
+          } else if (game === "Voo Infinito") {
+            heart.x = heart.x + newWidthAdded / 6 + heartsSprite.x - 80 / 3 - heartsSprite.x / 3 +
+              heartsSprite.x / 3 * h * 7.2;
+          }
+        }*/
+
+        //if (initialWidth !== width) {
+        // heart.x = heart.x - newWidthAdded / 2;
+        //}
+
+        if (heart.x > heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * 3
+          && canSurpassHeartsSpriteArea === false && initialWidth === width) {
+          //|| heart.x > heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * 3 + newWidthAdded
+          //&& canSurpassHeartsSpriteArea === false && initialWidth !== width) {
+          var value1 = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * 3;
+          var value2 = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * 3 + newWidthAdded;
+          heart.destroy();
+          console.log("heart.x: " + heart.x);
+          console.log("value1: " + value1);
+          console.log("value2: " + value2);
+          console.log("heart.x ultrapassou heartsSprite area!");
+        } else {
+
+          //console.log("heart.x: " + heart.x);
+
+          //heartsLeft += h;
+          //if (h === 0 && numberOfHearts === 1) {
+          //  heartsLeft += 1;
+          //}
+
+          hearts.push(heart);
+
+          heartsLeft = hearts.length;
+          console.log("heartsLeft: " + heartsLeft);
+        }
+      }
+    }
+
+    if (heartsLeft < hearts.length && hearts !== []) {
+      hearts[heartsLeft].changeImage("emptyHeartImg", emptyHeartImg);
+    } else if (gamestate === END) {
+      for (var h = 0; h < hearts.length; h = h + 1) {
+        hearts[h].changeImage("emptyHeartImg", emptyHeartImg);
+      }
+    }
+
+    for (var h = 0; h < hearts.length; h = h + 1) {
+      if (gamestate !== SELECT) {
+        hearts[h].visible = true;
+      } else {
+        hearts[h].visible = false
+      }
+    }
+
+  }
+
+  /*if (initialWidth !== width && hearts !== []) {
+    for (var h = 0; h < hearts.length; h = h + 1) {
+      if (game === "Corrida Infinita") {
+        hearts[h].x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 0.68;// -
+        //newWidthAdded / h * 7.5;
+      } else if (game === "Voo Infinito") {
+        hearts[h].x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 0.95;// -
+        //newWidthAdded * h / 5.2;
+      }
+    }
+  }*/
+
+  /*var fullHeartSprite = createSprite(heartsSprite.x - heartsSprite.x / 3, heartsSprite.y, 20, 20);
+  fullHeartSprite.shapeColor = "red";
+  fullHeartSprite.addImage("fullHeartImg", fullHeartImg);
+  fullHeartSprite.scale = 0.8;
+ 
+  var halfHeartSprite = createSprite(heartsSprite.x, heartsSprite.y, 20, 20);
+  halfHeartSprite.shapeColor = "red";
+  halfHeartSprite.addImage("halfHeartImg", halfHeartImg);
+  halfHeartSprite.scale = 0.8;
+ 
+  var emptyHeartSprite = createSprite(heartsSprite.x + heartsSprite.x / 3, heartsSprite.y, 20, 20);
+  emptyHeartSprite.shapeColor = "red";
+  emptyHeartSprite.addImage("emptyHeartImg", emptyHeartImg);
+  emptyHeartSprite.scale = 0.8;*/
 }
