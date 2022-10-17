@@ -296,3 +296,54 @@ canvas {
   transition-duration: 0.0s;
   outline: none;
 }
+
+.lobbyCodeButton {
+  width: 100px;
+  height: 100px;
+  border-radius: 13px;
+  border-width: 1.5px;
+  font-size: 30px;
+  color: #ABC201;
+  border-color: lavender;
+  /*#EBCD3F*/
+  background: #EBCD3F;
+  /*lavender*/
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.heartButton {
+  width: 70px;
+  height: 70px;
+  border-radius: 13px;
+  border-width: 1.5px;
+  font-size: 30px;
+  color: red;
+  border-color: darkred;
+  background: white;
+  /*transparent*/
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
