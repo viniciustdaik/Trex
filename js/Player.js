@@ -16,6 +16,7 @@ class Player {
     this.hitGround = false;
     this.color = "Cinza";
     this.gamePlaying = game;
+    this.hearts = heartsLeft;
 
     this.changedPlayerCountVerified = null;
 
@@ -57,6 +58,7 @@ class Player {
           isGameover: this.isGameover,
           hitGround: this.hitGround,
           gamePlaying: this.gamePlaying,
+          hearts: this.hearts,
         });
 
         console.log("Player Added!");
@@ -175,6 +177,7 @@ class Player {
       isGameover: this.isGameover,
       hitGround: this.hitGround,
       gamePlaying: this.gamePlaying,
+      hearts: this.hearts,
     });
   }
 
@@ -342,7 +345,7 @@ class Player {
 
   static availablePlayerIndexs() {
     allPlayerIndexsAvailable = "";
-    if (allPlayers !== undefined) {
+    if (allPlayers !== undefined && allPlayers !== null) {
       for (var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex + 1) {
         //console.log(allPlayers["player"+plrindex]);
         console.log("playeri: " + plrindex);
