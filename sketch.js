@@ -119,7 +119,7 @@ var invisibleGroundPositionOfTheScreen = "bottom", invisibleGroundPosY;
 
 var hearts = [], fullHeartImg, halfHeartImg, emptyHeartImg, heartsSprite, heartsNumber = 3, heartsLeft = 0,
   canSurpassHeartsSpriteArea = false, showTheOnlyOneHeart = false, showHearts = true, invencible = false,
-  invencibleDuration = 0650;
+  invencibleDuration = 0650, heart1button, heart2button, heart3button;
 
 var lobbyCodeInput, lobbyCodeButton, lobbyIndex;
 
@@ -539,6 +539,24 @@ function setup() {
   //x: invisibleground.x //110
   heartsSprite = createSprite(invisibleground.x - 80, invisibleGroundPosY + 35, 200, 65);
   heartsSprite.visible = false;
+
+  heart1button = createButton("");
+  heart1button.style("background-image", "url('./hearts/fullHeart.png')");
+  heart1button.class("heartButton");
+  heart1button.position(width - width - width - 1000, -500);
+  heart1button.mousePressed(handleHeart1Button);
+
+  heart2button = createButton("");
+  heart2button.style("background-image", "url('./hearts/fullHeart.png')");
+  heart2button.class("heartButton");
+  heart2button.position(width - width - width - 1000, -500);
+  heart2button.mousePressed(handleHeart2Button);
+
+  heart3button = createButton("");
+  heart3button.style("background-image", "url('./hearts/fullHeart.png')");
+  heart3button.class("heartButton");
+  heart3button.position(width - width - width - 1000, -500);
+  heart3button.mousePressed(handleHeart3Button);
 
   handleHearts(/*3, */true);
 
@@ -1170,12 +1188,23 @@ function draw() {
         coloridobutton.position(width / 2 + 135 - 105, height / 2 - 70);//width / 2 + 135, height / 2 - 30
       }
       if (canPlayMultiplayer === true) {
-        if (multiplayerToggle.x !== width / 2 - 170) {
-          multiplayerToggle.position(width / 2 - 170, coloridobutton.y + 120);
+        if (multiplayerToggle.x !== width - 70 - 300) {
+          multiplayerToggle.position(width - 70 - 300, coloridobutton.y + 120);
+          //multiplayerToggle.position(width / 2 - 170, coloridobutton.y + 120);
         }
-        if (nameInput.x !== width / 2 - 170) {
-          nameInput.position(width / 2 - 170, multiplayerToggle.y - 44);
+        if (nameInput.x !== width - 70 - 300) {
+          nameInput.position(width - 70 - 300, multiplayerToggle.y - 44);
+          //nameInput.position(width / 2 - 170, multiplayerToggle.y - 44);
         }
+      }
+      if (heart1button.x !== 85 - 75) {
+        heart1button.position(85 - 75, coloridobutton.y + 80);
+      }
+      if (heart2button.x !== 85) {
+        heart2button.position(85, coloridobutton.y + 80);
+      }
+      if (heart3button.x !== 85 + 75) {
+        heart3button.position(85 + 75, coloridobutton.y + 80);
       }
     } else if (isMobile == true && mostOfTheScreen == "height") {
       if (normalbutton.x !== width / 2 - 415) {
@@ -1191,6 +1220,15 @@ function draw() {
         if (nameInput.x !== width / 2 - 185) {
           nameInput.position(width / 2 - 185, multiplayerToggle.y - 44);
         }
+      }
+      if (heart1button.x !== width / 2 - 35 - 75) {
+        heart1button.position(width / 2 - 35 - 75, multiplayerToggle.y + 75);
+      }
+      if (heart2button.x !== width / 2 - 35) {
+        heart2button.position(width / 2 - 35, multiplayerToggle.y + 75);
+      }
+      if (heart3button.x !== width / 2 - 35 + 75) {
+        heart3button.position(width / 2 - 35 + 75, multiplayerToggle.y + 75);
       }
     }
 
@@ -3186,6 +3224,10 @@ function turnColored() {
 
   multiplayerToggle.position(-1250, multiplayerToggle.y);
   nameInput.position(-1250, nameInput.y);
+
+  heart1button.position(-1250, heart1button.y);
+  heart2button.position(-1250, heart2button.y);
+  heart3button.position(-1250, heart3button.y);
   if (player === undefined && multiplayerToggleValue === true) {
     Multiplayer();
   }
@@ -3222,6 +3264,10 @@ function turnNormal() {
 
   multiplayerToggle.position(-1250, multiplayerToggle.y);
   nameInput.position(-1250, nameInput.y);
+
+  heart1button.position(-1250, heart1button.y);
+  heart2button.position(-1250, heart2button.y);
+  heart3button.position(-1250, heart3button.y);
   if (player === undefined && multiplayerToggleValue === true) {
     Multiplayer();
   }
@@ -3836,7 +3882,7 @@ function handleHearts(createHearts, newHeartsNumber) {
           if (game === "Corrida Infinita") {
             heart.x = heartsSprite.x + 60 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.8;
           } else if (game === "Voo Infinito") {
-            heart.x = heartsSprite.x - 295 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2;
+            heart.x = heartsSprite.x + 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 190;
           }
         }
 
@@ -3945,3 +3991,28 @@ function handleHearts(createHearts, newHeartsNumber) {
   emptyHeartSprite.addImage("emptyHeartImg", emptyHeartImg);
   emptyHeartSprite.scale = 0.8;*/
 }
+
+function handleHeart1Button() {
+  if (heartsNumber !== 1) {
+    heartsNumber = 1;
+    heart2button.style("background-image", "url('./hearts/emptyHeart.png')");
+    heart3button.style("background-image", "url('./hearts/emptyHeart.png')");
+  }
+}
+
+function handleHeart2Button() {
+  if (heartsNumber !== 2) {
+    heartsNumber = 2;
+    heart2button.style("background-image", "url('./hearts/fullHeart.png')");
+    heart3button.style("background-image", "url('./hearts/emptyHeart.png')");
+  }
+}
+
+function handleHeart3Button() {
+  if (heartsNumber !== 3) {
+    heartsNumber = 3;
+    heart2button.style("background-image", "url('./hearts/fullHeart.png')");
+    heart3button.style("background-image", "url('./hearts/fullHeart.png')");
+  }
+}
+
