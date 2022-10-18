@@ -1209,26 +1209,35 @@ function draw() {
           //nameInput.position(width / 2 - 170, multiplayerToggle.y - 44);
         }
       }
-      if (isMobile == true && mostOfTheScreen == "width") {
-        if (heart1button.x !== 85 - 75) {
+      if (heart1button.x !== 85 - 75 && isMobile
+        || heart1button.x !== width / 2 - 35 - 75 && !isMobile) {
+        if (isMobile) {
           heart1button.position(85 - 75, coloridobutton.y + 80);
-        }
-        if (heart2button.x !== 85) {
-          heart2button.position(85, coloridobutton.y + 80);
-        }
-        if (heart3button.x !== 85 + 75) {
-          heart3button.position(85 + 75, coloridobutton.y + 80);
-        }
-      } else if (!isMobile) {
-        if (heart1button.x !== width / 2 - 35 - 75) {
+        } else {
           heart1button.position(width / 2 - 35 - 75, multiplayerToggle.y + 75);
         }
-        if (heart2button.x !== width / 2 - 35) {
+        //heart1button.position(85 - 75, coloridobutton.y + 80);
+        //heart1button.position(width / 2 - 35 - 75, multiplayerToggle.y + 75);
+      }
+      if (heart2button.x !== 85 && !isMobile
+        || heart2button.x !== width / 2 - 35 && isMobile) {
+        if (isMobile) {
+          heart2button.position(85, coloridobutton.y + 80);
+        } else {
           heart2button.position(width / 2 - 35, multiplayerToggle.y + 75);
         }
-        if (heart3button.x !== width / 2 - 35 + 75) {
+        //heart2button.position(85, coloridobutton.y + 80);
+        //heart2button.position(width / 2 - 35, multiplayerToggle.y + 75); 
+      }
+      if (heart3button.x !== 85 + 75 && !isMobile
+        || heart3button.x !== width / 2 - 35 + 75 && isMobile) {
+        if (isMobile) {
+          heart3button.position(85 + 75, coloridobutton.y + 80);
+        } else {
           heart3button.position(width / 2 - 35 + 75, multiplayerToggle.y + 75);
         }
+        //heart3button.position(85 + 75, coloridobutton.y + 80);
+        //heart3button.position(width / 2 - 35 + 75, multiplayerToggle.y + 75);
       }
     } else if (isMobile == true && mostOfTheScreen == "height") {
       if (normalbutton.x !== width / 2 - 415) {
