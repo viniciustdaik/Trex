@@ -2564,11 +2564,14 @@ function draw() {
         highscoreS.y = 33 + 40;
       }
 
+      push();
+      textAlign("LEFT, BASELINE");
       if (game === "Corrida Infinita") {
         text(highscore, highscoreS.x + 25, 42);
       } else if (game === "Voo Infinito") {
         text(highscore, highscoreS.x + 25, 42 + 40);
       }
+      pop();
 
       //text("PONTUAÇÃO: "+score)
       if (game === "Corrida Infinita") {
@@ -2590,11 +2593,14 @@ function draw() {
         highscoreS.y = 33 + 40 - newHeightAdded / 2;
       }
 
+      push();
+      textAlign("LEFT, BASELINE");
       if (game === "Corrida Infinita") {
         text(highscore, highscoreS.x + 25, 42 - newHeightAdded / 2);
       } else if (game === "Voo Infinito") {
         text(highscore, highscoreS.x + 25, 42 + 40 - newHeightAdded / 2);
       }
+      pop();
 
       if (game === "Corrida Infinita") {
         push();
@@ -2770,6 +2776,7 @@ function createclouds() {
         hearts[h].depth = cloud.depth + 1;
       }
     }
+    highscoreS.depth = cloud.depth + 1;
     cloudG.add(cloud);
     if (game == "Corrida Infinita") {
       //cloud.y = Math.round(random(50, 100));
