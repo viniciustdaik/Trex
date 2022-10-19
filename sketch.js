@@ -2770,13 +2770,21 @@ function createclouds() {
     trex.depth = gameover.depth;
     bird.depth = gameover.depth;
     gameover.depth = gameover.depth + 1;
-    if (hearts !== [] && showHearts === true ||
-      hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
-      for (var h = 0; h < hearts.length; h = h + 1) {
-        hearts[h].depth = cloud.depth + 1;
+    //if(game === "Voo Infinito"){
+    if (birdG.length !== 0) {
+      for (var b = 0; b < birdG.length; b = b + 1) {
+        birdG[b].depth = cloud.depth + 1;
       }
+    } else {
+      if (hearts !== [] && showHearts === true ||
+        hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
+        for (var h = 0; h < hearts.length; h = h + 1) {
+          hearts[h].depth = cloud.depth + 1;
+        }
+      }
+      highscoreS.depth = cloud.depth + 1;
     }
-    highscoreS.depth = cloud.depth + 1;
+    //}
     cloudG.add(cloud);
     if (game == "Corrida Infinita") {
       //cloud.y = Math.round(random(50, 100));
@@ -2937,6 +2945,15 @@ function createbird() {
           || b !== 7 && b !== 8 && randomform == 3 && !isMobile) {
           var enemybird = createSprite(width + 10, 80 * b, 10, 10);//+10, 10, 10);
           enemybird.lifetime = 315;
+
+          if (hearts !== [] && showHearts === true ||
+            hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
+            for (var h = 0; h < hearts.length; h = h + 1) {
+              hearts[h].depth = enemybird.depth + 1;
+            }
+          }
+          highscoreS.depth = enemybird.depth + 1;
+
           if (b == maxb && isMobile) {
             enemybird.y = 20;
           } else if (b == maxb && !isMobile) {
