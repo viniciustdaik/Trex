@@ -117,11 +117,15 @@ var canPlayMultiplayer = true;
 
 var invisibleGroundPositionOfTheScreen = "bottom", invisibleGroundPosY;
 
-var hearts = [], fullHeartImg, halfHeartImg, emptyHeartImg, heartsSprite, heartsNumber = 3, heartsLeft = 0,
+var hearts = [], fullHeartImg, halfHeartImg, emptyHeartImg, heartsSprite, heartsNumber = 1, heartsLeft = 0,
   canSurpassHeartsSpriteArea = false, showTheOnlyOneHeart = false, showHearts = true, invencible = false,
   invencibleDuration = 0650, heart1button, heart2button, heart3button;
 
 var lobbyCodeInput, lobbyCodeButton, lobbyIndex;
+
+var mobileSize, responsiveFontSize;
+
+var texts = [], textsNames = [];
 
 function preload() {
   soundFormats('mp3');
@@ -231,6 +235,12 @@ function setup() {
   createCanvas(windowWidth - 2.3, windowHeight - 2.5);
   //600, 200 //windowWidth - 2.3, windowHeight - 2.5
 
+  if (width < 405) {
+    mobileSize = "lessThanIPhoneXRSize";
+  } else {
+    mobileSize = "moreThanIPhoneXRSize";
+  }
+
   database = firebase.database();
 
   initialWidth = width;
@@ -274,7 +284,11 @@ function setup() {
     || isiPhoneXR == true && mostOfTheScreen == "width") {
     reloadButton.size(80, 25);
   } else if (isMobile == true && mostOfTheScreen == "height") {
-
+    if (mobileSize === "lessThanIPhoneXRSize") {
+      reloadButton.size(70);
+    } else {
+      reloadButton.size(80);
+    }
   }
   reloadButton.class("reloadButton");
   reloadButton.mousePressed(reload);
@@ -547,18 +561,91 @@ function setup() {
   heart1button.mousePressed(handleHeart1Button);
 
   heart2button = createButton("");
-  heart2button.style("background-image", "url('./hearts/fullHeart.png')");
+  if (heartsNumber >= 2) {
+    heart2button.style("background-image", "url('./hearts/fullHeart.png')");
+  } else {
+    heart2button.style("background-image", "url('./hearts/emptyHeart.png')");
+  }
   heart2button.class("heartButton");
   heart2button.position(width - width - width - 1000, -500);
   heart2button.mousePressed(handleHeart2Button);
 
   heart3button = createButton("");
-  heart3button.style("background-image", "url('./hearts/fullHeart.png')");
+  if (heartsNumber >= 3) {
+    heart3button.style("background-image", "url('./hearts/fullHeart.png')");
+  } else {
+    heart3button.style("background-image", "url('./hearts/emptyHeart.png')");
+  }
   heart3button.class("heartButton");
   heart3button.position(width - width - width - 1000, -500);
   heart3button.mousePressed(handleHeart3Button);
 
   handleHearts(/*3, */true);
+
+  //not done.
+  /*var selectAGameText = createElement("p");
+  selectAGameText.style("line-break", 'auto');
+  selectAGameText.style("font-family", "Trex");
+  selectAGameText.style("color", 'cyan');
+  selectAGameText.style("-webkit-text-stroke-width", '0.5px');
+  selectAGameText.style("-webkit-text-stroke-color", 'green');
+  selectAGameText.style("align-self", 'center');
+  selectAGameText.style("text-align", 'center');
+  selectAGameText.style("align-items", 'center');
+  //selectAGameText.style("background-color", 'blue');
+  if (isMobile) {
+    if (mobileSize === "lessThanIPhoneXRSize") {
+      selectAGameText.size(width / 1.2, 60);
+    } else {
+      if (mostOfTheScreen === "width") {
+        selectAGameText.size(width / 1.2, 35);
+      } else if (mostOfTheScreen === "width") {
+        selectAGameText.size(width / 1.2, 20);
+      }
+      //selectAGameText.size(width / 1.2, 20);
+    }
+  } else {
+    selectAGameText.size(width / 2, 70);
+  }
+  if (isMobile) {
+    if (mobileSize === "lessThanIPhoneXRSize") {
+      //if (mostOfTheScreen === "width") {
+      //  selectAGameText.style("font-size", '15px');//32
+      //} else if (mostOfTheScreen === "height") {
+      selectAGameText.style("font-size", '18px');//32
+      //}
+    } else {
+      if (mostOfTheScreen === "width") {
+        selectAGameText.style("font-size", '32px');//32
+      } else if (mostOfTheScreen === "height") {
+        selectAGameText.style("font-size", '20px');//32
+      }
+    }
+    //selectAGameText.style("font-size", '18px');//32
+  } else {
+    selectAGameText.style("font-size", '32.1px');//21
+  }
+  selectAGameText.html("Selecione Um Jogo.");
+  if (isMobile && mostOfTheScreen === "height") {
+    if (mobileSize === "lessThanIPhoneXRSize") {
+      selectAGameText.position(width / 2 / 6.0, -15);//width / 2, 50
+    } else {
+      selectAGameText.position(width / 2 / 6.0, infiniteracebutton.y - 58);//width / 2, 50
+    }
+  } else if (!isMobile) {
+    selectAGameText.position(width / 2 / 2/*- 288*//*, infiniteracebutton.y - 88);
+//height / 2 - 158 && infiniteracebutton.y - 88 = 220.75;
+/*} else if (isMobile && mostOfTheScreen === "width") {
+if (mobileSize === "lessThanIPhoneXRSize") {
+selectAGameText.position(width / 2 / 6.0, -15);//width / 2, 50
+} else {
+selectAGameText.position(width / 2 / 6.0, infiniteracebutton.y - 88);//width / 2, 50
+}
+}
+
+//console.log(selectAGameText.y);
+
+text("Sel")*/
 
   getState();
 
@@ -620,7 +707,6 @@ function draw() {
       if (hearts !== []) {
         for (var h = 0; h < hearts.length; h = h + 1) {
           hearts[h].x = hearts[h].x - newWidthAdded / 2;
-          console.log("EEEE");
         }
       }
     } else if (game === "Voo Infinito" && heartsSprite.x !== invisibleground.x + 20) {// - newWidthAdded / 2) {
@@ -628,7 +714,6 @@ function draw() {
       if (hearts !== []) {
         for (var h = 0; h < hearts.length; h = h + 1) {
           hearts[h].x = hearts[h].x - newWidthAdded / 2;
-          console.log("EEE");
         }
       }
     }
@@ -1321,7 +1406,13 @@ function draw() {
       reloadButton.size(reloadButton.width, 25);
       reloadbuttonYSubtract = +5;
     } else if (isMobile == true && mostOfTheScreen == "height" && reloadbuttonX == null) {
-      reloadbuttonX = width / 2 + 113;
+      //each 1 of textSize = - 10 in reloadbuttonX
+      if (mobileSize === "lessThanIPhoneXRSize" && isMobile) {
+        reloadbuttonX = width / 2 + 78;
+      } else if (!isMobile || mobileSize === "moreThanIPhoneXRSize" && isMobile) {
+        reloadbuttonX = width / 2 + 113;
+      }
+      //reloadbuttonX = width / 2 + 113;
       reloadbuttonYSubtract = +10;
     }
     //if(game == "Corrida Infinita" && TrexColorido !== true && reloadbuttonY == null
@@ -1339,7 +1430,7 @@ function draw() {
       
     }*/
     reloadbuttonY = reloadbuttonY + reloadbuttonYSubtract;
-    push();
+    /*push();
     if (isMobile == false && isiPhoneXR == false) {
       textSize(35);
     } else if (isMobile == true && mostOfTheScreen == "width"
@@ -1351,7 +1442,7 @@ function draw() {
 
     fill('red');
     textAlign("center");
-    stroke('darkred');
+    stroke('darkred');*/
     //The text is after drawSprites()
     //if(game == "Corrida Infinita" && TrexColorido !== true
     //|| game !== "Corrida Infinita"){
@@ -1381,7 +1472,7 @@ function draw() {
         }
       }
     }*/
-    pop();
+    //pop();
   } else {
     if (reloadButton.x !== width - width - width || reloadButton.y !== height - 25) {
       reloadButton.position(width - width - width, height - 25);
@@ -1391,7 +1482,12 @@ function draw() {
     if (isMobile == false && isiPhoneXR == false) {
       textSize(30);
     } else if (isMobile == true || isiPhoneXR == true) {
-      textSize(22.5);
+      //textSize(22.5);
+      if (mobileSize === "lessThanIPhoneXRSize") {
+        textSize(18.5);
+      } else {
+        textSize(22.5);
+      }
     }
 
     fill('gold');
@@ -1655,6 +1751,9 @@ function draw() {
     fill('cyan');
     stroke('green');
     textAlign("center");
+
+    push();
+    textWrap(WORD);
     if (isMobile == false && isiPhoneXR == false) {
       textSize(32);
     } else if (isMobile == true || isiPhoneXR == true) {
@@ -1663,16 +1762,20 @@ function draw() {
     if (mostOfTheScreen == "width" && isMobile == true || isMobile == false) {
       if (game !== "notselected") {
         if (initialWidth == width) {
-          text("Selecione Um Modo De Jogo.", width / 2, height / 2 - 95);
+          text("Selecione Um Modo De Jogo.", width / 2 - width / 2, height / 2 - 125, width);
+          //y:height / 2 - 95
         } else {
-          text("Selecione Um Modo De Jogo.", width / 2 - newWidthAdded / 2, height / 2 - 95);
+          text("Selecione Um Modo De Jogo.", width / 2 - newWidthAdded / 2 - width / 2, height / 2 - 125, width);
+          //y:height / 2 - 95
         }
 
       } else {
         if (initialWidth == width) {
-          text("Selecione Um Jogo.", width / 2, height / 2 - 95);
+          text("Selecione Um Jogo.", width / 2 - width / 2, height / 2 - 125, width);
+          //y:height / 2 - 95
         } else {
-          text("Selecione Um Jogo.", width / 2 - newWidthAdded / 2, height / 2 - 95);
+          text("Selecione Um Jogo.", width / 2 - newWidthAdded / 2 - width / 2, height / 2 - 125, width);
+          //y:height / 2 - 95
         }
       }
     } else if (mostOfTheScreen == "height" && isMobile == true) {
@@ -1682,13 +1785,13 @@ function draw() {
         stroke('green');
         textAlign('center');
         textSize(15.5);
-        text("Selecione Um Modo De Jogo.", width / 2, 50);
+        text("Selecione Um Modo De Jogo.", width / 2 - width / 2, 30, width);
         pop();
       } else {
-        text("Selecione Um Jogo.", width / 2, 50);
+        text("Selecione Um Jogo.", width / 2 - width / 2, 30, width);
       }
     }
-
+    pop();
 
     //text("Use As Setas Ou WASD.", width/2, height/2-55);
     /*if(normalbuttonover == true){
@@ -2704,9 +2807,19 @@ function draw() {
     push();
     var mostRecentVersionTextX;
     if (initialWidth == width) {
-      mostRecentVersionTextX = width / 2 - 25;
+      //mostRecentVersionTextX = width / 2 - 25;
+      if (mobileSize === "lessThanIPhoneXRSize" && isMobile) {
+        mostRecentVersionTextX = width / 2 - 25 - 10;
+      } else if (!isMobile || mobileSize === "moreThanIPhoneXRSize" && isMobile) {
+        mostRecentVersionTextX = width / 2 - 25;
+      }
     } else if (initialWidth !== width) {
-      mostRecentVersionTextX = width / 2 - 25 - newWidthAdded / 2;
+      if (mobileSize === "lessThanIPhoneXRSize" && isMobile) {
+        mostRecentVersionTextX = width / 2 - 25 - 10 - newWidthAdded / 2;
+      } else if (!isMobile || mobileSize === "moreThanIPhoneXRSize" && isMobile) {
+        mostRecentVersionTextX = width / 2 - 25 - newWidthAdded / 2;
+      }
+      //mostRecentVersionTextX = width / 2 - 25 - newWidthAdded / 2;
     }
     if (isMobile == false && isiPhoneXR == false) {
       textSize(35);
@@ -2714,7 +2827,12 @@ function draw() {
       || isiPhoneXR == true && mostOfTheScreen == "width") {
       textSize(25);
     } else if (isMobile == true && mostOfTheScreen == "height") {
-      textSize(18);
+      //textSize(18);
+      if (mobileSize === "lessThanIPhoneXRSize") {
+        textSize(15);
+      } else {
+        textSize(18);
+      }
     }
     textFont("default");
 
@@ -2722,6 +2840,7 @@ function draw() {
     textAlign("center");
     stroke('darkred');
     text("Esta versão não é a mais recente.", mostRecentVersionTextX, height - 25);
+
     pop();
   }
 
@@ -4072,4 +4191,135 @@ function handleHeart3Button() {
     heart3button.style("background-image", "url('./hearts/fullHeart.png')");
   }
 }
+
+/*function Text(createText, hide, name, text, fontSize, textAlign, show, showX, showY, textWidth, textHeight, color,
+  stroke, backgroundColor, fontFamily, borderRadius, lineBreak, contain, alignSelf, alignItems) {
+  /*
+  Text(true, false, "testText", "OI IIIIII II", 18, "center", true, width/2, height/2, 50, 50, "orange",
+  "lime", "blue", trexfont, 5, "auto", "content", "center", "center");
+  */
+  //if (name !== undefined) {
+/*if (createText === true && name !== undefined) {
+  var newText = createElement("h2");
+
+  if (textWidth !== undefined && textWidth !== false
+    && textHeight !== undefined && textHeight !== false) {
+    newText.size(textWidth, textHeight);
+  }
+
+  if (textAlign !== undefined && textAlign !== false) {
+    newText.style("text-align", textAlign);
+  }
+
+  if (fontSize !== undefined && fontSize !== false) {
+    newText.style("font-size", fontSize + "px");
+  }
+
+  if (text !== undefined) {
+    newText.html(text);
+  } else {
+    newText.html("No Text Given");
+  }
+
+  if (backgroundColor !== undefined && backgroundColor !== false) {
+    newText.style("background-color", backgroundColor);
+  }
+
+  if (color !== undefined && color !== false) {
+    newText.style("color", color);
+  }
+
+  if (stroke !== undefined && stroke !== false) {
+    newText.style("stroke-width", "100%");
+    newText.style("stroke", stroke);
+    newText.style("-webkit-text-stroke-color", stroke);
+    newText.style("-webkit-text-stroke", stroke);
+  }
+
+  if (fontFamily !== undefined && fontFamily !== false) {
+    newText.style("font-family", fontFamily);
+  }
+
+  if (borderRadius !== undefined && borderRadius !== false) {
+    newText.style("border-radius", borderRadius + "px");
+  }
+
+  if (lineBreak !== undefined && lineBreak !== false) {
+    newText.style("line-break", lineBreak);
+  }
+
+  if (contain !== undefined && contain !== false) {
+    newText.style("contain", contain);
+  }
+
+  if (alignSelf !== undefined && alignSelf !== false) {
+    newText.style("align-self", alignSelf);
+  }
+
+  if (alignItems !== undefined && alignItems !== false) {
+    newText.style("align-items", alignItems);
+  }
+
+  if (show === true && showX !== undefined && showY !== undefined
+    && showX !== false && showY !== false) {
+    newText.position(showX, showY);
+  }
+
+  textsNames.push(name);
+
+  texts.push(newText);
+} else {
+  /*if (hide === true) {
+    for (var t = 0; t < texts.length; t = t + 1) {
+      //texts[t].position(-1000, -500);
+      texts[t].remove();
+    }
+  }*/
+
+/*if (hide === true && name !== undefined) {
+  if (name !== "all") {
+    for (var t = 0; t < texts.length; t = t + 1) {
+      if (textsNames[t] === name) {
+        texts[t].position(-1250, texts[t].y);
+      }
+    }
+  } else {
+    for (var t = 0; t < texts.length; t = t + 1) {
+      texts[t].position(-1250, texts[t].y);
+    }
+  }
+} else if (hide === "remove" && name !== undefined) {
+  if (name !== "all") {
+    for (var t = 0; t < texts.length; t = t + 1) {
+      if (textsNames[t] === name) {
+        texts[t].remove();
+      }
+    }
+  } else {
+    for (var t = 0; t < texts.length; t = t + 1) {
+      texts[t].remove();
+    }
+  }
+}
+
+
+if (show === true && showX !== undefined
+  && showY !== undefined && name !== undefined) {
+  if (name !== "all") {
+    for (var t = 0; t < texts.length; t = t + 1) {
+      if (textsNames[t] === name) {
+        texts[t].position(showX, showY);
+      }
+    }
+  } else {
+    for (var t = 0; t < texts.length; t = t + 1) {
+      texts[t].position(showX, showY);
+    }
+  }
+}
+
+}
+
+//}
+}*/
 
