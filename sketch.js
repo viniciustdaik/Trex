@@ -1762,19 +1762,19 @@ function draw() {
     if (mostOfTheScreen == "width" && isMobile == true || isMobile == false) {
       if (game !== "notselected") {
         if (initialWidth == width) {
-          text("Selecione Um Modo De Jogo.", width / 2 - width / 2, height / 2 - 125, width);
+          text("Selecione Um Modo De Jogo.", 0, height / 2 - 125, width);
           //y:height / 2 - 95
         } else {
-          text("Selecione Um Modo De Jogo.", width / 2 - newWidthAdded / 2 - width / 2, height / 2 - 125, width);
+          text("Selecione Um Modo De Jogo.", 0 - newWidthAdded / 2, height / 2 - 125, width);
           //y:height / 2 - 95
         }
 
       } else {
         if (initialWidth == width) {
-          text("Selecione Um Jogo.", width / 2 - width / 2, height / 2 - 125, width);
+          text("Selecione Um Jogo.", 0, height / 2 - 125, width);
           //y:height / 2 - 95
         } else {
-          text("Selecione Um Jogo.", width / 2 - newWidthAdded / 2 - width / 2, height / 2 - 125, width);
+          text("Selecione Um Jogo.", 0 - newWidthAdded / 2, height / 2 - 125, width);
           //y:height / 2 - 95
         }
       }
@@ -1785,10 +1785,10 @@ function draw() {
         stroke('green');
         textAlign('center');
         textSize(15.5);
-        text("Selecione Um Modo De Jogo.", width / 2 - width / 2, 30, width);
+        text("Selecione Um Modo De Jogo.", 0, 30, width);
         pop();
       } else {
-        text("Selecione Um Jogo.", width / 2 - width / 2, 30, width);
+        text("Selecione Um Jogo.", 0, 30, width);
       }
     }
     pop();
