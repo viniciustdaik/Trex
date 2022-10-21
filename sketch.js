@@ -1763,19 +1763,19 @@ function draw() {
       if (game !== "notselected") {
         if (initialWidth == width) {
           text("Selecione Um Modo De Jogo.", 0, height / 2 - 125, width);
-          //y:height / 2 - 95
+          //x: width / 2, y:height / 2 - 95
         } else {
           text("Selecione Um Modo De Jogo.", 0 - newWidthAdded / 2, height / 2 - 125, width);
-          //y:height / 2 - 95
+          //x: width / 2, y:height / 2 - 95
         }
 
       } else {
         if (initialWidth == width) {
           text("Selecione Um Jogo.", 0, height / 2 - 125, width);
-          //y:height / 2 - 95
+          //x: width / 2, y:height / 2 - 95
         } else {
           text("Selecione Um Jogo.", 0 - newWidthAdded / 2, height / 2 - 125, width);
-          //y:height / 2 - 95
+          //x: width / 2, y:height / 2 - 95
         }
       }
     } else if (mostOfTheScreen == "height" && isMobile == true) {
@@ -1786,9 +1786,11 @@ function draw() {
         textAlign('center');
         textSize(15.5);
         text("Selecione Um Modo De Jogo.", 0, 30, width);
+        //y:50
         pop();
       } else {
         text("Selecione Um Jogo.", 0, 30, width);
+        //y:50
       }
     }
     pop();
@@ -3975,6 +3977,7 @@ function handleBack() {
     birdIsFlying = false;
     bird.rotation = 0;
     bird.y = 160;
+    trex.velocityY = 0;
     trex.y = invisibleGroundPosY - 30;//160
     trex.x = 50;
     multiplayerToggleValue = false;
