@@ -2483,13 +2483,12 @@ function draw() {
     console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
     //console.log("Flying: "+birdIsFlying);
     if (bird.isTouching(birdG) && birdIsInvencibleBirds === false && invencible === false
-      || bird.y < -10 && invencible === false) {
-      invencible = true;
-      console.log("invencible: " + invencible);
-
-      if (bird.y < -10) {
+      || bird.y < -10) {
+      if (bird.y < -10 && heartsLeft >= 2) {
         bird.y = 160;
       }
+      invencible = true;
+      console.log("invencible: " + invencible);
 
       heartsLeft = heartsLeft - 1;
       console.log("heartsLeft: " + heartsLeft);
