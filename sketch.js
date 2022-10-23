@@ -3474,46 +3474,53 @@ function setBirdColor() {
 }
 
 function crouch() {
-  touches = [];
-  if (/*MobileUnCrouchMode === "press" &&*/ trexIsJumping == true && trexIsCrouching == false) {
-    crouchAfterJumping = true;
+  if (isMobile) {
+    touches = [];
+    if (trexIsJumping === true && trex.y >= invisibleground.y - 50) {
+      trexIsJumping = false;
+      trex.y = invisibleGroundPosY - 30;
+      trex.velocityY = 0;
+    }
+    if (/*MobileUnCrouchMode === "press" &&*/ trexIsJumping == true && trexIsCrouching == false) {
+      crouchAfterJumping = true;
+    }
+    if (trexIsCrouching == false && gamestate == PLAY && trexIsJumping == false) {
+      //trex.addAnimation("crouching", trex_crouching);
+      trexIsCrouching = true;
+      trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+      if (TrexColorido == true && dinosaurcolor == "Cinza") {
+        trex.changeAnimation("crouchingnb", trex_crouchingnb);
+      }
+      if (TrexColorido == false) {
+        trex.changeAnimation("crouching", trex_crouching);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Marrom") {
+        trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Verde") {
+        trex.changeAnimation("crouching_green", trex_crouchinggreen);
+      }
+      //trex.velocityX = 2;
+    } else if (trexIsCrouching == true && gamestate == PLAY) {
+      trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+      trexIsCrouching = false;
+      if (TrexColorido == true || dinosaurcolor == "Cinza") {
+        trex.changeAnimation("runningnb", trex_runningnb);
+      }
+      if (TrexColorido == false) {
+        trex.changeAnimation("running", trex_running);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Marrom") {
+        trex.changeAnimation("running_brown", trex_runningbrown);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Verde") {
+        trex.changeAnimation("running_green", trex_runninggreen);
+      }
+      //trex.velocityX = 0;
+    }
   }
-  if (trexIsCrouching == false && gamestate == PLAY && trexIsJumping == false) {
-    //trex.addAnimation("crouching", trex_crouching);
-    trexIsCrouching = true;
-    trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
-    if (TrexColorido == true && dinosaurcolor == "Cinza") {
-      trex.changeAnimation("crouchingnb", trex_crouchingnb);
-    }
-    if (TrexColorido == false) {
-      trex.changeAnimation("crouching", trex_crouching);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Marrom") {
-      trex.changeAnimation("crouching_brown", trex_crouchingbrown);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Verde") {
-      trex.changeAnimation("crouching_green", trex_crouchinggreen);
-    }
-    //trex.velocityX = 2;
-  } else if (trexIsCrouching == true && gamestate == PLAY) {
-    trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
-    trexIsCrouching = false;
-    if (TrexColorido == true || dinosaurcolor == "Cinza") {
-      trex.changeAnimation("runningnb", trex_runningnb);
-    }
-    if (TrexColorido == false) {
-      trex.changeAnimation("running", trex_running);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Marrom") {
-      trex.changeAnimation("running_brown", trex_runningbrown);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Verde") {
-      trex.changeAnimation("running_green", trex_runninggreen);
-    }
-    //trex.velocityX = 0;
-  } else {
 
-  }
+  touches = [];
 }
 
 function turnColored() {
