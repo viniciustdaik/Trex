@@ -253,7 +253,7 @@ function setup() {
   createCanvas(windowWidth - 2.3, windowHeight - 2.5);
   //600, 200 //windowWidth - 2.3, windowHeight - 2.5
 
-  joystick = createJoystick(true);
+  joystick = createJoystick();//true
   if (!joystick.calibrated()) {
     joystick.calibrate(true);
 
