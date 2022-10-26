@@ -779,7 +779,7 @@ function draw() {
     background('white');
   }
 
-  if (!isMobile && gamestate !== PLAY) {
+  if (!isMobile && gamestate === SELECT) {
     push();
     fill("black");
     stroke("gray");
@@ -1969,12 +1969,12 @@ function draw() {
 
         //trex.velocityX = 2;
 
-        console.log("Pressed!");
-      } else if (lastButtonType === "axes" && axesValue[3] !== 1 && trex.y >= invisibleground.y - 40
-        || buttonsValue[0/*axesDown*/] === false && lastButtonType === "button"
-        && trex.y >= invisibleground.y - 40
-        || buttonsValue[1/*redButton*/] === false && lastButtonType === "button"
-        && trex.y >= invisibleground.y - 40) {
+        //console.log("Pressed!");
+      } else if (/*lastButtonType === "axes" &&*/ axesValue[3] !== 1 && trex.y >= invisibleground.y - 40
+        /*||*/ && buttonsValue[0/*axesDown*/] === false// && lastButtonType === "button"
+        //&& trex.y >= invisibleground.y - 40
+        /*||*/ && buttonsValue[1/*redButton*/] === false) {// && lastButtonType === "button"
+        //&& trex.y >= invisibleground.y - 40) {
         //crouch();
         //trex.addAnimation("running", trex_running);
 
@@ -1994,7 +1994,7 @@ function draw() {
         trexIsCrouching = false;
         //trex.velocityX = 0;
 
-        console.log("Released!");
+        //console.log("Released!");
       }
 
       var crouchButtonX;
@@ -2271,13 +2271,13 @@ function draw() {
           /*150 - newHeightAdded / 2*/
           keyDown('W') && trex.y - newHeightAdded >= invisibleground.y - 40 - newHeightAdded / 2 ||
           /*150 - newHeightAdded / 2*/
-          keyDown("UP_ARROW") && trex.y - newHeightAdded >= invisibleground.y - 40 - newHeightAdded / 2 ||
+          keyDown("UP_ARROW") && trex.y - newHeightAdded >= invisibleground.y - 40 - newHeightAdded / 2) {//||
           /*150 - newHeightAdded / 2*/
-          touches.length > 0 && trex.y - newHeightAdded >= invisibleground.y - 40 - newHeightAdded / 2
+          //touches.length > 0 && trex.y - newHeightAdded >= invisibleground.y - 40 - newHeightAdded / 2
           /*150 - newHeightAdded / 2*/
-          && trexIsCrouching == false
-          && !mouseIsOver(ShowBestHighscoresButtonHitbox)
-          && !mouseIsOver(crouchbuttonHitbox)) {
+          //&& trexIsCrouching == false
+          //&& !mouseIsOver(ShowBestHighscoresButtonHitbox)
+          //&& !mouseIsOver(crouchbuttonHitbox)) {
           //&& !mousePressedOver(crouchbuttonbackground)){
           //&& !mouseIsOver(crouchbutton)){
           if (trex.y >= invisibleground.y - 40 - newHeightAdded / 2/* trex.y >= 150  - newHeightAdded / 2*/
@@ -3474,13 +3474,10 @@ function setBirdColor() {
 }
 
 function crouch() {
+  touches = [];
+
   if (isMobile) {
     touches = [];
-    if (trexIsJumping === true && trex.y >= invisibleground.y - 50) {
-      trexIsJumping = false;
-      trex.y = invisibleGroundPosY - 30;
-      trex.velocityY = 0;
-    }
     if (/*MobileUnCrouchMode === "press" &&*/ trexIsJumping == true && trexIsCrouching == false) {
       crouchAfterJumping = true;
     }
@@ -4924,7 +4921,7 @@ function onJoystickRelease(e) {
     axesValue[3] === "";
   }*/
 
-  if (!redButtonReleased && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
+  /*if (!redButtonReleased && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
     && !axesDownReleased && !axeDownReleased) {
     //crouch();
     //trex.addAnimation("running", trex_running);
@@ -4946,7 +4943,7 @@ function onJoystickRelease(e) {
     //trex.velocityX = 0;
 
     console.log("Released!");
-  }
+  }*/
 }
 
 function handleConsoleOrientationControls() {
