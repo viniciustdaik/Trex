@@ -62,7 +62,7 @@ var infiniteflightbutton, infiniteracebutton;
 
 var gotStateOneTime = false;
 
-var initialHeight, newHeightAdded, initialWidth, newWidthAdded, newHeight;
+var initialHeight, newHeightAdded = 0, initialWidth, newWidthAdded = 0, newHeight;
 
 var PcFeaturesOnMobile = false;
 
@@ -783,9 +783,9 @@ function draw() {
     push();
     fill("black");
     stroke("gray");
-    rect(width - 235 - 100, 0, 230, 120)
+    rect(width - 235 - 100 - newWidthAdded / 2, 0, 230, 120)
     pop();
-    joystick.draw(width - 120 - 100, 0 + 60, 220, 100);
+    joystick.draw(width - 120 - 100 - newWidthAdded / 2, 0 + 60, 220, 100);
   }
 
   if (backButtonOnPC === true && !isMobile && backButton.x !== width - 55 && gamestate !== SELECT) {
@@ -1299,11 +1299,11 @@ function draw() {
     fill("cyan");
     stroke("blue");
     if (itemSelected === "infiniteracebutton" && showItemSelectedGui) {
-      ellipse(infiniteracebutton.x + 80 - 5.5, infiniteracebutton.y
+      ellipse(infiniteracebutton.x + 80 - 5.5 - newWidthAdded / 2, infiniteracebutton.y
         + infiniteracebutton.y / 4 - 3, 188, 188);
       //rect(infiniteracebutton.x - 5, infiniteracebutton.y - 5, 158, 158);
     } else if (itemSelected === "infiniteflightbutton" && showItemSelectedGui) {
-      ellipse(infiniteflightbutton.x + 80 - 5.5, infiniteflightbutton.y
+      ellipse(infiniteflightbutton.x + 80 - 5.5 - newWidthAdded / 2, infiniteflightbutton.y
         + infiniteflightbutton.y / 4 - 3, 188, 188);
       //rect(infiniteflightbutton.x - 5, infiniteflightbutton.y - 5, 158, 158);
     }
@@ -1430,17 +1430,17 @@ function draw() {
     fill("cyan");
     stroke("blue");
     if (itemSelected === "normalbutton" && showItemSelectedGui) {
-      ellipse(normalbutton.x + 180 - 5.5, normalbutton.y + 35 - 1, 428, 120);
+      ellipse(normalbutton.x + 180 - 5.5 - newWidthAdded / 2, normalbutton.y + 35 - 1, 428, 120);
     } else if (itemSelected === "coloridobutton" && showItemSelectedGui) {
-      ellipse(coloridobutton.x + 180 - 5.5, coloridobutton.y + 35 - 1, 428, 120);
+      ellipse(coloridobutton.x + 180 - 5.5 - newWidthAdded / 2, coloridobutton.y + 35 - 1, 428, 120);
     } else if (itemSelected === "multiplayerToggle" && showItemSelectedGui) {
-      ellipse(multiplayerToggle.x + 180 - 5.5, multiplayerToggle.y + 35 - 1, 428, 120);
+      ellipse(multiplayerToggle.x + 180 - 5.5 - newWidthAdded / 2, multiplayerToggle.y + 35 - 1, 428, 120);
     } else if (itemSelected === "heart1button" && showItemSelectedGui) {
-      ellipse(heart1button.x + 35, heart1button.y + 35 - 1, 100, 80);
+      ellipse(heart1button.x + 35 - newWidthAdded / 2, heart1button.y + 35 - 1, 100, 80);
     } else if (itemSelected === "heart2button" && showItemSelectedGui) {
-      ellipse(heart2button.x + 35, heart2button.y + 35 - 1, 100, 80);
+      ellipse(heart2button.x + 35 - newWidthAdded / 2, heart2button.y + 35 - 1, 100, 80);
     } else if (itemSelected === "heart3button" && showItemSelectedGui) {
-      ellipse(heart3button.x + 35, heart3button.y + 35 - 1, 100, 80);
+      ellipse(heart3button.x + 35 - newWidthAdded / 2, heart3button.y + 35 - 1, 100, 80);
     }
     pop();
   }
