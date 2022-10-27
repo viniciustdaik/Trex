@@ -55,8 +55,8 @@ var game = "notselected";
 
 var windowResizeX = true, windowResizeY = false;
 
-var version = 1.22299, mostRecentVersion = null, reloadButton,
-  LatestUpdatePlatformsAimed = ""/* PC, Mobile, Android, iPhone, iPad, iPhoneXR, All */;//1.22299
+var version = 1.222991, mostRecentVersion = null, reloadButton,
+  LatestUpdatePlatformsAimed = ""/* PC, Mobile, Android, iPhone, iPad, iPhoneXR, All */;//1.222991
 
 var infiniteflightbutton, infiniteracebutton;
 
@@ -133,7 +133,8 @@ var joystick, itemSelected = "infiniteracebutton", showItemSelectedGui = false, 
   bolinhatoselect = "both"/* left, right, both */, buttonsValue = [/* axesDown, redButton */],
   PSXButtonImg, PSCircleButtonImg, PSSquareButtonImg, PSTriangleButtonImg,
   PSUpArrowImg, PSDownArrowImg, PSLeftArrowImg, PSRightArrowImg,
-  controlsOrientations = [], controlsOrientationsTexts = [];
+  controlsOrientations = [], controlsOrientationsTexts = [], calibrating = false,
+  calibrateButton;
 
 function preload() {
   soundFormats('mp3');
@@ -254,21 +255,37 @@ function setup() {
   //600, 200 //windowWidth - 2.3, windowHeight - 2.5
 
   joystick = createJoystick();//true
-  if (!joystick.calibrated()) {
+  /*if (!joystick.calibrated()) {
     joystick.calibrate(true);
 
-    joystick.onButtonPressed(onJoystickPress);
-    joystick.onButtonReleased(onJoystickRelease);
+    //joystick.onButtonPressed(onJoystickPress);
+    //joystick.onButtonReleased(onJoystickRelease);
 
-    joystick.onAxesPressed(onJoystickPress);
-    joystick.onAxesReleased(onJoystickRelease);
-  }
+    //joystick.onAxesPressed(onJoystickPress);
+    //joystick.onAxesReleased(onJoystickRelease);
 
+    console.log("Calibration Mode Activated.");
+  }*/
   joystick.onButtonPressed(onJoystickPress);
   joystick.onButtonReleased(onJoystickRelease);
 
   joystick.onAxesPressed(onJoystickPress);
   joystick.onAxesReleased(onJoystickRelease);
+
+  calibrateButton = createButton("");
+  if (!joystick.calibrated()) {
+    calibrateButton.html("Calibrar");
+  } else {
+    calibrateButton.html("Mudar");
+  }
+  calibrateButton.class("calibrateButton");
+  calibrateButton.size(75);
+  if (!isMobile) {
+    calibrateButton.position(width - 235 - 22, 125);
+  } else {
+    calibrateButton.position(width - width - width - 1000, -500);
+  }
+  calibrateButton.mousePressed(handleCalibrate);
 
   if (width < 405) {
     mobileSize = "lessThanIPhoneXRSize";
@@ -781,11 +798,38 @@ function draw() {
 
   if (!isMobile && gamestate === SELECT) {
     push();
-    fill("black");
+    var yAdd;
+    textFont(trexfont);//"Trex" if its trexfont then + 25 on y
+    if (textFont() === trexfont) {
+      yAdd = 25;
+    } else if (textFont() === "Trex") {
+      yAdd = 0;
+    }
+    fill("cyan");
+    textSize(25);
+    //textAlign("center");
+    stroke("green");
+    textWrap(WORD);
+
+    if (calibrating === false && joystick.calibrated() === false) {
+      text("Calibre Para Jogar Com Um Controle!", 10 - newWidthAdded / 2, 10 + yAdd, width - 235 - 100 - 10);
+    } else if (calibrating === true) {
+      text("Clique E Aperte O Botão No Controle!", 10 - newWidthAdded / 2, 10 + yAdd, width - 235 - 100 - 10);
+    }
+
+    if (calibrateButton.x !== width - 235 - 22 - newWidthAdded / 10000) {
+      calibrateButton.position(width - 235 - 22 - newWidthAdded / 10000, calibrateButton.y);
+    }
+
+
+    fill("orange");//"black"
     stroke("gray");
     rect(width - 235 - 100 - newWidthAdded / 2, 0, 230, 120)
     pop();
+
     joystick.draw(width - 120 - 100 - newWidthAdded / 2, 0 + 60, 220, 100);
+  } else if (isMobile && gamestate === SELECT && calibrateButton.x !== width - width - width - 1000) {
+    calibrateButton.position(width - width - width - 1000, -500);
   }
 
   if (backButtonOnPC === true && !isMobile && backButton.x !== width - 55 && gamestate !== SELECT) {
@@ -3049,6 +3093,8 @@ function createclouds() {
       }
       highscoreS.depth = cloud.depth + 1;
     }
+    gameover.depth = cloud.depth + 1;
+    restart.depth = cloud.depth + 1;
     //}
     cloudG.add(cloud);
     if (game == "Corrida Infinita") {
@@ -3521,6 +3567,25 @@ function crouch() {
 }
 
 function turnColored() {
+  if (controlsOrientations.length > 0 || controlsOrientationsTexts.length > 0) {
+    if (controlsOrientations.length > 0) {
+      for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
+        controlsOrientations[o].destroy();
+        controlsOrientations.pop();
+        var onum = o + 1;
+        console.log("controlOrientation " + onum + "(" + o + ")" + " Destroyed!");
+      }
+    }
+    if (controlsOrientationsTexts.length > 0) {
+      for (var o = controlsOrientationsTexts.length - 1; o >= 0; o = o - 1) {
+        controlsOrientationsTexts[o].remove();
+        controlsOrientationsTexts.pop();
+        var onum = o + 1;
+        console.log("controlOrientationText " + onum + "(" + o + ")" + " Destroyed!");
+      }
+    }
+  }
+
   TrexColorido = true;
   gamestate = PLAY;
   gameover.changeImage("gameovercolored", gameover_coloredimg);
@@ -3554,6 +3619,9 @@ function turnColored() {
   heart1button.position(-1250, heart1button.y);
   heart2button.position(-1250, heart2button.y);
   heart3button.position(-1250, heart3button.y);
+
+  calibrateButton.position(-1250, -500);
+
   if (player === undefined && multiplayerToggleValue === true) {
     Multiplayer();
   }
@@ -3562,7 +3630,9 @@ function turnColored() {
   }
 
   handleHearts(true);
+}
 
+function turnNormal() {
   if (controlsOrientations.length > 0 || controlsOrientationsTexts.length > 0) {
     if (controlsOrientations.length > 0) {
       for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
@@ -3581,9 +3651,7 @@ function turnColored() {
       }
     }
   }
-}
 
-function turnNormal() {
   TrexColorido = false;
   gamestate = PLAY;
   gameover.changeImage("gameover", gameoverimg);
@@ -3613,6 +3681,9 @@ function turnNormal() {
   heart1button.position(-1250, heart1button.y);
   heart2button.position(-1250, heart2button.y);
   heart3button.position(-1250, heart3button.y);
+
+  calibrateButton.position(-1250, -500);
+
   if (player === undefined && multiplayerToggleValue === true) {
     Multiplayer();
   }
@@ -3621,7 +3692,9 @@ function turnNormal() {
   }
 
   handleHearts(true);
+}
 
+function turnCorridaInfinita() {
   if (controlsOrientations.length > 0 || controlsOrientationsTexts.length > 0) {
     if (controlsOrientations.length > 0) {
       for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
@@ -3640,9 +3713,6 @@ function turnNormal() {
       }
     }
   }
-}
-
-function turnCorridaInfinita() {
   game = "Corrida Infinita";
   heartsSprite.x = invisibleground.x - 80;
   heartsSprite.y = invisibleGroundPosY + 35;
@@ -3662,6 +3732,13 @@ function turnCorridaInfinita() {
     highscoreS.y = 33 - newHeightAdded / 2;;
   }
 
+  if (showItemSelectedGui) {
+    handleConsoleOrientationControls(true);
+  }
+}
+
+function turnVooInfinito() {
+  //if(!isMobile || isMobile && PcFeaturesOnMobile == true){
   if (controlsOrientations.length > 0 || controlsOrientationsTexts.length > 0) {
     if (controlsOrientations.length > 0) {
       for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
@@ -3680,14 +3757,6 @@ function turnCorridaInfinita() {
       }
     }
   }
-
-  if (showItemSelectedGui) {
-    handleConsoleOrientationControls();
-  }
-}
-
-function turnVooInfinito() {
-  //if(!isMobile || isMobile && PcFeaturesOnMobile == true){
   game = "Voo Infinito";
   heartsSprite.x = invisibleground.x + 20;
   heartsSprite.y = invisibleGroundPosY + 28.5;//35 //invisibleground.y + 32.5
@@ -3706,27 +3775,8 @@ function turnVooInfinito() {
     highscoreS.y = 33 + 40 - newHeightAdded / 2;
   }
 
-  if (controlsOrientations.length > 0 || controlsOrientationsTexts.length > 0) {
-    if (controlsOrientations.length > 0) {
-      for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
-        controlsOrientations[o].destroy();
-        controlsOrientations.pop();
-        var onum = o + 1;
-        console.log("controlOrientation " + onum + "(" + o + ")" + " Destroyed!");
-      }
-    }
-    if (controlsOrientationsTexts.length > 0) {
-      for (var o = controlsOrientationsTexts.length - 1; o >= 0; o = o - 1) {
-        controlsOrientationsTexts[o].remove();
-        controlsOrientationsTexts.pop();
-        var onum = o + 1;
-        console.log("controlOrientationText " + onum + "(" + o + ")" + " Destroyed!");
-      }
-    }
-  }
-
   if (showItemSelectedGui) {
-    handleConsoleOrientationControls();
+    handleConsoleOrientationControls(true);
   }
   //}
 }
@@ -4039,6 +4089,10 @@ function windowResized() {
         ground.x = ground.x - newWidthAdded / 2;
         bird.x = 50 - newWidthAdded / 2;
 
+        if (gamestate === SELECT && showItemSelectedGui) {
+          handleConsoleOrientationControls(false, true);
+        }
+
         //handleHearts(true);
         if (game == "Voo Infinito") {
           if (player !== undefined && playerCount === 2) {
@@ -4203,6 +4257,11 @@ function handleBack() {
     gamestate = -1;//SELECT
     itemSelected = pastItemsSelected[2];//"infiniteracebutton"
     handleHearts(false);
+
+    if (!isMobile) {
+      calibrateButton.position(width - 235 - 22 - newWidthAdded / 10000, 125);
+    }
+
     score = 0;
     highscore = 0;
     birdG.destroyEach();
@@ -4232,7 +4291,7 @@ function handleBack() {
     multiplayerToggle.style("background-color", "darkred");
     backButton.position(width - width - width - 1000, -500);
     if (showItemSelectedGui) {
-      handleConsoleOrientationControls();
+      handleConsoleOrientationControls(true);
     }
     if (crouchbutton.y !== -350) {
       crouchbutton.position(width / 2 - 35, -350);
@@ -4578,461 +4637,535 @@ if (show === true && showX !== undefined
 }*/
 
 function onJoystickPress(e) {
-  console.log(e);
+  if (calibrating === false) {
+    console.log(e);
 
-  var buttonGreenPressed = joystick.getButtonPressedByName("buttonGreen"); //index =0 
-  var axesUpPressed = joystick.getButtonPressedByName("axesUp"); //index =12
+    var buttonGreenPressed = joystick.getButtonPressedByName("buttonGreen"); //index =0 
+    var axesUpPressed = joystick.getButtonPressedByName("axesUp"); //index =12
 
-  var redButtonPressed = joystick.getButtonPressedByName("buttonRed"); //index =1
-  var axesDownPressed = joystick.getButtonPressedByName("axesDown"); //index =13
+    var redButtonPressed = joystick.getButtonPressedByName("buttonRed"); //index =1
+    var axesDownPressed = joystick.getButtonPressedByName("axesDown"); //index =13
 
-  console.log("buttonGreenPressed: " + buttonGreenPressed);
-  console.log("axesUpPressed: " + axesUpPressed);
+    console.log("buttonGreenPressed: " + buttonGreenPressed);
+    console.log("axesUpPressed: " + axesUpPressed);
 
-  console.log("redButtonPressed: " + redButtonPressed);
-  console.log("axesDownPressed: " + axesDownPressed);
+    console.log("redButtonPressed: " + redButtonPressed);
+    console.log("axesDownPressed: " + axesDownPressed);
 
-  //var axesUp = joystick.getAxesValueByIndex(0, 3);
-  //console.log("axesUp: " + axesUp);
+    //var axesUp = joystick.getAxesValueByIndex(0, 3);
+    //console.log("axesUp: " + axesUp);
 
-  /*if (e.index === 3 && e.type === "axes" && e.value === -1) {
-    console.log("index: " + e.index, ", type: " + e.type, ", value: " + e.value);
-    console.log("if worked!");
-  }*/
+    /*if (e.index === 3 && e.type === "axes" && e.value === -1) {
+      console.log("index: " + e.index, ", type: " + e.type, ", value: " + e.value);
+      console.log("if worked!");
+    }*/
 
-  //horizontal = esquerda direita, vertical = cima baixo
-  if (e.index === 0/* bolinha da esquerda, horizontal */ && e.type === "axes" && axesValue[0] !== e.value) {
-    axesValue[0] = e.value;
-  } else if (e.index === 1/* bolinha da esquerda, vertical */ && e.type === "axes" && axesValue[1] !== e.value) {
-    axesValue[1] = e.value;
-  } else if (e.index === 2/* bolinha da esquerda, horizontal */ && e.type === "axes" && axesValue[2] !== e.value) {
-    axesValue[2] = e.value;
-  } else if (e.index === 3/* bolinha da esquerda, vertical */ && e.type === "axes" && axesValue[3] !== e.value) {
-    axesValue[3] = e.value;
-  }
+    //horizontal = esquerda direita, vertical = cima baixo
+    if (e.index === 0/* bolinha da esquerda, horizontal */ && e.type === "axes" && axesValue[0] !== e.value) {
+      axesValue[0] = e.value;
+    } else if (e.index === 1/* bolinha da esquerda, vertical */ && e.type === "axes" && axesValue[1] !== e.value) {
+      axesValue[1] = e.value;
+    } else if (e.index === 2/* bolinha da esquerda, horizontal */ && e.type === "axes" && axesValue[2] !== e.value) {
+      axesValue[2] = e.value;
+    } else if (e.index === 3/* bolinha da esquerda, vertical */ && e.type === "axes" && axesValue[3] !== e.value) {
+      axesValue[3] = e.value;
+    }
 
-  if (lastButtonType !== e.type) {
-    lastButtonType = e.type;
-  }
+    if (lastButtonType !== e.type) {
+      lastButtonType = e.type;
+    }
 
-  buttonsValue[0] = axesDownPressed;
-  buttonsValue[1] = redButtonPressed;
+    buttonsValue[0] = axesDownPressed;
+    buttonsValue[1] = redButtonPressed;
 
-  if (buttonGreenPressed === true && gamestate === PLAY && trexIsCrouching === false
-    && trex.y >= invisibleground.y - 40 && game === "Corrida Infinita"
-    || axesUpPressed === true && gamestate === PLAY && trexIsCrouching === false
-    && trex.y >= invisibleground.y - 40 && game === "Corrida Infinita"
-    || e.index === 3 && e.type === "axes" && e.value === -1 && trexIsCrouching === false
-    && trex.y >= invisibleground.y - 40 && gamestate === PLAY && game === "Corrida Infinita") {
-    if (trex.y >= invisibleground.y - 40 /* trex.y >= 150 */ && trexIsCrouching == false) {
+    if (buttonGreenPressed === true && gamestate === PLAY && trexIsCrouching === false
+      && trex.y >= invisibleground.y - 40 && game === "Corrida Infinita"
+      || axesUpPressed === true && gamestate === PLAY && trexIsCrouching === false
+      && trex.y >= invisibleground.y - 40 && game === "Corrida Infinita"
+      || e.index === 3 && e.type === "axes" && e.value === -1 && trexIsCrouching === false
+      && trex.y >= invisibleground.y - 40 && gamestate === PLAY && game === "Corrida Infinita") {
+      if (trex.y >= invisibleground.y - 40 /* trex.y >= 150 */ && trexIsCrouching == false) {
+        touches = [];
+        trex.velocityY = -10;
+        //jumpsound.stop();
+        jumpsound.play();
+        //trexIsJumping = true;
+      }
+      console.log("Pressed!");
+    } else if (buttonGreenPressed === true && gamestate === PLAY && game === "Voo Infinito"
+      || axesUpPressed === true && gamestate === PLAY && game === "Voo Infinito"
+      || e.index === 3 && e.type === "axes" && e.value === -1 && gamestate === PLAY
+      && game === "Voo Infinito") {
       touches = [];
-      trex.velocityY = -10;
-      //jumpsound.stop();
-      jumpsound.play();
-      //trexIsJumping = true;
+      bird.velocityY = -10;
     }
-    console.log("Pressed!");
-  } else if (buttonGreenPressed === true && gamestate === PLAY && game === "Voo Infinito"
-    || axesUpPressed === true && gamestate === PLAY && game === "Voo Infinito"
-    || e.index === 3 && e.type === "axes" && e.value === -1 && gamestate === PLAY
-    && game === "Voo Infinito") {
-    touches = [];
-    bird.velocityY = -10;
-  }
 
-  if (redButtonPressed === true && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
-    && game === "Corrida Infinita"
-    || axesDownPressed === true && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
-    && game === "Corrida Infinita"
-    || e.index === 3 && e.type === "axes" && e.value === 1 && trex.y >= invisibleground.y - 40
-    && gamestate === PLAY && game === "Corrida Infinita") {
-    //crouch();
-    //trex.addAnimation("crouching", trex_crouching);
+    if (redButtonPressed === true && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
+      && game === "Corrida Infinita"
+      || axesDownPressed === true && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
+      && game === "Corrida Infinita"
+      || e.index === 3 && e.type === "axes" && e.value === 1 && trex.y >= invisibleground.y - 40
+      && gamestate === PLAY && game === "Corrida Infinita") {
+      //crouch();
+      //trex.addAnimation("crouching", trex_crouching);
 
-    trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
-    if (TrexColorido == true && dinosaurcolor == "Cinza") {
-      trex.changeAnimation("crouchingnb", trex_crouchingnb);
-    }
-    if (TrexColorido == false) {
-      trex.changeAnimation("crouching", trex_crouching);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Marrom") {
-      trex.changeAnimation("crouching_brown", trex_crouchingbrown);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Verde") {
-      trex.changeAnimation("crouching_green", trex_crouchinggreen);
-    }
-    trexIsCrouching = true;
-
-    //trex.velocityX = 2;
-
-    console.log("Pressed!");
-  }
-
-  if (showItemSelectedGui) {
-    if (joystick.getButtonPressedByName("buttonRed") && gamestate === SELECT
-      || joystick.getButtonPressedByName("axesRight") && gamestate === SELECT
-      || joystick.getButtonPressedByName("sholderRight") && gamestate === SELECT
-      || e.index === 0 && e.type === "axes" && e.value === 1 && gamestate === SELECT
-      && bolinhatoselect !== "right"
-      || e.index === 2 && e.type === "axes" && e.value === 1 && gamestate === SELECT
-      && bolinhatoselect !== "left") {
-      if (game === "notselected") {
-        if (itemSelected === "infiniteracebutton") {
-          itemSelected = "infiniteflightbutton";
-          pastItemsSelected[2] = "infiniteflightbutton";
-        } else if (itemSelected === "infiniteflightbutton" && endToStartX) {
-          itemSelected = "infiniteracebutton";
-          pastItemsSelected[2] = "infiniteracebutton";
-        }
-      } else {
-        if (itemSelected === "normalbutton") {
-          itemSelected = "coloridobutton";
-          pastItemsSelected[0] = "coloridobutton";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "coloridobutton") {
-              pastItemsSelected[i] = "normalbutton";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "coloridobutton" && endToStartX) {
-          itemSelected = "normalbutton";
-          pastItemsSelected[0] = "normalbutton";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "normalbutton") {
-              pastItemsSelected[i] = "coloridobutton";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "heart1button") {
-          itemSelected = "heart2button";
-          pastItemsSelected[1] = "heart2button";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart3button") {
-              pastItemsSelected[i] = "heart2button";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "heart2button") {
-          itemSelected = "heart3button";
-          pastItemsSelected[1] = "heart3button";
-          /*or (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart2button") {
-              pastItemsSelected[i] = "heart3button";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "heart3button" && endToStartX) {
-          itemSelected = "heart1button";
-          pastItemsSelected[1] = "heart1button";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "heart3button" || pastItemsSelected[i] === "heart2button") {
-              pastItemsSelected[i] = "heart1button";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        }
+      trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+      if (TrexColorido == true && dinosaurcolor == "Cinza") {
+        trex.changeAnimation("crouchingnb", trex_crouchingnb);
       }
-    } else if (joystick.getButtonPressedByName("buttonBlue") && gamestate === SELECT
-      || joystick.getButtonPressedByName("axesLeft") && gamestate === SELECT
-      || joystick.getButtonPressedByName("sholderLeft") && gamestate === SELECT
-      || e.index === 0 && e.type === "axes" && e.value === -1 && gamestate === SELECT
-      && bolinhatoselect !== "right"
-      || e.index === 2 && e.type === "axes" && e.value === -1 && gamestate === SELECT
-      && bolinhatoselect !== "left") {
-      if (game === "notselected") {
-        if (itemSelected === "infiniteflightbutton") {
-          itemSelected = "infiniteracebutton";
-          pastItemsSelected[2] = "infiniteracebutton";
-        } else if (itemSelected === "infiniteracebutton" && endToStartX) {
-          itemSelected = "infiniteflightbutton";
-          pastItemsSelected[2] = "infiniteflightbutton";
-        }
-      } else {
-        if (itemSelected === "coloridobutton") {
-          itemSelected = "normalbutton";
-          pastItemsSelected[0] = "normalbutton";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "coloridobutton") {
-              pastItemsSelected[i] = "normalbutton";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "normalbutton" && endToStartX) {
-          itemSelected = "coloridobutton";
-          pastItemsSelected[0] = "coloridobutton";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "normalbutton") {
-              pastItemsSelected[i] = "coloridobutton";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "heart1button" && endToStartX) {
-          itemSelected = "heart3button";
-          pastItemsSelected[1] = "heart3button";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart2button") {
-              pastItemsSelected[i] = "heart3button";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "heart2button") {
-          itemSelected = "heart1button";
-          pastItemsSelected[1] = "heart1button";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "heart3button" || pastItemsSelected[i] === "heart2button") {
-              pastItemsSelected[i] = "heart1button";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        } else if (itemSelected === "heart3button") {
-          itemSelected = "heart2button";
-          pastItemsSelected[1] = "heart2button";
-          /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
-            if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart3button") {
-              pastItemsSelected[i] = "heart2button";
-              console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
-            }
-          }*/
-        }
+      if (TrexColorido == false) {
+        trex.changeAnimation("crouching", trex_crouching);
       }
-    } else if (//joystick.getButtonPressedByName("buttonGreen") && gamestate === SELECT && game !== "notselected"
+      if (TrexColorido == true && dinosaurcolor == "Marrom") {
+        trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Verde") {
+        trex.changeAnimation("crouching_green", trex_crouchinggreen);
+      }
+      trexIsCrouching = true;
+
+      //trex.velocityX = 2;
+
+      console.log("Pressed!");
+    }
+
+    if (showItemSelectedGui) {
+      if (joystick.getButtonPressedByName("buttonRed") && gamestate === SELECT
+        || joystick.getButtonPressedByName("axesRight") && gamestate === SELECT
+        || joystick.getButtonPressedByName("sholderRight") && gamestate === SELECT
+        || e.index === 0 && e.type === "axes" && e.value === 1 && gamestate === SELECT
+        && bolinhatoselect !== "right"
+        || e.index === 2 && e.type === "axes" && e.value === 1 && gamestate === SELECT
+        && bolinhatoselect !== "left") {
+        if (game === "notselected") {
+          if (itemSelected === "infiniteracebutton") {
+            itemSelected = "infiniteflightbutton";
+            pastItemsSelected[2] = "infiniteflightbutton";
+          } else if (itemSelected === "infiniteflightbutton" && endToStartX) {
+            itemSelected = "infiniteracebutton";
+            pastItemsSelected[2] = "infiniteracebutton";
+          }
+        } else {
+          if (itemSelected === "normalbutton") {
+            itemSelected = "coloridobutton";
+            pastItemsSelected[0] = "coloridobutton";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "coloridobutton") {
+                pastItemsSelected[i] = "normalbutton";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "coloridobutton" && endToStartX) {
+            itemSelected = "normalbutton";
+            pastItemsSelected[0] = "normalbutton";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "normalbutton") {
+                pastItemsSelected[i] = "coloridobutton";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "heart1button") {
+            itemSelected = "heart2button";
+            pastItemsSelected[1] = "heart2button";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart3button") {
+                pastItemsSelected[i] = "heart2button";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "heart2button") {
+            itemSelected = "heart3button";
+            pastItemsSelected[1] = "heart3button";
+            /*or (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart2button") {
+                pastItemsSelected[i] = "heart3button";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "heart3button" && endToStartX) {
+            itemSelected = "heart1button";
+            pastItemsSelected[1] = "heart1button";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "heart3button" || pastItemsSelected[i] === "heart2button") {
+                pastItemsSelected[i] = "heart1button";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          }
+        }
+      } else if (joystick.getButtonPressedByName("buttonBlue") && gamestate === SELECT
+        || joystick.getButtonPressedByName("axesLeft") && gamestate === SELECT
+        || joystick.getButtonPressedByName("sholderLeft") && gamestate === SELECT
+        || e.index === 0 && e.type === "axes" && e.value === -1 && gamestate === SELECT
+        && bolinhatoselect !== "right"
+        || e.index === 2 && e.type === "axes" && e.value === -1 && gamestate === SELECT
+        && bolinhatoselect !== "left") {
+        if (game === "notselected") {
+          if (itemSelected === "infiniteflightbutton") {
+            itemSelected = "infiniteracebutton";
+            pastItemsSelected[2] = "infiniteracebutton";
+          } else if (itemSelected === "infiniteracebutton" && endToStartX) {
+            itemSelected = "infiniteflightbutton";
+            pastItemsSelected[2] = "infiniteflightbutton";
+          }
+        } else {
+          if (itemSelected === "coloridobutton") {
+            itemSelected = "normalbutton";
+            pastItemsSelected[0] = "normalbutton";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "coloridobutton") {
+                pastItemsSelected[i] = "normalbutton";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "normalbutton" && endToStartX) {
+            itemSelected = "coloridobutton";
+            pastItemsSelected[0] = "coloridobutton";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "normalbutton") {
+                pastItemsSelected[i] = "coloridobutton";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "heart1button" && endToStartX) {
+            itemSelected = "heart3button";
+            pastItemsSelected[1] = "heart3button";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart2button") {
+                pastItemsSelected[i] = "heart3button";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "heart2button") {
+            itemSelected = "heart1button";
+            pastItemsSelected[1] = "heart1button";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "heart3button" || pastItemsSelected[i] === "heart2button") {
+                pastItemsSelected[i] = "heart1button";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          } else if (itemSelected === "heart3button") {
+            itemSelected = "heart2button";
+            pastItemsSelected[1] = "heart2button";
+            /*for (var i = 0; i < pastItemsSelected.length; i = i + 1) {
+              if (pastItemsSelected[i] === "heart1button" || pastItemsSelected[i] === "heart3button") {
+                pastItemsSelected[i] = "heart2button";
+                console.log("pastItemsSelected[" + i + "]: " + pastItemsSelected[i]);
+              }
+            }*/
+          }
+        }
+      } else if (//joystick.getButtonPressedByName("buttonGreen") && gamestate === SELECT && game !== "notselected"
       /*||*/ joystick.getButtonPressedByName("axesDown") && gamestate === SELECT && game !== "notselected"
-      || e.index === 1 && e.type === "axes" && e.value === 1 && gamestate === SELECT
-      && bolinhatoselect !== "right"
-      || e.index === 3 && e.type === "axes" && e.value === 1 && gamestate === SELECT
-      && bolinhatoselect !== "left") {
-      if (itemSelected === "coloridobutton" || itemSelected === "normalbutton") {
-        itemSelected = "multiplayerToggle";
-      } else if (itemSelected === "multiplayerToggle") {
-        if (pastItemsSelected[1] === "heart1button") {
-          itemSelected = "heart1button";
-        } else if (pastItemsSelected[1] === "heart2button") {
-          itemSelected = "heart2button";
-        } else if (pastItemsSelected[1] === "heart3button") {
-          itemSelected = "heart3button";
-        }
-      } else if (itemSelected === "heart1button" && endToStartY
-        || itemSelected === "heart2button" && endToStartY
-        || itemSelected === "heart3button" && endToStartY) {
-        if (pastItemsSelected[0] === "normalbutton") {
-          itemSelected = "normalbutton";
-        } else if (pastItemsSelected[0] === "coloridobutton") {
-          itemSelected = "coloridobutton";
-        }
-      }
-    } else if (joystick.getButtonPressedByName("buttonYellow") && gamestate === SELECT && game !== "notselected"
-      || joystick.getButtonPressedByName("axesUp") && gamestate === SELECT && game !== "notselected"
-      || e.index === 1 && e.type === "axes" && e.value === -1 && gamestate === SELECT
-      && bolinhatoselect !== "right"
-      || e.index === 3 && e.type === "axes" && e.value === -1 && gamestate === SELECT
-      && bolinhatoselect !== "left") {
-      if (itemSelected === "multiplayerToggle") {
-        if (pastItemsSelected[0] === "normalbutton") {
-          itemSelected = "normalbutton";
-        } else if (pastItemsSelected[0] === "coloridobutton") {
-          itemSelected = "coloridobutton";
-        }
-      } else if (itemSelected === "heart1button" || itemSelected === "heart2button"
-        || itemSelected === "heart3button") {
-        itemSelected = "multiplayerToggle";
-      } else if (itemSelected === "coloridobutton" && endToStartY
-        || itemSelected === "normalbutton" && endToStartY) {
-        if (pastItemsSelected[1] === "heart1button") {
-          itemSelected = "heart1button";
-        } else if (pastItemsSelected[1] === "heart2button") {
-          itemSelected = "heart2button";
-        } else if (pastItemsSelected[1] === "heart3button") {
-          itemSelected = "heart3button";
-        }
-      }
-    } else if (joystick.getButtonPressedByName("buttonGreen") && gamestate === SELECT) {
-      if (game === "notselected") {
-        if (itemSelected === "infiniteracebutton") {
-          turnCorridaInfinita();
-        } else if (itemSelected === "infiniteflightbutton") {
-          turnVooInfinito();
-        }
-      } else {
-        if (itemSelected === "normalbutton") {
-          turnNormal();
-        } else if (itemSelected === "coloridobutton") {
-          turnColored();
+        || e.index === 1 && e.type === "axes" && e.value === 1 && gamestate === SELECT
+        && bolinhatoselect !== "right"
+        || e.index === 3 && e.type === "axes" && e.value === 1 && gamestate === SELECT
+        && bolinhatoselect !== "left") {
+        if (itemSelected === "coloridobutton" || itemSelected === "normalbutton") {
+          itemSelected = "multiplayerToggle";
         } else if (itemSelected === "multiplayerToggle") {
-          handleMultiplayerToggle();
-        } else if (itemSelected === "heart1button") {
-          handleHeart1Button();
-        } else if (itemSelected === "heart2button") {
-          handleHeart2Button();
-        } else if (itemSelected === "heart3button") {
-          handleHeart3Button();
+          if (pastItemsSelected[1] === "heart1button") {
+            itemSelected = "heart1button";
+          } else if (pastItemsSelected[1] === "heart2button") {
+            itemSelected = "heart2button";
+          } else if (pastItemsSelected[1] === "heart3button") {
+            itemSelected = "heart3button";
+          }
+        } else if (itemSelected === "heart1button" && endToStartY
+          || itemSelected === "heart2button" && endToStartY
+          || itemSelected === "heart3button" && endToStartY) {
+          if (pastItemsSelected[0] === "normalbutton") {
+            itemSelected = "normalbutton";
+          } else if (pastItemsSelected[0] === "coloridobutton") {
+            itemSelected = "coloridobutton";
+          }
+        }
+      } else if (joystick.getButtonPressedByName("buttonYellow") && gamestate === SELECT && game !== "notselected"
+        || joystick.getButtonPressedByName("axesUp") && gamestate === SELECT && game !== "notselected"
+        || e.index === 1 && e.type === "axes" && e.value === -1 && gamestate === SELECT
+        && bolinhatoselect !== "right"
+        || e.index === 3 && e.type === "axes" && e.value === -1 && gamestate === SELECT
+        && bolinhatoselect !== "left") {
+        if (itemSelected === "multiplayerToggle") {
+          if (pastItemsSelected[0] === "normalbutton") {
+            itemSelected = "normalbutton";
+          } else if (pastItemsSelected[0] === "coloridobutton") {
+            itemSelected = "coloridobutton";
+          }
+        } else if (itemSelected === "heart1button" || itemSelected === "heart2button"
+          || itemSelected === "heart3button") {
+          itemSelected = "multiplayerToggle";
+        } else if (itemSelected === "coloridobutton" && endToStartY
+          || itemSelected === "normalbutton" && endToStartY) {
+          if (pastItemsSelected[1] === "heart1button") {
+            itemSelected = "heart1button";
+          } else if (pastItemsSelected[1] === "heart2button") {
+            itemSelected = "heart2button";
+          } else if (pastItemsSelected[1] === "heart3button") {
+            itemSelected = "heart3button";
+          }
+        }
+      } else if (joystick.getButtonPressedByName("buttonGreen") && gamestate === SELECT) {
+        if (game === "notselected") {
+          if (itemSelected === "infiniteracebutton") {
+            turnCorridaInfinita();
+          } else if (itemSelected === "infiniteflightbutton") {
+            turnVooInfinito();
+          }
+        } else {
+          if (itemSelected === "normalbutton") {
+            turnNormal();
+          } else if (itemSelected === "coloridobutton") {
+            turnColored();
+          } else if (itemSelected === "multiplayerToggle") {
+            handleMultiplayerToggle();
+          } else if (itemSelected === "heart1button") {
+            handleHeart1Button();
+          } else if (itemSelected === "heart2button") {
+            handleHeart2Button();
+          } else if (itemSelected === "heart3button") {
+            handleHeart3Button();
+          }
         }
       }
     }
+
+    if (joystick.getButtonPressedByName("buttonGreen") && gamestate === END) {
+      reset();
+    }
+
+    console.log("itemSelected: " + itemSelected);
+
+    if (joystick.getButtonPressedByName("select") && gamestate !== SELECT) {
+      handleBack();
+    }
+
+    if (showItemSelectedGui === false) {
+      showItemSelectedGui = true;
+      handleConsoleOrientationControls(true);
+      console.log("showItemSelectedGui: " + showItemSelectedGui);
+    }
+
   }
-
-  if (joystick.getButtonPressedByName("buttonGreen") && gamestate === END) {
-    reset();
-  }
-
-  console.log("itemSelected: " + itemSelected);
-
-  if (joystick.getButtonPressedByName("select") && gamestate !== SELECT) {
-    handleBack();
-  }
-
-  if (showItemSelectedGui === false) {
-    showItemSelectedGui = true;
-    handleConsoleOrientationControls();
-    console.log("showItemSelectedGui: " + showItemSelectedGui);
-  }
-
 }
 
 function onJoystickRelease(e) {
-  //console.log(e);
+  if (calibrating === false && joystick.calibrate() === true) {
+    //console.log(e);
 
-  var redButtonReleased = joystick.getButtonPressedByName("buttonRed"); //index =1
-  var axesDownReleased = joystick.getButtonPressedByName("axesDown"); //index =13
+    var redButtonReleased = joystick.getButtonPressedByName("buttonRed"); //index =1
+    var axesDownReleased = joystick.getButtonPressedByName("axesDown"); //index =13
 
-  //var axeDownValue = joystick.getAxesValueByIndex(0, 3);
+    //var axeDownValue = joystick.getAxesValueByIndex(0, 3);
 
-  console.log("redButtonReleased: " + redButtonReleased);
-  console.log("axesDownReleased: " + axesDownReleased);
-  //console.log("axeDownValue: " + axeDownValue);
+    console.log("redButtonReleased: " + redButtonReleased);
+    console.log("axesDownReleased: " + axesDownReleased);
+    //console.log("axeDownValue: " + axeDownValue);
 
-  var axeDownReleased;
+    var axeDownReleased;
 
-  buttonsValue[0] = axesDownReleased;
-  buttonsValue[1] = redButtonReleased;
+    buttonsValue[0] = axesDownReleased;
+    buttonsValue[1] = redButtonReleased;
 
-  if (e.type === "axes" && e.index === 3 && e.value === -0
-    || e.type === "axes" && e.index === 3 && e.pressed === false) {
-    axeDownReleased = false;
+    if (e.type === "axes" && e.index === 3 && e.value === -0
+      || e.type === "axes" && e.index === 3 && e.pressed === false) {
+      axeDownReleased = false;
+    }
+
+    if (axeDownReleased === false) {
+      axesValue[3] = "";
+    }
+
+    console.log("axeDownReleased: " + axeDownReleased + ", note: if it's undefined, that's normal.");
+
+    /*if (lastButtonType === "axes" && axesValue[3] === 1) {
+      axesValue[3] === "";
+    }*/
+
+    /*if (!redButtonReleased && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
+      && !axesDownReleased && !axeDownReleased) {
+      //crouch();
+      //trex.addAnimation("running", trex_running);
+  
+      trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+      if (TrexColorido == true || dinosaurcolor == "Cinza") {
+        trex.changeAnimation("runningnb", trex_runningnb);
+      }
+      if (TrexColorido == false) {
+        trex.changeAnimation("running", trex_running);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Marrom") {
+        trex.changeAnimation("running_brown", trex_runningbrown);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Verde") {
+        trex.changeAnimation("running_green", trex_runninggreen);
+      }
+      trexIsCrouching = false;
+      //trex.velocityX = 0;
+  
+      console.log("Released!");
+    }*/
+
   }
-
-  if (axeDownReleased === false) {
-    axesValue[3] = "";
-  }
-
-  console.log("axeDownReleased: " + axeDownReleased + ", note: if it's undefined, that's normal.");
-
-  /*if (lastButtonType === "axes" && axesValue[3] === 1) {
-    axesValue[3] === "";
-  }*/
-
-  /*if (!redButtonReleased && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
-    && !axesDownReleased && !axeDownReleased) {
-    //crouch();
-    //trex.addAnimation("running", trex_running);
-
-    trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
-    if (TrexColorido == true || dinosaurcolor == "Cinza") {
-      trex.changeAnimation("runningnb", trex_runningnb);
-    }
-    if (TrexColorido == false) {
-      trex.changeAnimation("running", trex_running);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Marrom") {
-      trex.changeAnimation("running_brown", trex_runningbrown);
-    }
-    if (TrexColorido == true && dinosaurcolor == "Verde") {
-      trex.changeAnimation("running_green", trex_runninggreen);
-    }
-    trexIsCrouching = false;
-    //trex.velocityX = 0;
-
-    console.log("Released!");
-  }*/
 }
 
-function handleConsoleOrientationControls() {
+function handleConsoleOrientationControls(create, fixX) {
   //if (showItemSelectedGui) {
-  var totalOrientations;
-  if (game === "notselected") {
-    totalOrientations = 5;
-  } else if (game !== "notselected" && TrexColorido === "notselected") {
-    totalOrientations = 5;
-  }
-  for (var o = 1; o <= totalOrientations; o = o + 1) {
-    var controlOrientationText = createElement("h2");
-    if (o !== 1) {
-      controlOrientationText.position(25 + 25 + 25, height - 58);
-    } else {
-      controlOrientationText.position(25 + 25, height - 58);
+  if (create === true) {
+    var totalOrientations;
+    if (game === "notselected") {
+      totalOrientations = 5;
+    } else if (game !== "notselected" && TrexColorido === "notselected") {
+      totalOrientations = 5;
     }
-
-    var controlOrientation1 = createSprite(25, height - 25);
-    if (o === 5) {
-      controlOrientation1.scale = 0.45;
-    } else {
-      controlOrientation1.scale = 0.8;
-    }
-
-    if (o !== 1 && o !== 5) {
-      var controlOrientation2 = createSprite(25 + 25, height - 25);
-      if (o === 4) {
-        controlOrientation2.scale = 0.45;
-      } else {
-        controlOrientation2.scale = 0.5;
+    for (var o = 1; o <= totalOrientations; o = o + 1) {
+      var controlOrientationText = createElement("h2");
+      controlOrientationText.style("font-family", "Trex");
+      controlOrientationText.style("-webkit-text-fill-color:lime");
+      controlOrientationText.style("color:gray");
+      controlOrientationText.style("-webkit-text-stroke-width:0.025px");
+      controlOrientationText.style("stroke-width:0.025px");
+      controlOrientationText.style("letter-spacing: -0.15ch");
+      if (o === 3) {
+        controlOrientationText.style("font-size", "15.25px");
+      } else if (o === 2) {
+        controlOrientationText.style("font-size", "16.25px");
+      } else if (o === 1) {
+        controlOrientationText.style("font-size", "17px");
+      } else if (o === 4 || o === 5) {
+        controlOrientationText.style("font-size", "30.25px");
       }
-    }
 
-    if (o !== 1) {
-      if (o < 3) {
-        controlOrientationText.position(controlOrientationText.x + 65 +
-          controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x
-          /* * o * 2.1*/, controlOrientationText.y);
+      if (o !== 1) {
+        controlOrientationText.position(25 + 25 + 25, height - 44);//y: height - 58 //height - 38
       } else {
-        if (o === 3) {
-          controlOrientationText.position(controlOrientationText.x + 65 +
-            controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 6
-          /* * o * 2.1*/, controlOrientationText.y);
-        } else if (o > 3) {
-          controlOrientationText.position(controlOrientationText.x + 65 +
-            controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 5 / o
-            /* * o * 2.1*/, controlOrientationText.y);
+        controlOrientationText.position(25 + 25, height - 44);//y: height - 58 //height - 38
+      }
+
+      if (o === 4 || o === 5) {
+        controlOrientationText.position(controlOrientationText.x, height - 64);
+      }
+
+      var controlOrientation1 = createSprite(controlOrientationText.x - 25, height - 25);
+      if (o === 5) {
+        controlOrientation1.scale = 0.45;
+      } else {
+        controlOrientation1.scale = 0.8;
+      }
+
+      if (o !== 1 && o !== 5) {
+        var controlOrientation2 = createSprite(25 + 25, height - 25);
+        if (o === 4) {
+          controlOrientation2.scale = 0.45;
+        } else {
+          controlOrientation2.scale = 0.5;
         }
       }
 
-      if (o !== 5) {
-        controlOrientation1.x = controlOrientationText.x - 50;//controlOrientation.x + controlsOrientations[o - 2].x * o;
-        // * o * 3.7;
+      if (o !== 1) {
+        if (o < 3) {
+          controlOrientationText.position(controlOrientationText.x + 65 +
+            controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x
+          /* * o * 2.1*/, controlOrientationText.y);
+        } else {
+          if (o === 3) {
+            controlOrientationText.position(controlOrientationText.x + 65 +
+              controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 6
+          /* * o * 2.1*/, controlOrientationText.y);
+          } else if (o > 3) {
+            controlOrientationText.position(controlOrientationText.x + 65 +
+              controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 5 / o
+            /* * o * 2.1*/, controlOrientationText.y);
+          }
+        }
 
-        controlOrientation2.x = controlOrientationText.x - 0;
+        if (o !== 5) {
+          controlOrientation1.x = controlOrientationText.x - 50;//controlOrientation.x + controlsOrientations[o - 2].x * o;
+          // * o * 3.7;
 
-        controlOrientationText.position(controlOrientationText.x + 30, controlOrientationText.y);
-      } else {
-        controlOrientation1.x = controlOrientationText.x - 25;
+          controlOrientation2.x = controlOrientationText.x - 0;
+
+          controlOrientationText.position(controlOrientationText.x + 30, controlOrientationText.y);
+        } else {
+          controlOrientation1.x = controlOrientationText.x - 25;
+        }
+      }
+
+      if (o === 1) {
+        controlOrientation1.addImage("psxbuttonimg", PSXButtonImg);
+        controlOrientationText.html("Escolher");//Selecionar
+      } else if (o === 2) {
+        controlOrientation1.addImage("pssquarebuttonimg", PSSquareButtonImg);
+        controlOrientation2.addImage("psleftarrowimg", PSLeftArrowImg);
+        controlOrientationText.html("Esquerda");
+      } else if (o === 3) {
+        controlOrientation1.addImage("pscirclebuttonimg", PSCircleButtonImg);
+        controlOrientation2.addImage("psrightarrowimg", PSRightArrowImg);
+        controlOrientationText.html("Direita");
+      } else if (o === 4) {
+        controlOrientation1.addImage("pstrianglebuttonimg", PSTriangleButtonImg);
+        controlOrientation2.addImage("psuparrowimg", PSUpArrowImg);
+        controlOrientationText.html("Cima");
+      } else if (o === 5) {
+        controlOrientation1.addImage("psdownarrowimg", PSDownArrowImg);
+        controlOrientationText.html("Baixo");
+      }
+
+      controlsOrientations.push(controlOrientation1);
+      if (o !== 1 && o !== 5) {
+        controlsOrientations.push(controlOrientation2);
+      }
+      controlsOrientationsTexts.push(controlOrientationText);
+
+      if (o === totalOrientations && initialWidth !== width) {
+        handleConsoleOrientationControls(false, true);
       }
     }
+  } else if (create === false && fixX === true && initialWidth !== width) {
+    if (controlsOrientations.length > 0 && controlsOrientationsTexts.length > 0) {
+      for (var o = 0; o < controlsOrientations.length; o = o + 1) {
+        var minusNumber, indexOT;
+        if (o === 0 || o === 7) {
+          minusNumber = 25;
+        } else if (o === 4 || o === 2 || o === 6) {
+          minusNumber = 30;
+        } else {
+          minusNumber = 80;
+        }
 
-    if (o === 1) {
-      controlOrientation1.addImage("psxbuttonimg", PSXButtonImg);
-      controlOrientationText.html("Selecionar");
-    } else if (o === 2) {
-      controlOrientation1.addImage("pssquarebuttonimg", PSSquareButtonImg);
-      controlOrientation2.addImage("psleftarrowimg", PSLeftArrowImg);
-      controlOrientationText.html("Esquerda");
-    } else if (o === 3) {
-      controlOrientation1.addImage("pscirclebuttonimg", PSCircleButtonImg);
-      controlOrientation2.addImage("psrightarrowimg", PSRightArrowImg);
-      controlOrientationText.html("Direita");
-    } else if (o === 4) {
-      controlOrientation1.addImage("pstrianglebuttonimg", PSTriangleButtonImg);
-      controlOrientation2.addImage("psuparrowimg", PSUpArrowImg);
-      controlOrientationText.html("Cima");
-    } else if (o === 5) {
-      controlOrientation1.addImage("psdownarrowimg", PSDownArrowImg);
-      controlOrientationText.html("Baixo");
+        if (o === 0) {
+          indexOT = 0;
+        } else if (o === 1 || o === 2) {
+          indexOT = 1;
+        } else if (o === 3 || o === 4) {
+          indexOT = 2;
+        } else if (o === 5 || o === 6) {
+          indexOT = 3;
+        } else if (o === 7) {
+          indexOT = 4;
+        }
+        controlsOrientations[o].x = controlsOrientationsTexts[indexOT].x - minusNumber - newWidthAdded / 2;
+        console.log("o: " + o, "indexOT: " + indexOT, "minusNumber: " + minusNumber);
+      }
     }
-
-    controlsOrientations.push(controlOrientation1);
-    if (o !== 1 && o !== 5) {
-      controlsOrientations.push(controlOrientation2);
-    }
-    controlsOrientationsTexts.push(controlOrientationText);
   }
   //}
+}
+
+function handleCalibrate() {
+  if (calibrating === false) {
+    calibrating = true;
+    joystick.calibrate(true);
+    calibrateButton.html("Confirmar");
+  } else {
+    calibrating = false;
+    joystick.calibrate(false);
+    if (!joystick.calibrated()) {
+      calibrateButton.html("Calibrar");
+    } else {
+      calibrateButton.html("Mudar");
+    }
+  }
 }
 
