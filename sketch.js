@@ -140,109 +140,111 @@ function preload() {
   soundFormats('mp3');
 
   //Carregar imagens em variáveis auxiliares.
-  trex_running = loadAnimation("./trex/trex1-blink.png", "./trex/trex3.png", "./trex/trex4.png",
-    "./trex/trex1.png", "./trex/trex3.png", "./trex/trex4.png");
-  trex_runningnb = loadAnimation("./trex/trex1-blink(no borders).png",
-    "./trex/trex3(no borders).png", "./trex/trex4(no borders).png",
-    "./trex/trex1(no borders).png", "./trex/trex3(no borders).png", "./trex/trex4(no borders).png");
-  trex_runninggreen = loadAnimation("./trex/green/greentrex1-blink(no borders).png",
-    "./trex/green/greentrex3(no borders).png",
-    "./trex/green/greentrex4(no borders).png", "./trex/green/greentrex1(no borders).png",
-    "./trex/green/greentrex3(no borders).png", "./trex/green/greentrex4(no borders).png");
-  trex_runningbrown = loadAnimation("./trex/brown/browntrex1-blink(no borders).png",
-    "./trex/brown/browntrex3(no borders).png",
-    "./trex/brown/browntrex4(no borders).png", "./trex/brown/browntrex1(no borders).png",
-    "./trex/brown/browntrex3(no borders).png", "./trex/brown/browntrex4(no borders).png");
-  trex_collided = loadAnimation("./trex/trex_collided.png");
-  trex_collidednb = loadAnimation("./trex/trex_collided(no borders).png");
-  trex_collidedgreen = loadAnimation("./trex/green/trex_collidedgreen(no borders).png");
-  trex_collidedbrown = loadAnimation("./trex/brown/trex_collidedbrown(no borders).png");
-  ground_image = loadImage("ground2.png");
-  ground_colored_image = loadImage("ground2(colored).png");
-  cloud_image = loadImage("./imagens-de-fundo/cloud.png");
-  cloud_filled_img = loadImage("./imagens-de-fundo/cloud(filled).png");
-  trex_crouching = loadAnimation("./trex/trex_low1-blink.png", "./trex/trex_low2(eye fixed).png",
-    "./trex/trex_low1(eye fixed).png", "./trex/trex_low2(eye fixed).png",
-    "./trex/trex_low1(eye fixed).png", "./trex/trex_low2(eye fixed).png");
-  trex_crouchingnb = loadAnimation("./trex/trex_low1-blink(no borders).png",
-    "./trex/trex_low2(eye fixed)(no borders).png", "./trex/trex_low1(eye fixed)(no borders).png",
-    "./trex/trex_low2(eye fixed)(no borders).png",
-    "./trex/trex_low1(eye fixed)(no borders).png", "./trex/trex_low2(eye fixed)(no borders).png");
-  trex_crouchinggreen = loadAnimation("./trex/green/greentrex_low1-blink(no borders).png",
-    "./trex/green/greentrex_low2(eye fixed)(no borders).png",
-    "./trex/green/greentrex_low1(eye fixed)(no borders).png",
-    "./trex/green/greentrex_low2(eye fixed)(no borders).png",
-    "./trex/green/greentrex_low1(eye fixed)(no borders).png",
-    "./trex/green/greentrex_low2(eye fixed)(no borders).png");
-  trex_crouchingbrown = loadAnimation("./trex/brown/browntrex_low1-blink(no borders).png",
-    "./trex/brown/browntrex_low2(eye fixed)(no borders).png",
-    "./trex/brown/browntrex_low1(eye fixed)(no borders).png",
-    "./trex/brown/browntrex_low2(eye fixed)(no borders).png",
-    "./trex/brown/browntrex_low1(eye fixed)(no borders).png",
-    "./trex/brown/browntrex_low2(eye fixed)(no borders).png");
-  cactu1nb = loadImage("./inimigos-obstaculos/obstacle1(colored)(no borders).png");
-  cactu2nb = loadImage("./inimigos-obstaculos/obstacle2(colored)(no borders).png");
-  cactu3nb = loadImage("./inimigos-obstaculos/obstacle3(colored)(no borders).png");
-  cactu4nb = loadImage("./inimigos-obstaculos/obstacle4(colored)(no borders).png");
-  cactu5nb = loadImage("./inimigos-obstaculos/obstacle5(colored)(no borders).png");
-  cactu6nb = loadImage("./inimigos-obstaculos/obstacle6(colored)(no borders).png");
-  cactu1 = loadImage("./inimigos-obstaculos/obstacle1.png");
-  cactu2 = loadImage("./inimigos-obstaculos/obstacle2.png");
-  cactu3 = loadImage("./inimigos-obstaculos/obstacle3.png");
-  cactu4 = loadImage("./inimigos-obstaculos/obstacle4.png");
-  cactu5 = loadImage("./inimigos-obstaculos/obstacle5.png");
-  cactu6 = loadImage("./inimigos-obstaculos/obstacle6.png");
-  gameoverimg = loadImage("gameOver.png");
-  gameover_coloredimg = loadImage("gameOver(colored).png");
-  restartimg = loadImage("restart.png");
-  normalbuttonimg = loadImage("normal.png");
-  coloridobuttonimg = loadImage("Colorido.png");
-  leftbuttonimg = loadImage("left_arrow.png");
-  rightbuttonimg = loadImage("right_arrow.png");
-  selectbuttonimg = loadImage("select.png");
-  birdanmleft = loadAnimation("./inimigos-obstaculos/birds/bird1(no borders)-left.png",
-    "./inimigos-obstaculos/birds/bird2(no borders)-left.png");
-  greenbirdanmleft = loadAnimation("./inimigos-obstaculos/birds/greenbird1(no borders)-left.png",
-    "./inimigos-obstaculos/birds/greenbird2(no borders)-left.png");
-  brownbirdanmleft = loadAnimation("./inimigos-obstaculos/birds/brownbird1(no borders)-left.png",
-    "./inimigos-obstaculos/birds/brownbird2(no borders)-left.png");
-  birdanmright = loadAnimation("./inimigos-obstaculos/birds/bird1(no borders)-right.png",
-    "./inimigos-obstaculos/birds/bird2(no borders)-right.png");
-  greenbirdanmright = loadAnimation("./inimigos-obstaculos/birds/greenbird1(no borders)-right.png",
-    "./inimigos-obstaculos/birds/greenbird2(no borders)-right.png");
-  brownbirdanmright = loadAnimation("./inimigos-obstaculos/birds/brownbird1(no borders)-right.png",
-    "./inimigos-obstaculos/birds/brownbird2(no borders)-right.png");
-  birdimgleft = loadAnimation("./inimigos-obstaculos/birds/bird1(no borders)-left.png");
-  greenbirdimgleft = loadAnimation("./inimigos-obstaculos/birds/greenbird1(no borders)-left.png");
-  brownbirdimgleft = loadAnimation("./inimigos-obstaculos/birds/brownbird1(no borders)-left.png");
-  birdimgright = loadAnimation("./inimigos-obstaculos/birds/bird1(no borders)-right.png");
-  greenbirdimgright = loadAnimation("./inimigos-obstaculos/birds/greenbird1(no borders)-right.png");
-  brownbirdimgright = loadAnimation("./inimigos-obstaculos/birds/brownbird1(no borders)-right.png");
-  highscoreimg = loadImage("./imagens-de-pontuacao/highscore.png");
-  //crouchbuttonimg = loadImage("down_arrow.png");
-  staranim = loadAnimation("./imagens-de-fundo/star1.png",
-    "./imagens-de-fundo/star2.png", "./imagens-de-fundo/star3.png");
+  trex_running = loadAnimation("./assets/trex/trex1-blink.png", "./assets/trex/trex3.png",
+    "./assets/trex/trex4.png",
+    "./assets/trex/trex1.png", "./assets/trex/trex3.png", "./assets/trex/trex4.png");
+  trex_runningnb = loadAnimation("./assets/trex/trex1-blink(no borders).png",
+    "./assets/trex/trex3(no borders).png", "./assets/trex/trex4(no borders).png",
+    "./assets/trex/trex1(no borders).png", "./assets/trex/trex3(no borders).png",
+    "./assets/trex/trex4(no borders).png");
+  trex_runninggreen = loadAnimation("./assets/trex/green/greentrex1-blink(no borders).png",
+    "./assets/trex/green/greentrex3(no borders).png",
+    "./assets/trex/green/greentrex4(no borders).png", "./assets/trex/green/greentrex1(no borders).png",
+    "./assets/trex/green/greentrex3(no borders).png", "./assets/trex/green/greentrex4(no borders).png");
+  trex_runningbrown = loadAnimation("./assets/trex/brown/browntrex1-blink(no borders).png",
+    "./assets/trex/brown/browntrex3(no borders).png",
+    "./assets/trex/brown/browntrex4(no borders).png", "./assets/trex/brown/browntrex1(no borders).png",
+    "./assets/trex/brown/browntrex3(no borders).png", "./assets/trex/brown/browntrex4(no borders).png");
+  trex_collided = loadAnimation("./assets/trex/trex_collided.png");
+  trex_collidednb = loadAnimation("./assets/trex/trex_collided(no borders).png");
+  trex_collidedgreen = loadAnimation("./assets/trex/green/trex_collidedgreen(no borders).png");
+  trex_collidedbrown = loadAnimation("./assets/trex/brown/trex_collidedbrown(no borders).png");
+  ground_image = loadImage("./assets/ground2.png");
+  ground_colored_image = loadImage("./assets/ground2(colored).png");
+  cloud_image = loadImage("./assets/imagens-de-fundo/cloud.png");
+  cloud_filled_img = loadImage("./assets/imagens-de-fundo/cloud(filled).png");
+  trex_crouching = loadAnimation("./assets/trex/trex_low1-blink.png", "./assets/trex/trex_low2(eye fixed).png",
+    "./assets/trex/trex_low1(eye fixed).png", "./assets/trex/trex_low2(eye fixed).png",
+    "./assets/trex/trex_low1(eye fixed).png", "./assets/trex/trex_low2(eye fixed).png");
+  trex_crouchingnb = loadAnimation("./assets/trex/trex_low1-blink(no borders).png",
+    "./assets/trex/trex_low2(eye fixed)(no borders).png", "./assets/trex/trex_low1(eye fixed)(no borders).png",
+    "./assets/trex/trex_low2(eye fixed)(no borders).png",
+    "./assets/trex/trex_low1(eye fixed)(no borders).png", "./assets/trex/trex_low2(eye fixed)(no borders).png");
+  trex_crouchinggreen = loadAnimation("./assets/trex/green/greentrex_low1-blink(no borders).png",
+    "./assets/trex/green/greentrex_low2(eye fixed)(no borders).png",
+    "./assets/trex/green/greentrex_low1(eye fixed)(no borders).png",
+    "./assets/trex/green/greentrex_low2(eye fixed)(no borders).png",
+    "./assets/trex/green/greentrex_low1(eye fixed)(no borders).png",
+    "./assets/trex/green/greentrex_low2(eye fixed)(no borders).png");
+  trex_crouchingbrown = loadAnimation("./assets/trex/brown/browntrex_low1-blink(no borders).png",
+    "./assets/trex/brown/browntrex_low2(eye fixed)(no borders).png",
+    "./assets/trex/brown/browntrex_low1(eye fixed)(no borders).png",
+    "./assets/trex/brown/browntrex_low2(eye fixed)(no borders).png",
+    "./assets/trex/brown/browntrex_low1(eye fixed)(no borders).png",
+    "./assets/trex/brown/browntrex_low2(eye fixed)(no borders).png");
+  cactu1nb = loadImage("./assets/inimigos-obstaculos/obstacle1(colored)(no borders).png");
+  cactu2nb = loadImage("./assets/inimigos-obstaculos/obstacle2(colored)(no borders).png");
+  cactu3nb = loadImage("./assets/inimigos-obstaculos/obstacle3(colored)(no borders).png");
+  cactu4nb = loadImage("./assets/inimigos-obstaculos/obstacle4(colored)(no borders).png");
+  cactu5nb = loadImage("./assets/inimigos-obstaculos/obstacle5(colored)(no borders).png");
+  cactu6nb = loadImage("./assets/inimigos-obstaculos/obstacle6(colored)(no borders).png");
+  cactu1 = loadImage("./assets/inimigos-obstaculos/obstacle1.png");
+  cactu2 = loadImage("./assets/inimigos-obstaculos/obstacle2.png");
+  cactu3 = loadImage("./assets/inimigos-obstaculos/obstacle3.png");
+  cactu4 = loadImage("./assets/inimigos-obstaculos/obstacle4.png");
+  cactu5 = loadImage("./assets/inimigos-obstaculos/obstacle5.png");
+  cactu6 = loadImage("./assets/inimigos-obstaculos/obstacle6.png");
+  gameoverimg = loadImage("./assets/gameOver.png");
+  gameover_coloredimg = loadImage("./assets/gameOver(colored).png");
+  restartimg = loadImage("./assets/restart.png");
+  normalbuttonimg = loadImage("./assets/normal.png");
+  coloridobuttonimg = loadImage("./assets/Colorido.png");
+  leftbuttonimg = loadImage("./assets/left_arrow.png");
+  rightbuttonimg = loadImage("./assets/right_arrow.png");
+  selectbuttonimg = loadImage("./assets/select.png");
+  birdanmleft = loadAnimation("./assets/inimigos-obstaculos/birds/bird1(no borders)-left.png",
+    "./assets/inimigos-obstaculos/birds/bird2(no borders)-left.png");
+  greenbirdanmleft = loadAnimation("./assets/inimigos-obstaculos/birds/greenbird1(no borders)-left.png",
+    "./assets/inimigos-obstaculos/birds/greenbird2(no borders)-left.png");
+  brownbirdanmleft = loadAnimation("./assets/inimigos-obstaculos/birds/brownbird1(no borders)-left.png",
+    "./assets/inimigos-obstaculos/birds/brownbird2(no borders)-left.png");
+  birdanmright = loadAnimation("./assets/inimigos-obstaculos/birds/bird1(no borders)-right.png",
+    "./assets/inimigos-obstaculos/birds/bird2(no borders)-right.png");
+  greenbirdanmright = loadAnimation("./assets/inimigos-obstaculos/birds/greenbird1(no borders)-right.png",
+    "./assets/inimigos-obstaculos/birds/greenbird2(no borders)-right.png");
+  brownbirdanmright = loadAnimation("./assets/inimigos-obstaculos/birds/brownbird1(no borders)-right.png",
+    "./assets/inimigos-obstaculos/birds/brownbird2(no borders)-right.png");
+  birdimgleft = loadAnimation("./assets/inimigos-obstaculos/birds/bird1(no borders)-left.png");
+  greenbirdimgleft = loadAnimation("./assets/inimigos-obstaculos/birds/greenbird1(no borders)-left.png");
+  brownbirdimgleft = loadAnimation("./assets/inimigos-obstaculos/birds/brownbird1(no borders)-left.png");
+  birdimgright = loadAnimation("./assets/inimigos-obstaculos/birds/bird1(no borders)-right.png");
+  greenbirdimgright = loadAnimation("./assets/inimigos-obstaculos/birds/greenbird1(no borders)-right.png");
+  brownbirdimgright = loadAnimation("./assets/inimigos-obstaculos/birds/brownbird1(no borders)-right.png");
+  highscoreimg = loadImage("./assets/imagens-de-pontuacao/highscore.png");
+  //crouchbuttonimg = loadImage("./assets/down_arrow.png");
+  staranim = loadAnimation("./assets/imagens-de-fundo/star1.png",
+    "./assets/imagens-de-fundo/star2.png", "./assets/imagens-de-fundo/star3.png");
 
-  emptyHeartImg = loadImage("./hearts/emptyHeart.png");
-  halfHeartImg = loadImage("./hearts/halfHeart.png");
-  fullHeartImg = loadImage("./hearts/fullHeart.png");
+  emptyHeartImg = loadImage("./assets/hearts/emptyHeart.png");
+  halfHeartImg = loadImage("./assets/hearts/halfHeart.png");
+  fullHeartImg = loadImage("./assets/hearts/fullHeart.png");
 
-  PSXButtonImg = loadImage("./consolebuttons/psXbutton.png");
-  PSCircleButtonImg = loadImage("./consolebuttons/psCirclebutton.png");
-  PSSquareButtonImg = loadImage("./consolebuttons/psSquarebutton.png");
-  PSTriangleButtonImg = loadImage("./consolebuttons/psTrianglebutton.png");
+  PSXButtonImg = loadImage("./assets/consolebuttons/psXbutton.png");
+  PSCircleButtonImg = loadImage("./assets/consolebuttons/psCirclebutton.png");
+  PSSquareButtonImg = loadImage("./assets/consolebuttons/psSquarebutton.png");
+  PSTriangleButtonImg = loadImage("./assets/consolebuttons/psTrianglebutton.png");
 
-  PSUpArrowImg = loadImage("./consolebuttons/psUpArrow2.png");
-  PSDownArrowImg = loadImage("./consolebuttons/psDownArrow2.png");
-  PSLeftArrowImg = loadImage("./consolebuttons/psLeftArrow2.png");
-  PSRightArrowImg = loadImage("./consolebuttons/psRightArrow2.png");
+  PSUpArrowImg = loadImage("./assets/consolebuttons/psUpArrow2.png");
+  PSDownArrowImg = loadImage("./assets/consolebuttons/psDownArrow2.png");
+  PSLeftArrowImg = loadImage("./assets/consolebuttons/psLeftArrow2.png");
+  PSRightArrowImg = loadImage("./assets/consolebuttons/psRightArrow2.png");
 
-  trexfont = loadFont("./Trex.ttf");
+  trexfont = loadFont("./assets/Trex.ttf");
 
   //Sounds
-  jumpsound = loadSound("jump.mp3");
-  failsound = loadSound("fail.mp3");
-  checkpointsound = loadSound("checkPoint.mp3");
+  jumpsound = loadSound("./assets/jump.mp3");
+  failsound = loadSound("./assets/fail.mp3");
+  checkpointsound = loadSound("./assets/checkPoint.mp3");
 
   jumpsound.setVolume(1);
   checkpointsound.setVolume(2.5);
@@ -396,7 +398,7 @@ function setup() {
   BestHighscores5DeleteButton.position(width - width - width, height / 2);
   BestHighscores5DeleteButton.mousePressed(resetBestHighscoreFive);
 
-  var trexImg = createImg('./trex/trex_idle(eye fixed).png');
+  var trexImg = createImg('./assets/trex/trex_idle(eye fixed).png');
   trexImg.position(width - width - width - width, height - height - height, height);
   trexImg.size(150, 150);
 
@@ -505,7 +507,7 @@ function setup() {
   //  crouchbuttonHitbox.y = invisibleground.y + 50 + 35;
   //}
 
-  crouchbuttonbackgroundimage = createImg("nothing.png");
+  crouchbuttonbackgroundimage = createImg("./assets/nothing.png");
   crouchbuttonbackgroundimage.class("crouchbuttonBackgroundIMG");
   crouchbuttonbackgroundimage.position(width / 2 - 35, -350);
 
@@ -620,16 +622,16 @@ function setup() {
   heartsSprite.visible = false;
 
   heart1button = createButton("");
-  heart1button.style("background-image", "url('./hearts/fullHeart.png')");
+  heart1button.style("background-image", "url('./assets/hearts/fullHeart.png')");
   heart1button.class("heartButton");
   heart1button.position(width - width - width - 1000, -500);
   heart1button.mousePressed(handleHeart1Button);
 
   heart2button = createButton("");
   if (heartsNumber >= 2) {
-    heart2button.style("background-image", "url('./hearts/fullHeart.png')");
+    heart2button.style("background-image", "url('./assets/hearts/fullHeart.png')");
   } else {
-    heart2button.style("background-image", "url('./hearts/emptyHeart.png')");
+    heart2button.style("background-image", "url('./assets/hearts/emptyHeart.png')");
   }
   heart2button.class("heartButton");
   heart2button.position(width - width - width - 1000, -500);
@@ -637,9 +639,9 @@ function setup() {
 
   heart3button = createButton("");
   if (heartsNumber >= 3) {
-    heart3button.style("background-image", "url('./hearts/fullHeart.png')");
+    heart3button.style("background-image", "url('./assets/hearts/fullHeart.png')");
   } else {
-    heart3button.style("background-image", "url('./hearts/emptyHeart.png')");
+    heart3button.style("background-image", "url('./assets/hearts/emptyHeart.png')");
   }
   heart3button.class("heartButton");
   heart3button.position(width - width - width - 1000, -500);
@@ -4462,24 +4464,24 @@ function handleHearts(createHearts, newHeartsNumber) {
 function handleHeart1Button() {
   if (heartsNumber !== 1) {
     heartsNumber = 1;
-    heart2button.style("background-image", "url('./hearts/emptyHeart.png')");
-    heart3button.style("background-image", "url('./hearts/emptyHeart.png')");
+    heart2button.style("background-image", "url('./assets/hearts/emptyHeart.png')");
+    heart3button.style("background-image", "url('./assets/hearts/emptyHeart.png')");
   }
 }
 
 function handleHeart2Button() {
   if (heartsNumber !== 2) {
     heartsNumber = 2;
-    heart2button.style("background-image", "url('./hearts/fullHeart.png')");
-    heart3button.style("background-image", "url('./hearts/emptyHeart.png')");
+    heart2button.style("background-image", "url('./assets/hearts/fullHeart.png')");
+    heart3button.style("background-image", "url('./assets/hearts/emptyHeart.png')");
   }
 }
 
 function handleHeart3Button() {
   if (heartsNumber !== 3) {
     heartsNumber = 3;
-    heart2button.style("background-image", "url('./hearts/fullHeart.png')");
-    heart3button.style("background-image", "url('./hearts/fullHeart.png')");
+    heart2button.style("background-image", "url('./assets/hearts/fullHeart.png')");
+    heart3button.style("background-image", "url('./assets/hearts/fullHeart.png')");
   }
 }
 
