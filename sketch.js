@@ -3708,24 +3708,6 @@ function turnNormal() {
 }
 
 function turnCorridaInfinita() {
-  if (controlsOrientations.length > 0 || controlsOrientationsTexts.length > 0) {
-    if (controlsOrientations.length > 0) {
-      for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
-        controlsOrientations[o].destroy();
-        controlsOrientations.pop();
-        var onum = o + 1;
-        console.log("controlOrientation " + onum + "(" + o + ")" + " Destroyed!");
-      }
-    }
-    if (controlsOrientationsTexts.length > 0) {
-      for (var o = controlsOrientationsTexts.length - 1; o >= 0; o = o - 1) {
-        controlsOrientationsTexts[o].remove();
-        controlsOrientationsTexts.pop();
-        var onum = o + 1;
-        console.log("controlOrientationText " + onum + "(" + o + ")" + " Destroyed!");
-      }
-    }
-  }
   game = "Corrida Infinita";
   heartsSprite.x = invisibleground.x - 80;
   heartsSprite.y = invisibleGroundPosY + 35;
@@ -3746,30 +3728,12 @@ function turnCorridaInfinita() {
   }
 
   if (showItemSelectedGui) {
-    handleConsoleOrientationControls(true);
+    handleConsoleOrientationControls();
   }
 }
 
 function turnVooInfinito() {
   //if(!isMobile || isMobile && PcFeaturesOnMobile == true){
-  if (controlsOrientations.length > 0 || controlsOrientationsTexts.length > 0) {
-    if (controlsOrientations.length > 0) {
-      for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
-        controlsOrientations[o].destroy();
-        controlsOrientations.pop();
-        var onum = o + 1;
-        console.log("controlOrientation " + onum + "(" + o + ")" + " Destroyed!");
-      }
-    }
-    if (controlsOrientationsTexts.length > 0) {
-      for (var o = controlsOrientationsTexts.length - 1; o >= 0; o = o - 1) {
-        controlsOrientationsTexts[o].remove();
-        controlsOrientationsTexts.pop();
-        var onum = o + 1;
-        console.log("controlOrientationText " + onum + "(" + o + ")" + " Destroyed!");
-      }
-    }
-  }
   game = "Voo Infinito";
   heartsSprite.x = invisibleground.x + 20;
   heartsSprite.y = invisibleGroundPosY + 28.5;//35 //invisibleground.y + 32.5
@@ -3789,7 +3753,7 @@ function turnVooInfinito() {
   }
 
   if (showItemSelectedGui) {
-    handleConsoleOrientationControls(true);
+    handleConsoleOrientationControls();
   }
   //}
 }
@@ -4104,7 +4068,7 @@ function windowResized() {
           bird.x = 50 - newWidthAdded / 2;
 
           if (gamestate === SELECT && showItemSelectedGui) {
-            handleConsoleOrientationControls(false, true);
+            handleConsoleOrientationControls();
           }
 
           //handleHearts(true);
@@ -4305,7 +4269,7 @@ function handleBack() {
     multiplayerToggle.style("background-color", "darkred");
     backButton.position(width - width - width - 1000, -500);
     if (showItemSelectedGui) {
-      handleConsoleOrientationControls(true);
+      handleConsoleOrientationControls();
     }
     if (crouchbutton.y !== -350) {
       crouchbutton.position(width / 2 - 35, -350);
@@ -5024,119 +4988,160 @@ function onJoystickRelease(e) {
   }
 }
 
-function handleConsoleOrientationControls(create, fixX) {
+function handleConsoleOrientationControls() {//create, fixX
   //if (showItemSelectedGui) {
-  if (create === true) {
-    var totalOrientations;
-    if (game === "notselected") {
-      totalOrientations = 5;
-    } else if (game !== "notselected" && TrexColorido === "notselected") {
-      totalOrientations = 5;
+  //if (create === true) {
+  if (controlsOrientations.length > 0) {
+    for (var o = controlsOrientations.length - 1; o >= 0; o = o - 1) {
+      controlsOrientations[o].destroy();
+      controlsOrientations.pop();
+      var onum = o + 1;
+      console.log("controlOrientation " + onum + "(" + o + ")" + " Destroyed!");
     }
-    for (var o = 1; o <= totalOrientations; o = o + 1) {
-      var controlOrientationText = createElement("h2");
-      controlOrientationText.style("font-family", "Trex");
-      controlOrientationText.style("-webkit-text-fill-color:lime");
-      controlOrientationText.style("color:gray");
-      controlOrientationText.style("-webkit-text-stroke-width:0.025px");
-      controlOrientationText.style("stroke-width:0.025px");
-      controlOrientationText.style("letter-spacing: -0.15ch");
-      if (o === 3) {
-        controlOrientationText.style("font-size", "15.25px");
-      } else if (o === 2) {
-        controlOrientationText.style("font-size", "16.25px");
-      } else if (o === 1) {
-        controlOrientationText.style("font-size", "17px");
-      } else if (o === 4 || o === 5) {
-        controlOrientationText.style("font-size", "30.25px");
-      }
+  }
+  if (controlsOrientationsTexts.length > 0) {
+    for (var o = controlsOrientationsTexts.length - 1; o >= 0; o = o - 1) {
+      controlsOrientationsTexts[o].remove();
+      controlsOrientationsTexts.pop();
+      var onum = o + 1;
+      console.log("controlOrientationText " + onum + "(" + o + ")" + " Destroyed!");
+    }
+  }
 
-      if (o !== 1) {
-        controlOrientationText.position(25 + 25 + 25, height - 44);//y: height - 58 //height - 38
+  var totalOrientations;
+  if (game === "notselected") {
+    totalOrientations = 5;
+  } else if (game !== "notselected" && TrexColorido === "notselected") {
+    totalOrientations = 5;
+  }
+  for (var o = 1; o <= totalOrientations; o = o + 1) {
+    var controlOrientationText = createElement("h2");
+    controlOrientationText.style("font-family", "Trex");
+    controlOrientationText.style("-webkit-text-fill-color:lime");
+    controlOrientationText.style("color:gray");
+    controlOrientationText.style("-webkit-text-stroke-width:0.025px");
+    controlOrientationText.style("stroke-width:0.025px");
+    controlOrientationText.style("letter-spacing: -0.15ch");
+    if (o === 3) {
+      controlOrientationText.style("font-size", "15.25px");
+    } else if (o === 2) {
+      controlOrientationText.style("font-size", "16.25px");
+    } else if (o === 1) {
+      controlOrientationText.style("font-size", "17px");
+    } else if (o === 4 || o === 5) {
+      controlOrientationText.style("font-size", "30.25px");
+    }
+
+    if (o !== 1) {
+      controlOrientationText.position(25 + 25 + 25, height - 44);//y: height - 58 //height - 38
+    } else {
+      controlOrientationText.position(25 + 25, height - 44);//y: height - 58 //height - 38
+    }
+
+    if (o === 4 || o === 5) {
+      controlOrientationText.position(controlOrientationText.x, height - 64);
+    }
+
+    var controlOrientation1 = createSprite(controlOrientationText.x - 25, height - 25);
+    if (o === 5) {
+      controlOrientation1.scale = 0.45;
+    } else {
+      controlOrientation1.scale = 0.8;
+    }
+
+    if (o !== 1 && o !== 5) {
+      var controlOrientation2 = createSprite(25 + 25, height - 25);
+      if (o === 4) {
+        controlOrientation2.scale = 0.45;
       } else {
-        controlOrientationText.position(25 + 25, height - 44);//y: height - 58 //height - 38
+        controlOrientation2.scale = 0.5;
       }
+    }
 
-      if (o === 4 || o === 5) {
-        controlOrientationText.position(controlOrientationText.x, height - 64);
-      }
-
-      var controlOrientation1 = createSprite(controlOrientationText.x - 25, height - 25);
-      if (o === 5) {
-        controlOrientation1.scale = 0.45;
+    if (o !== 1) {
+      if (o < 3) {
+        controlOrientationText.position(controlOrientationText.x + 65 +
+          controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x
+          /* * o * 2.1*/, controlOrientationText.y);
       } else {
-        controlOrientation1.scale = 0.8;
-      }
-
-      if (o !== 1 && o !== 5) {
-        var controlOrientation2 = createSprite(25 + 25, height - 25);
-        if (o === 4) {
-          controlOrientation2.scale = 0.45;
-        } else {
-          controlOrientation2.scale = 0.5;
-        }
-      }
-
-      if (o !== 1) {
-        if (o < 3) {
+        if (o === 3) {
           controlOrientationText.position(controlOrientationText.x + 65 +
-            controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x
+            controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 6
           /* * o * 2.1*/, controlOrientationText.y);
-        } else {
-          if (o === 3) {
-            controlOrientationText.position(controlOrientationText.x + 65 +
-              controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 6
-          /* * o * 2.1*/, controlOrientationText.y);
-          } else if (o > 3) {
-            controlOrientationText.position(controlOrientationText.x + 65 +
-              controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 5 / o
+        } else if (o > 3) {
+          controlOrientationText.position(controlOrientationText.x + 65 +
+            controlsOrientationsTexts[o - 2].x + controlsOrientationsTexts[o - 2].x / 5 / o
             /* * o * 2.1*/, controlOrientationText.y);
-          }
-        }
-
-        if (o !== 5) {
-          controlOrientation1.x = controlOrientationText.x - 50;//controlOrientation.x + controlsOrientations[o - 2].x * o;
-          // * o * 3.7;
-
-          controlOrientation2.x = controlOrientationText.x - 0;
-
-          controlOrientationText.position(controlOrientationText.x + 30, controlOrientationText.y);
-        } else {
-          controlOrientation1.x = controlOrientationText.x - 25;
         }
       }
 
-      if (o === 1) {
-        controlOrientation1.addImage("psxbuttonimg", PSXButtonImg);
-        controlOrientationText.html("Escolher");//Selecionar
-      } else if (o === 2) {
-        controlOrientation1.addImage("pssquarebuttonimg", PSSquareButtonImg);
-        controlOrientation2.addImage("psleftarrowimg", PSLeftArrowImg);
-        controlOrientationText.html("Esquerda");
-      } else if (o === 3) {
-        controlOrientation1.addImage("pscirclebuttonimg", PSCircleButtonImg);
-        controlOrientation2.addImage("psrightarrowimg", PSRightArrowImg);
-        controlOrientationText.html("Direita");
-      } else if (o === 4) {
-        controlOrientation1.addImage("pstrianglebuttonimg", PSTriangleButtonImg);
-        controlOrientation2.addImage("psuparrowimg", PSUpArrowImg);
-        controlOrientationText.html("Cima");
-      } else if (o === 5) {
-        controlOrientation1.addImage("psdownarrowimg", PSDownArrowImg);
-        controlOrientationText.html("Baixo");
-      }
+      if (o !== 5) {
+        //controlOrientation1.x = controlOrientationText.x - 50;//controlOrientation.x + controlsOrientations[o - 2].x * o;
+        // * o * 3.7;
 
-      controlsOrientations.push(controlOrientation1);
-      if (o !== 1 && o !== 5) {
-        controlsOrientations.push(controlOrientation2);
-      }
-      controlsOrientationsTexts.push(controlOrientationText);
+        //controlOrientation2.x = controlOrientationText.x - 0;
 
-      if (o === totalOrientations && initialWidth !== width) {
-        handleConsoleOrientationControls(false, true);
+        controlOrientationText.position(controlOrientationText.x + 30, controlOrientationText.y);
+      } else {
+        //controlOrientation1.x = controlOrientationText.x - 25;
       }
     }
-  } else if (create === false && fixX === true && initialWidth !== width) {
+
+    var minusNumber1, minusNumber2;
+
+    if (o === 1 || o === 5) {
+      minusNumber1 = 25;
+    } else {
+      minusNumber1 = 80;
+    }
+
+    console.log("minusNumber1: " + minusNumber1);
+
+    controlOrientation1.x = controlOrientationText.x - minusNumber1 - newWidthAdded / 2;
+
+    if (o !== 1 && o !== 5) {
+      if (o === 1 || o === 5) {
+        minusNumber2 = 25;
+      } else if (o === 2 || o === 3 || o === 4) {
+        minusNumber2 = 30;
+      }
+
+      console.log("minusNumber2: " + minusNumber2)
+
+      controlOrientation2.x = controlOrientationText.x - minusNumber2 - newWidthAdded / 2;
+    }
+
+    if (o === 1) {
+      controlOrientation1.addImage("psxbuttonimg", PSXButtonImg);
+      controlOrientationText.html("Escolher");//Selecionar
+    } else if (o === 2) {
+      controlOrientation1.addImage("pssquarebuttonimg", PSSquareButtonImg);
+      controlOrientation2.addImage("psleftarrowimg", PSLeftArrowImg);
+      controlOrientationText.html("Esquerda");
+    } else if (o === 3) {
+      controlOrientation1.addImage("pscirclebuttonimg", PSCircleButtonImg);
+      controlOrientation2.addImage("psrightarrowimg", PSRightArrowImg);
+      controlOrientationText.html("Direita");
+    } else if (o === 4) {
+      controlOrientation1.addImage("pstrianglebuttonimg", PSTriangleButtonImg);
+      controlOrientation2.addImage("psuparrowimg", PSUpArrowImg);
+      controlOrientationText.html("Cima");
+    } else if (o === 5) {
+      controlOrientation1.addImage("psdownarrowimg", PSDownArrowImg);
+      controlOrientationText.html("Baixo");
+    }
+
+    controlsOrientations.push(controlOrientation1);
+    if (o !== 1 && o !== 5) {
+      controlsOrientations.push(controlOrientation2);
+    }
+    controlsOrientationsTexts.push(controlOrientationText);
+
+    /*if (o === totalOrientations && initialWidth !== width) {
+      handleConsoleOrientationControls(false, true);
+    }*/
+  }
+  /*} else if (create === false && fixX === true && initialWidth !== width) {
     if (controlsOrientations.length > 0 && controlsOrientationsTexts.length > 0) {
       for (var o = 0; o < controlsOrientations.length; o = o + 1) {
         var minusNumber, indexOT;
@@ -5163,7 +5168,7 @@ function handleConsoleOrientationControls(create, fixX) {
         console.log("o: " + o, "indexOT: " + indexOT, "minusNumber: " + minusNumber);
       }
     }
-  }
+  }*/
   //}
 }
 
