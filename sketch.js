@@ -314,7 +314,7 @@ function setup() {
 
   let userAgent = navigator.userAgent;
 
-  if (userAgent.match(/chrome|chromium|crios/i)) {
+  /*if (userAgent.match(/chrome|chromium|crios/i)) {
     browserName = "chrome";
   } else if (userAgent.match(/firefox|fxios/i)) {
     browserName = "firefox";
@@ -326,7 +326,20 @@ function setup() {
     browserName = "edge";
   } else {
     browserName = "NoBrowser";
-  }
+  }*/
+
+  browserName = (function (agent) {
+    switch (true) {
+      case agent.indexOf("edge") > -1: return "MS Edge";
+      case agent.indexOf("edg/") > -1: return "Edge ( chromium based)";
+      case agent.indexOf("opr") > -1 && !!window.opr: return "Opera";
+      case agent.indexOf("chrome") > -1 && !!window.chrome: return "Chrome";
+      case agent.indexOf("trident") > -1: return "MS IE";
+      case agent.indexOf("firefox") > -1: return "Mozilla Firefox";
+      case agent.indexOf("safari") > -1: return "Safari";
+      default: return "other";
+    }
+  })(window.navigator.userAgent.toLowerCase());
 
   reloadButton = createButton("Recarregar");
   reloadButton.position(width - width - width, height - 25);
@@ -3975,163 +3988,164 @@ function getState() {
 
 function windowResized() {
   //if(windowResize == false){
-  if (!isMobile && windowWidth < width) {
-    if (windowResizeY == true) {
-      if (windowHeight - 2.5 !== height) {
-        resizeCanvas(width, windowHeight - 2.5);
-        newHeight = height;
+  if (browserName !== "Opera") {
+    if (!isMobile && windowWidth < width) {
+      if (windowResizeY == true) {
+        if (windowHeight - 2.5 !== height) {
+          resizeCanvas(width, windowHeight - 2.5);
+          newHeight = height;
 
-        if (initialHeight !== height) {
-          newHeightAdded = height - initialHeight;
+          if (initialHeight !== height) {
+            newHeightAdded = height - initialHeight;
 
-          if (game == "Corrida Infinita") {
-            ground.y = 180 - newHeightAdded / 2;
-            invisibleground.y = 190 - newHeightAdded / 2;
-          } else if (game == "Voo Infinito") {
-            ground.y = height - 5 - newHeightAdded / 2;
-            invisibleground.y = height - 5 + 10 - newHeightAdded / 2;
-            if (gamestate == PLAY) {
-              //bird.y = bird.y;
-            } else if (gamestate == END) {
-              /*if(initialHeight > newHeight){
-                if(birdcolor !== "Cinza"){
-                  bird.y = ground.y - 35+ 11-newHeightAdded/2;
-                }else{
-                  bird.y = ground.y - 35+ 7.5-newHeightAdded/2;
-                }
-              }else if(newHeight < initialHeight){
-                if(birdcolor !== "Cinza"){
-                  bird.y = ground.y - 35+ 11+newHeightAdded*12;
-                }else{
-                  bird.y = ground.y - 35+ 7.5+newHeightAdded*12;
-                }
-              }*/
-              //console.log(ground.y);
-              //if(birdcolor !== "Cinza"){
-              //  bird.y = ground.y - 35 + 11;
-              //}else{
-              //  bird.y = ground.y - 35 + 7.5;
-              //}
+            if (game == "Corrida Infinita") {
+              ground.y = 180 - newHeightAdded / 2;
+              invisibleground.y = 190 - newHeightAdded / 2;
+            } else if (game == "Voo Infinito") {
+              ground.y = height - 5 - newHeightAdded / 2;
+              invisibleground.y = height - 5 + 10 - newHeightAdded / 2;
+              if (gamestate == PLAY) {
+                //bird.y = bird.y;
+              } else if (gamestate == END) {
+                /*if(initialHeight > newHeight){
+                  if(birdcolor !== "Cinza"){
+                    bird.y = ground.y - 35+ 11-newHeightAdded/2;
+                  }else{
+                    bird.y = ground.y - 35+ 7.5-newHeightAdded/2;
+                  }
+                }else if(newHeight < initialHeight){
+                  if(birdcolor !== "Cinza"){
+                    bird.y = ground.y - 35+ 11+newHeightAdded*12;
+                  }else{
+                    bird.y = ground.y - 35+ 7.5+newHeightAdded*12;
+                  }
+                }*/
+                //console.log(ground.y);
+                //if(birdcolor !== "Cinza"){
+                //  bird.y = ground.y - 35 + 11;
+                //}else{
+                //  bird.y = ground.y - 35 + 7.5;
+                //}
 
-            }
-          }
-
-          //if(trex.y  - newHeightAdded/2 > 160 
-          //&& trex.y - newHeightAdded/2 < 140){
-          //&& trexIsCrouching == false){
-          //trex.y = 160;
-          //trex.y = 160 - newHeightAdded/2;
-          //var e1 = 140-newHeightAdded/2;
-          //var e2 = 160-newHeightAdded/2;
-          //console.log(trex.y-newHeightAdded/2);
-          //console.log("140"+e1);
-          //console.log("160"+e2);
-          trex.y = trex.y - newHeightAdded / 2;
-          //}
-
-          if (TrexColorido == true) {
-            sand.y = sand.y - newHeightAdded / 2;
-          }
-        } else {
-          //if(trex.y > 160 && trexIsCrouching == false && trex.y < 140){
-          //||trexIsCrouching == true && trex.y > 180 && trex.y < 160){
-          //trex.y = 179;
-          trex.y = trex.y + newHeightAdded / 2;
-          //}
-          if (game == "Corrida Infinita") {
-            invisibleground.y = invisibleGroundPosY;//190;
-            ground.y = invisibleGroundPosY - 10;//180;
-          } else if (game == "Voo Infinito") {
-            ground.y = height - 5;
-            invisibleground.y = height - 5 + 10;
-            if (gamestate == PLAY) {
-              //bird.y = bird.y - newHeightAdded/2;
-            } else if (gamestate == END) {
-              if (birdcolor !== "Cinza") {
-                //bird.y = ground.y - 35 + 11;
-              } else {
-                //bird.y = ground.y - 35 + 7.5;
               }
             }
-          }
-          if (TrexColorido == true) {
-            sand.y = height / 2 + 180;
-          }
-        }
 
-        if (game == "Voo Infinito") {
-          if (gamestate == END) {
-            //console.log(ground.y);
-            if (initialHeight > newHeight) {
-              bird.y = bird.y + newHeightAdded / 2;
+            //if(trex.y  - newHeightAdded/2 > 160 
+            //&& trex.y - newHeightAdded/2 < 140){
+            //&& trexIsCrouching == false){
+            //trex.y = 160;
+            //trex.y = 160 - newHeightAdded/2;
+            //var e1 = 140-newHeightAdded/2;
+            //var e2 = 160-newHeightAdded/2;
+            //console.log(trex.y-newHeightAdded/2);
+            //console.log("140"+e1);
+            //console.log("160"+e2);
+            trex.y = trex.y - newHeightAdded / 2;
+            //}
 
-            } else {
-              bird.y = bird.y - newHeightAdded / 2;
+            if (TrexColorido == true) {
+              sand.y = sand.y - newHeightAdded / 2;
             }
-            /*if(birdcolor !== "Cinza"){
-              //bird.y = ground.y - 35 + 11;
-              
-            }else{
-              //bird.y = ground.y - 35 + 7.5;
-            }*/
+          } else {
+            //if(trex.y > 160 && trexIsCrouching == false && trex.y < 140){
+            //||trexIsCrouching == true && trex.y > 180 && trex.y < 160){
+            //trex.y = 179;
+            trex.y = trex.y + newHeightAdded / 2;
+            //}
+            if (game == "Corrida Infinita") {
+              invisibleground.y = invisibleGroundPosY;//190;
+              ground.y = invisibleGroundPosY - 10;//180;
+            } else if (game == "Voo Infinito") {
+              ground.y = height - 5;
+              invisibleground.y = height - 5 + 10;
+              if (gamestate == PLAY) {
+                //bird.y = bird.y - newHeightAdded/2;
+              } else if (gamestate == END) {
+                if (birdcolor !== "Cinza") {
+                  //bird.y = ground.y - 35 + 11;
+                } else {
+                  //bird.y = ground.y - 35 + 7.5;
+                }
+              }
+            }
+            if (TrexColorido == true) {
+              sand.y = height / 2 + 180;
+            }
           }
-        }
 
+          if (game == "Voo Infinito") {
+            if (gamestate == END) {
+              //console.log(ground.y);
+              if (initialHeight > newHeight) {
+                bird.y = bird.y + newHeightAdded / 2;
+
+              } else {
+                bird.y = bird.y - newHeightAdded / 2;
+              }
+              /*if(birdcolor !== "Cinza"){
+                //bird.y = ground.y - 35 + 11;
+                
+              }else{
+                //bird.y = ground.y - 35 + 7.5;
+              }*/
+            }
+          }
+
+        }
       }
-    }
-  } else if (!isMobile && windowWidth > width) {
-    if (windowResizeX == true) {
-      resizeCanvas(windowWidth - 2.3, height)//, windowHeight - 2.5);
+    } else if (!isMobile && windowWidth > width) {
+      if (windowResizeX == true) {
+        resizeCanvas(windowWidth - 2.3, height)//, windowHeight - 2.5);
 
-      if (initialWidth !== width) {
-        newWidthAdded = width - initialWidth;
-        invisibleground.x = 200 - newWidthAdded / 2;
-        ground.x = ground.x - newWidthAdded / 2;
-        bird.x = 50 - newWidthAdded / 2;
+        if (initialWidth !== width) {
+          newWidthAdded = width - initialWidth;
+          invisibleground.x = 200 - newWidthAdded / 2;
+          ground.x = ground.x - newWidthAdded / 2;
+          bird.x = 50 - newWidthAdded / 2;
 
-        if (gamestate === SELECT && showItemSelectedGui) {
-          handleConsoleOrientationControls(false, true);
-        }
+          if (gamestate === SELECT && showItemSelectedGui) {
+            handleConsoleOrientationControls(false, true);
+          }
 
-        //handleHearts(true);
-        if (game == "Voo Infinito") {
-          if (player !== undefined && playerCount === 2) {
-            if (game === "Voo Infinito") {
-              player2.x = 50 - newWidthAdded / 2;
-            } else if (game === "Corrida Infinita") {
+          //handleHearts(true);
+          if (game == "Voo Infinito") {
+            if (player !== undefined && playerCount === 2) {
+              if (game === "Voo Infinito") {
+                player2.x = 50 - newWidthAdded / 2;
+              } else if (game === "Corrida Infinita") {
+
+              }
 
             }
-
           }
         }
       }
+    } else if (!isMobile && windowHeight > height
+      || !isMobile && windowHeight < height) {
+      //soon
     }
-  } else if (!isMobile && windowHeight > height
-    || !isMobile && windowHeight < height) {
-    //soon
+    else if (isMobile) {
+      //resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
+    }
+    else {
+
+    }
+    //if(newHeight == undefined){
+    //  newHeight = height - initialHeight + height;
+    //} 
+
+    /*if(TrexColorido == true && Isday == true){
+      background('cyan');
+    }else if(TrexColorido == false && Isday == true){
+      background('white');
+    }else if(TrexColorido !== false && TrexColorido !== true && Isday == true){
+      background('white');
+    }else if(gamestate == SELECTED){
+      background('white');
+    }*/
+
+    sand.width = width;
   }
-  else if (isMobile) {
-    //resizeCanvas(windowWidth - 2.3, windowHeight - 2.5);
-  }
-  else {
-
-  }
-  //if(newHeight == undefined){
-  //  newHeight = height - initialHeight + height;
-  //} 
-
-  /*if(TrexColorido == true && Isday == true){
-    background('cyan');
-  }else if(TrexColorido == false && Isday == true){
-    background('white');
-  }else if(TrexColorido !== false && TrexColorido !== true && Isday == true){
-    background('white');
-  }else if(gamestate == SELECTED){
-    background('white');
-  }*/
-
-  sand.width = width;
-
   //}
 }
 
