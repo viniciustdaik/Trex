@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Trex';
+  src: url(./Trex.ttf);
+}
+
 html,
 body {
   margin: 0;
@@ -339,6 +344,26 @@ canvas {
   align-self: center;
   align-items: center;
   justify-content: center;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.0s;
+  /* Safari */
+  transition-duration: 0.0s;
+  outline: none;
+}
+
+.calibrateButton {
+  border-radius: 13px;
+  border-width: 1.5px;
+  color: cyan;
+  border-color: blue;
+  font-size: 13px;
+  background: gray;
+  /*transparent*/
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
   padding: 10px;
   display: inline-block;
   cursor: pointer;
