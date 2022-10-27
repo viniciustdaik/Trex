@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Trex';
-  src: url(./Trex.ttf);
+  src: url(./assets/Trex.ttf);
 }
 
 html,
@@ -27,7 +27,7 @@ canvas {
   width: 70px;
   height: 70px;
   border-radius: 35px;
-  background-image: url('./trex/crouchimgbutton.png');
+  background-image: url('./assets/trex/crouchimgbutton.png');
   background-color: #9ea7a7;
   background-position: center;
   background-size: contain;
@@ -49,7 +49,7 @@ canvas {
   border-radius: 35px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./Colorido.png');
+  background-image: url('./assets/Colorido.png');
   background-color: #ffffff;
   background-position: center;
   background-size: contain;
@@ -69,7 +69,7 @@ canvas {
   border-radius: 35px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./normal.png');
+  background-image: url('./assets/normal.png');
   background-color: #ffffff;
   background-position: center;
   background-size: contain;
@@ -89,7 +89,7 @@ canvas {
   border-radius: 35px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./trex/trex_idle\(eye\ fixed\).png');
+  background-image: url('./assets/trex/trex_idle\(eye\ fixed\).png');
   background-color: #ffffff;
   background-position: center;
   background-size: contain;
@@ -109,7 +109,7 @@ canvas {
   border-radius: 35px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./inimigos-obstaculos/birds/bird1-left.png');
+  background-image: url('./assets/inimigos-obstaculos/birds/bird1-left.png');
   background-color: #ffffff;
   background-position: center;
   background-size: contain;
@@ -124,7 +124,7 @@ canvas {
 }
 
 .BestHighscoresButton {
-  background-image: url('./imagens-de-pontuacao/highscore.png');
+  background-image: url('./assets/imagens-de-pontuacao/highscore.png');
   border-width: 1.5px;
   border-color: #000000;
   background-position: center;
@@ -133,7 +133,7 @@ canvas {
 }
 
 .TrashButton {
-  background-image: url('./trash.png');
+  background-image: url('./assets/trash.png');
   border-width: 1.5px;
   border-color: #000000;
   background-position: center;
@@ -199,7 +199,7 @@ canvas {
   width: 70px;
   height: 70px;
   border-radius: 35px;
-  background-image: url('./trex/greencrouchimgbutton.png');
+  background-image: url('./assets/trex/greencrouchimgbutton.png');
   background-color: #9ea7a7;
   background-position: center;
   background-size: contain;
@@ -219,7 +219,7 @@ canvas {
   width: 70px;
   height: 70px;
   border-radius: 35px;
-  background-image: url('./trex/browncrouchimgbutton.png');
+  background-image: url('./assets/trex/browncrouchimgbutton.png');
   background-color: #9ea7a7;
   background-position: center;
   background-size: contain;
@@ -241,7 +241,7 @@ canvas {
   border-radius: 25px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./multiplayer2.png');
+  background-image: url('./assets/multiplayer2.png');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -286,7 +286,7 @@ canvas {
   border-radius: 5px;
   border-width: 1.5px;
   border-color: #000000;
-  background-image: url('./backDoorImgNoBGReallySmall.png');
+  background-image: url('./assets/backDoorImgNoBGReallySmall.png');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
