@@ -2309,7 +2309,7 @@ function draw() {
           && trexIsCrouching == false ||//&&!mousePressedOver(crouchbutton)||
           keyDown("UP_ARROW") && trex.y >= invisibleground.y - 40/*trex.y >= 150*/
           && trexIsCrouching == false ||//&&!mousePressedOver(crouchbutton)||
-          touches.length === 1 && trex.y >= invisibleground.y - 40/*trex.y >= 150*/
+          touches.length > 0 && trex.y >= invisibleground.y - 40/*trex.y >= 150*/
           && trexIsCrouching == false
           && !mouseIsOver(ShowBestHighscoresButtonHitbox)
           && !mouseIsOver(crouchbuttonHitbox)) {
