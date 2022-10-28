@@ -2309,7 +2309,7 @@ function draw() {
           && trexIsCrouching == false ||//&&!mousePressedOver(crouchbutton)||
           keyDown("UP_ARROW") && trex.y >= invisibleground.y - 40/*trex.y >= 150*/
           && trexIsCrouching == false ||//&&!mousePressedOver(crouchbutton)||
-          touches.length > 0 && trex.y >= invisibleground.y - 40/*trex.y >= 150*/
+          touches.length === 1 && trex.y >= invisibleground.y - 40/*trex.y >= 150*/
           && trexIsCrouching == false
           && !mouseIsOver(ShowBestHighscoresButtonHitbox)
           && !mouseIsOver(crouchbuttonHitbox)) {
@@ -4347,13 +4347,24 @@ function handleHearts(createHearts, newHeartsNumber) {
           } else if (game === "Voo Infinito") {
             heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2;
           }
-        } else {
-          if (game === "Corrida Infinita") {
+        } else if (initialWidth !== width) {
+          /*if (game === "Corrida Infinita") {
             heart.x = heartsSprite.x + 60 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.8;
           } else if (game === "Voo Infinito") {
             heart.x = heartsSprite.x + 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 190;
+          }*/
+          if (game === "Corrida Infinita") {
+            heart.x = heartsSprite.x - 80 + newWidthAdded / 4.1 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.95
+              ;
+          } else if (game === "Voo Infinito") {
+            heart.x = heartsSprite.x - 80 - newWidthAdded / 24.1 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 26.75
+              ;
           }
         }
+
+        //if (initialWidth !== width) {
+        //  heart.x = heart.x + newWidthAdded / 10;
+        //}
 
         /*if (game === "Corrida Infinita") {
           heart.x = heartsSprite.x - 80 + newWidthAdded / 75 - heartsSprite.x / 3 + heartsSprite.x / 3 *
@@ -4415,7 +4426,7 @@ function handleHearts(createHearts, newHeartsNumber) {
       }
     }
 
-    if (heartsLeft < hearts.length && hearts !== []) {
+    if (heartsLeft < hearts.length && hearts !== [] && heartsLeft >= 0) {
       hearts[heartsLeft].changeImage("emptyHeartImg", emptyHeartImg);
     } else if (gamestate === END) {
       for (var h = 0; h < hearts.length; h = h + 1) {
