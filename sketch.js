@@ -5025,8 +5025,8 @@ function onJoystickPress(e) {
 }
 
 function onJoystickRelease(e) {
-  if (calibrating === false && joystick.calibrate() === true) {
-    //console.log(e);
+  if (calibrating === false && joystick.calibrated() === true) {
+    console.log(e);
 
     var redButtonReleased = joystick.getButtonPressedByName("buttonRed"); //index =1
     var axesDownReleased = joystick.getButtonPressedByName("axesDown"); //index =13
@@ -5057,11 +5057,11 @@ function onJoystickRelease(e) {
       axesValue[3] === "";
     }*/
 
-    /*if (!redButtonReleased && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
-      && !axesDownReleased && !axeDownReleased) {
+    if (!redButtonReleased && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
+      && !axesDownReleased && axeDownReleased === false && /**/ trexIsJumping === false) {
       //crouch();
       //trex.addAnimation("running", trex_running);
-  
+
       trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
       if (TrexColorido == true || dinosaurcolor == "Cinza") {
         trex.changeAnimation("runningnb", trex_runningnb);
@@ -5077,9 +5077,9 @@ function onJoystickRelease(e) {
       }
       trexIsCrouching = false;
       //trex.velocityX = 0;
-  
+
       console.log("Released!");
-    }*/
+    }
 
   }
 }
