@@ -4711,7 +4711,7 @@ if (show === true && showX !== undefined
 }*/
 
 function onJoystickPress(e) {
-  if (calibrating === false) {
+  if (calibrating === false && joystick.calibrated() === true) {
     console.log(e);
 
     var buttonGreenPressed = joystick.getButtonPressedByName("buttonGreen"); //index =0 
