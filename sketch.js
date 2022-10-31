@@ -136,6 +136,16 @@ var joystick, itemSelected = "infiniteracebutton", showItemSelectedGui = false, 
   controlsOrientations = [], controlsOrientationsTexts = [], calibrating = false,
   calibrateButton;
 
+var lobbyIndex = null, customLobbyConfig = [{
+  "TrexColorido": true,
+  "MaxPlayers": 3,
+  "heartsNumber": 3,
+  "game": "Voo Infinito",
+}];
+
+//517.7
+//372.7
+
 function preload() {
   soundFormats('mp3');
 
@@ -737,17 +747,17 @@ text("Sel")*/
   nameInput.style('background', 'lavender');
   nameInput.style('border-radius', '13px');*/
   nameInput.class("nameInput");
-  /*
-    lobbyCodeInput = createInput("").attribute("placeholder", "Código");
-    //lobbyCodeInput.position(width - width - width - 1000, -500);
-    lobbyCodeInput.position(width / 2, height - 100);
-    lobbyCodeInput.class("nameInput");
-  
-    lobbyCodeButton = createButton("Play");
-    //lobbyCodeButton.position(width - width - width - 1000, -500);
-    lobbyCodeButton.position(width / 2, height - 250);
-    lobbyCodeButton.class("lobbyCodeButton");
-  */
+
+  /*lobbyCodeInput = createInput("").attribute("placeholder", "Código");
+  //lobbyCodeInput.position(width - width - width - 1000, -500);
+  lobbyCodeInput.position(width / 2, height - 100);
+  lobbyCodeInput.class("nameInput");
+
+  lobbyCodeButton = createButton("Play");
+  //lobbyCodeButton.position(width - width - width - 1000, -500);
+  lobbyCodeButton.position(width / 2, height - 250);
+  lobbyCodeButton.class("lobbyCodeButton");*/
+
   player2text = createElement("h2");
   player2text.style("font-size", '15px');
   player2text.style("color", 'darkgray');//gold
@@ -1368,10 +1378,10 @@ function draw() {
     }
     pop();
 
-    if (initialWidth !== width) {
-      gameover.x = width / 2 - newWidthAdded / 2;
-      restart.x = width / 2 - newWidthAdded / 2;
-    }
+    //if (initialWidth !== width) {
+    gameover.x = width / 2 - newWidthAdded / 2;
+    restart.x = width / 2 - newWidthAdded / 2;
+    //}
     if (initialHeight == height) {
       gameover.y = 100;
       restart.y = 140;
@@ -1473,10 +1483,10 @@ function draw() {
       infiniteracebutton.position(width - width - width, infiniteracebutton.y);
     }
 
-    if (initialWidth !== width) {
-      gameover.x = width / 2 - newWidthAdded / 2;
-      restart.x = width / 2 - newWidthAdded / 2;
-    }
+    //if (initialWidth !== width) {
+    gameover.x = width / 2 - newWidthAdded / 2;
+    restart.x = width / 2 - newWidthAdded / 2;
+    //}
     if (initialHeight == height) {
       gameover.y = invisibleGroundPosY - 90;//100
       restart.y = invisibleGroundPosY - 50;//140
@@ -2353,7 +2363,9 @@ function draw() {
       }
 
       //Outra verificação igual essa antes do pulo
-      console.log("trexIsJumping: " + trexIsJumping);
+      if (!isMobile) {
+        console.log("trexIsJumping: " + trexIsJumping);
+      }
       if (initialHeight == height) {
         if (crouchAfterJumping == true && trex.y >= invisibleGroundPosY - 40 /* trex.y >= 150 */
           && trexIsJumping == true) {
@@ -2684,7 +2696,9 @@ function draw() {
     if (birdIsFlying == true && bird.rotation !== -15) {
       bird.rotation = bird.rotation - 1;
     }
-    console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
+    if (!isMobile) {
+      console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
+    }
     //console.log("Flying: "+birdIsFlying);
     if (bird.isTouching(birdG) && birdIsInvencibleBirds === false && invencible === false
       || bird.y < -10) {
@@ -3011,21 +3025,22 @@ function draw() {
     && LatestUpdatePlatformsAimed.includes("iPad") && isiPad === true) {
     push();
     var mostRecentVersionTextX;
-    if (initialWidth == width) {
+    //TEST THIS: 
+    /*if (initialWidth == width) {
       //mostRecentVersionTextX = width / 2 - 25;
       if (mobileSize === "lessThanIPhoneXRSize" && isMobile) {
         mostRecentVersionTextX = width / 2 - 25 - 10;
       } else if (!isMobile || mobileSize === "moreThanIPhoneXRSize" && isMobile) {
         mostRecentVersionTextX = width / 2 - 25;
       }
-    } else if (initialWidth !== width) {
-      if (mobileSize === "lessThanIPhoneXRSize" && isMobile) {
-        mostRecentVersionTextX = width / 2 - 25 - 10 - newWidthAdded / 2;
-      } else if (!isMobile || mobileSize === "moreThanIPhoneXRSize" && isMobile) {
-        mostRecentVersionTextX = width / 2 - 25 - newWidthAdded / 2;
-      }
-      //mostRecentVersionTextX = width / 2 - 25 - newWidthAdded / 2;
+    } else if (initialWidth !== width) {*/
+    if (mobileSize === "lessThanIPhoneXRSize" && isMobile) {
+      mostRecentVersionTextX = width / 2 - 25 - 10 - newWidthAdded / 2;
+    } else if (!isMobile || mobileSize === "moreThanIPhoneXRSize" && isMobile) {
+      mostRecentVersionTextX = width / 2 - 25 - newWidthAdded / 2;
     }
+    //mostRecentVersionTextX = width / 2 - 25 - newWidthAdded / 2;
+    //}
     if (isMobile == false && isiPhoneXR == false) {
       textSize(35);
     } else if (isMobile == true && mostOfTheScreen == "width"
@@ -3637,8 +3652,38 @@ function turnColored() {
 
   calibrateButton.position(-1250, -500);
 
+  /*if (lobbyIndex === null) {
+    if (lobbyCodeInput.value() !== "") {
+      var lobbyIndexRef = "/Trex/customLobbies/" + lobbyCodeInput.value() + "/";
+      var lobbyConfigRef = database.ref("/Trex/customLobbies/" + lobbyCodeInput.value() + "/config");
+      console.log("lobbyIndexRef: " + lobbyIndexRef);
+
+      lobbyConfigRef.on("value", data => {
+        var lobbyConfig = data.val();
+        console.log("lobbyConfig: " + lobbyConfig);
+        if (lobbyConfig !== undefined) {
+          customLobbyConfig = lobbyConfig;
+          MaxOfPlayers = customLobbyConfig.MaxPlayers;
+          console.log("customLobbyConfig.MaxPlayers: " + customLobbyConfig.MaxPlayers);
+          lobbyIndex = lobbyIndexRef;
+          console.log("lobbyIndex: " + lobbyIndex);
+        } else {
+          console.log("lobby doesn't exist.");
+          MaxOfPlayers = 3;
+          lobbyIndex = "/Trex/publicLobby1/";
+        }
+      });
+    } else {
+      console.log("publicLobby1");
+      MaxOfPlayers = 3;
+      lobbyIndex = "/Trex/publicLobby1/";
+    }
+  }*/
+
   if (player === undefined && multiplayerToggleValue === true) {
+    //setTimeout(() => {
     Multiplayer();
+    //}, 0500);
   }
   if (isMobile || !isMobile && backButtonOnPC === true) {
     backButton.position(width - 55, height - 55);
@@ -3699,8 +3744,38 @@ function turnNormal() {
 
   calibrateButton.position(-1250, -500);
 
+  /*if (lobbyIndex === null) {
+    if (lobbyCodeInput.value() !== "") {
+      var lobbyIndexRef = "/Trex/customLobbies/" + lobbyCodeInput.value() + "/";
+      var lobbyConfigRef = database.ref("/Trex/customLobbies/" + lobbyCodeInput.value() + "/config");
+      console.log("lobbyIndexRef: " + lobbyIndexRef);
+
+      lobbyConfigRef.on("value", data => {
+        var lobbyConfig = data.val();
+        console.log("lobbyConfig: " + lobbyConfig);
+        if (lobbyConfig !== undefined) {
+          customLobbyConfig = lobbyConfig;
+          MaxOfPlayers = customLobbyConfig.MaxPlayers;
+          console.log("customLobbyConfig.MaxPlayers: " + customLobbyConfig.MaxPlayers);
+          lobbyIndex = lobbyIndexRef;
+          console.log("lobbyIndex: " + lobbyIndex);
+        } else {
+          console.log("lobby doesn't exist.");
+          MaxOfPlayers = 3;
+          lobbyIndex = "/Trex/publicLobby1/";
+        }
+      });
+    } else {
+      console.log("publicLobby1");
+      MaxOfPlayers = 3;
+      lobbyIndex = "/Trex/publicLobby1/";
+    }
+  }*/
+
   if (player === undefined && multiplayerToggleValue === true) {
+    //setTimeout(() => {
     Multiplayer();
+    //}, 0500);
   }
   if (isMobile || !isMobile && backButtonOnPC === true) {
     backButton.position(width - 55, height - 55);
@@ -4125,6 +4200,7 @@ function reload() {
 
 function Multiplayer() {
   if (player === undefined) {
+    ///if (lobbyIndex !== null) {
     player = new Player();
 
     player2 = createSprite(50, 160, 20, 50);
@@ -4189,10 +4265,17 @@ function Multiplayer() {
 
         console.log("player" + p + " Created!");
       }
-
     }
 
+
+
     Player.getPlayersInfo();
+    ///} else {
+    ///  console.log("lobbyIndex === null");
+    ///  setTimeout(() => {
+    //Multiplayer();
+    ///  }, 1000);
+    ///}
   } else {
     console.log("Você Já está no Multiplayer.");
   }
@@ -4505,72 +4588,72 @@ function handleHeart3Button() {
 //if (name !== undefined) {
 /*if (createText === true && name !== undefined) {
   var newText = createElement("h2");
-
+ 
   if (textWidth !== undefined && textWidth !== false
     && textHeight !== undefined && textHeight !== false) {
     newText.size(textWidth, textHeight);
   }
-
+ 
   if (textAlign !== undefined && textAlign !== false) {
     newText.style("text-align", textAlign);
   }
-
+ 
   if (fontSize !== undefined && fontSize !== false) {
     newText.style("font-size", fontSize + "px");
   }
-
+ 
   if (text !== undefined) {
     newText.html(text);
   } else {
     newText.html("No Text Given");
   }
-
+ 
   if (backgroundColor !== undefined && backgroundColor !== false) {
     newText.style("background-color", backgroundColor);
   }
-
+ 
   if (color !== undefined && color !== false) {
     newText.style("color", color);
   }
-
+ 
   if (stroke !== undefined && stroke !== false) {
     newText.style("stroke-width", "100%");
     newText.style("stroke", stroke);
     newText.style("-webkit-text-stroke-color", stroke);
     newText.style("-webkit-text-stroke", stroke);
   }
-
+ 
   if (fontFamily !== undefined && fontFamily !== false) {
     newText.style("font-family", fontFamily);
   }
-
+ 
   if (borderRadius !== undefined && borderRadius !== false) {
     newText.style("border-radius", borderRadius + "px");
   }
-
+ 
   if (lineBreak !== undefined && lineBreak !== false) {
     newText.style("line-break", lineBreak);
   }
-
+ 
   if (contain !== undefined && contain !== false) {
     newText.style("contain", contain);
   }
-
+ 
   if (alignSelf !== undefined && alignSelf !== false) {
     newText.style("align-self", alignSelf);
   }
-
+ 
   if (alignItems !== undefined && alignItems !== false) {
     newText.style("align-items", alignItems);
   }
-
+ 
   if (show === true && showX !== undefined && showY !== undefined
     && showX !== false && showY !== false) {
     newText.position(showX, showY);
   }
-
+ 
   textsNames.push(name);
-
+ 
   texts.push(newText);
 } else {
   /*if (hide === true) {
@@ -4605,8 +4688,8 @@ function handleHeart3Button() {
     }
   }
 }
-
-
+ 
+ 
 if (show === true && showX !== undefined
   && showY !== undefined && name !== undefined) {
   if (name !== "all") {
@@ -4621,9 +4704,9 @@ if (show === true && showX !== undefined
     }
   }
 }
-
+ 
 }
-
+ 
 //}
 }*/
 
@@ -5165,7 +5248,7 @@ function handleConsoleOrientationControls() {//create, fixX
         } else {
           minusNumber = 80;
         }
-
+ 
         if (o === 0) {
           indexOT = 0;
         } else if (o === 1 || o === 2) {
