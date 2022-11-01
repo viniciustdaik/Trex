@@ -351,7 +351,7 @@ class Player {
         allPlayerIndexsAvailable = "";
         console.log("allPlayers from availablePlayerIndexs: " + allPlayers);
         if (allPlayers === null) {
-            console.log("allPlayers = null, no other players.");
+            console.log("allPlayers = null, no other players. Getting AvailablePlayerIndexs...");
             for (var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex + 1) {
                 //console.log(allPlayers["player"+plrindex]);
                 console.log("playeri: " + plrindex);
@@ -361,6 +361,7 @@ class Player {
         }
 
         if (allPlayers !== undefined && allPlayers !== null) {
+            console.log("Getting AvailablePlayerIndexs...");
             for (var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex + 1) {
                 //console.log(allPlayers["player"+plrindex]);
                 console.log("playeri: " + plrindex);
@@ -370,7 +371,10 @@ class Player {
                 }
             }
         } else {
-            console.log("allPlayers = undefined, can't define available player indexs");
+            console.log("allPlayerIndexsAvailable: " + allPlayerIndexsAvailable)
+            if (allPlayerIndexsAvailable === "") {
+                console.log("allPlayers = undefined, can't define available player indexs.");
+            }
         }
     }
 
