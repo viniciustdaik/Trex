@@ -821,6 +821,14 @@ function draw() {
     background('white');
   }
 
+  //text("numberOfBirds: " + birdG.length, width / 2, height / 2 - 100);
+  //text("numberOfCactus: " + cactuG.length, width / 2, height / 2 - 120);
+  //text("numberOfCactusHitboxes: " + cactuhitboxG.length, width / 2, height / 2 - 140);
+
+  //cactu.lifetime
+
+  //bird.lifetime
+
   if (!isMobile && gamestate === SELECT) {
     push();
     var yAdd;
@@ -2664,6 +2672,17 @@ function draw() {
   }
 
   if (game == "Voo Infinito" && gamestate == PLAY) {
+    if (birdG.length > 0) {
+      for (var enemyBirdOfBirdG of birdG) {
+        if (enemyBirdOfBirdG.x <= -50) {
+          enemyBirdOfBirdG.destroy();
+          if (!isMobile) {
+            console.log("enemyBirdOfBirdG.x <= -50");
+          }
+        }
+      }
+    }
+
     createclouds();
     createbird();
     if (dinosaurcolor == "notselected" && game == "Voo Infinito") {
@@ -3187,6 +3206,7 @@ function createcactu() {
       }
       cactu.scale = 0.5;
       cactu.lifetime = 315;//215
+      hitbox.lifetime = 315;
       cactuG.add(cactu);
       cactuhitboxG.add(hitbox);
     }
@@ -3285,7 +3305,7 @@ function createbird() {
           || b !== 2 && b !== 3 && randomform == 2 && !isMobile
           || b !== 7 && b !== 8 && randomform == 3 && !isMobile) {
           var enemybird = createSprite(width + 10, 80 * b, 10, 10);//+10, 10, 10);
-          enemybird.lifetime = 315;
+          enemybird.lifetime = 230;//315
 
           if (hearts !== [] && showHearts === true ||
             hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
@@ -5058,7 +5078,7 @@ function onJoystickRelease(e) {
     }*/
 
     if (!redButtonReleased && gamestate === PLAY && trex.y >= invisibleGroundPosY - 40
-      && !axesDownReleased && axeDownReleased === false && /**/ trexIsJumping === false) {
+      && !axesDownReleased && axeDownReleased === false /*&&  trexIsJumping === false*/) {
       //crouch();
       //trex.addAnimation("running", trex_running);
 
