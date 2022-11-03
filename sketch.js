@@ -146,6 +146,8 @@ var lobbyIndex = null, customLobbyConfig = [{
 //517.7
 //372.7
 
+//text("Selecio")
+
 function preload() {
   soundFormats('mp3');
 
@@ -778,6 +780,21 @@ function draw() {
     keyCode = null;
   }
 
+  if (!isMobile || isMobile && mostOfTheScreen === "width"
+    || isMobile && windowHeight < windowWidth) {
+    normalbutton.style("width:360px");
+    coloridobutton.style("width:360px");
+
+    nameInput.style("width:338px");
+    multiplayerToggle.style("width:360px");
+  } else {
+    normalbutton.style("width:90%");
+    coloridobutton.style("width:90%");
+
+    nameInput.style("width:85%");//90.5% //93.5%
+    multiplayerToggle.style("width:90%");
+  }
+
   if (initialWidth !== width) {
     if (game === "Corrida Infinita" && heartsSprite.x !== invisibleground.x - 80) {// - newWidthAdded / 2) {
       heartsSprite.x = invisibleground.x - 80;// - newWidthAdded / 2;
@@ -1011,7 +1028,48 @@ function draw() {
       player.isCrouching = trexIsCrouching;
       player.update();
     }
-    if (player.index === 1) {
+
+    //fix this
+    var addNum;//subtractNum
+    if (player.index % 2 === 0) {
+      //  addNum = 10 * player.index / 2;
+      //  trex.x = trex.x - subtractNum;
+      if (player.index === 2) {
+        addNum = 0;
+      } else {
+        //var num = player.index - 2;
+        var multiplyNum = player.index / 2;
+        addNum = 10 * multiplyNum;
+      }
+    } else {
+      //                3 - 2 = 1, 5 - 2 = 3
+      //var multiplyNum = player.index - 2;// * 1.5;
+      //addNum = 10;// * multiplyNum;//3: 10, 5: 10 * 2...
+
+      //3 - 1 = 2, 5 - 1 = 4... 2 / 2 = 1, 4 / 2 = 2...
+      var num = player.index - 1;
+      var multiplyNum = num / 2;
+      addNum = 10 * multiplyNum;
+
+      //if player.index === 3
+      if (multiplyNum % 2 === 0) {
+        addNum = 10 * multiplyNum;//addNu = 10;
+      } else {
+        //10 * multiplyNum //15 * multiplyNum
+        addNum = 15 * multiplyNum;
+      }
+    }
+
+    if (player.index === 1 && player.positionX !== 30 * player.index/* + 5 * player.index * player.index / 1.5*/) {
+      trex.x = 30 * player.index;// + 5 * player.index * player.index / 1.5;
+      player.positionX = trex.x;
+      player.update();
+    } else if (player.index > 1 && player.positionX !== 30 * player.index + 10 * player.index + addNum) {
+      trex.x = 30 * player.index + 10 * player.index + addNum;
+      player.positionX = trex.x;
+      player.update();
+    }
+    /*if (player.index === 1) {
       trex.x = 75;
       player.positionX = trex.x;
       player.update();
@@ -1023,7 +1081,7 @@ function draw() {
       trex.x = 75 + 45;
       player.positionX = trex.x;
       player.update();
-    }
+    }*/
     for (var playerNum = 2; playerNum <= playerCount; playerNum = playerNum + 1) {
       var otherPlayer;
       var otherPlayerColor;
@@ -1410,7 +1468,8 @@ function draw() {
         if (multiplayerToggle.x !== width - 70 - 300 && isMobile
           || multiplayerToggle.x !== width / 2 - 170 && !isMobile) {
           if (isMobile) {
-            multiplayerToggle.position(width - 70 - 300, coloridobutton.y + 120);
+            //multiplayerToggle.position(width - 70 - 300, coloridobutton.y + 120);
+            multiplayerToggle.position(width / 2 + 135 - 105, coloridobutton.y + 120);
           } else {
             multiplayerToggle.position(width / 2 - 170, coloridobutton.y + 120);
           }
@@ -1420,7 +1479,8 @@ function draw() {
         if (nameInput.x !== width - 70 - 300 && isMobile
           || nameInput.x !== width / 2 - 170 && !isMobile) {
           if (isMobile) {
-            nameInput.position(width - 70 - 300, multiplayerToggle.y - 44);
+            //nameInput.position(width - 70 - 300, multiplayerToggle.y - 44);
+            nameInput.position(width / 2 + 135 - 105, multiplayerToggle.y - 44);
           } else {
             nameInput.position(width / 2 - 170, multiplayerToggle.y - 44);
           }
@@ -1460,17 +1520,21 @@ function draw() {
       }
     } else if (isMobile == true && mostOfTheScreen == "height") {
       if (normalbutton.x !== width / 2 - 415) {
-        normalbutton.position(width / 2 - 185, 70);//width / 2 -415, height / 2 - 30
+        //normalbutton.position(width / 2 - 185, 70);//width / 2 -415, height / 2 - 30
+        normalbutton.position(20, 70);
       }
       if (coloridobutton.x !== width / 2 + 135 - 35) {//width / 2 + 135
-        coloridobutton.position(width / 2 - 185, 160);//width / 2 + 135, height / 2 - 30
+        //coloridobutton.position(width / 2 - 185, 160);//width / 2 + 135, height / 2 - 30
+        coloridobutton.position(20, 160);
       }
       if (canPlayMultiplayer === true) {
         if (multiplayerToggle.x !== width / 2 - 185) {
-          multiplayerToggle.position(width / 2 - 185, coloridobutton.y + 120);
+          //multiplayerToggle.position(width / 2 - 185, coloridobutton.y + 120);
+          multiplayerToggle.position(20, coloridobutton.y + 120);
         }
         if (nameInput.x !== width / 2 - 185) {
-          nameInput.position(width / 2 - 185, multiplayerToggle.y - 44);
+          //nameInput.position(width / 2 - 185, multiplayerToggle.y - 44);
+          nameInput.position(20, multiplayerToggle.y - 44);
         }
       }
       if (heart1button.x !== width / 2 - 35 - 75) {
@@ -1591,7 +1655,7 @@ function draw() {
     } else if (isMobile == true && mostOfTheScreen == "height") {
       textSize(18);
     }
-
+ 
     fill('red');
     textAlign("center");
     stroke('darkred');*/
@@ -1908,43 +1972,62 @@ function draw() {
     textWrap(WORD);
     if (isMobile == false && isiPhoneXR == false) {
       textSize(32);
-    } else if (isMobile == true || isiPhoneXR == true) {
+    } else if (isMobile == true && mostOfTheScreen === "width"
+      | isiPhoneXR == true && mostOfTheScreen === "width") {
       textSize(21);
+    } else if (isMobile === true && mostOfTheScreen === "height") {
+      textSize(15.5);
     }
-    if (mostOfTheScreen == "width" && isMobile == true || isMobile == false) {
-      if (game !== "notselected") {
-        if (initialWidth == width) {
-          text("Selecione Um Modo De Jogo.", 0, height / 2 - 125, width);
-          //x: width / 2, y:height / 2 - 95
-        } else {
-          text("Selecione Um Modo De Jogo.", 0 - newWidthAdded / 2, height / 2 - 125, width);
-          //x: width / 2, y:height / 2 - 95
-        }
-
+    var textY;
+    if (!isMobile || isMobile && mostOfTheScreen === "width") {
+      //textY = height / 2 - 125;
+      if (game === "notselected") {
+        textY = infiniteracebutton.y - 25
       } else {
-        if (initialWidth == width) {
-          text("Selecione Um Jogo.", 0, height / 2 - 125, width);
-          //x: width / 2, y:height / 2 - 95
-        } else {
-          text("Selecione Um Jogo.", 0 - newWidthAdded / 2, height / 2 - 125, width);
-          //x: width / 2, y:height / 2 - 95
-        }
+        textY = normalbutton.y - 25
       }
-    } else if (mostOfTheScreen == "height" && isMobile == true) {
+    } else if (isMobile && mostOfTheScreen === "height") {
+      textY = 30;
+    }/* else if (isMobile && mostOfTheScreen === "width") {
+      if (game === "notselected") {
+        textY = infiniteracebutton.y - 25
+      } else {
+        textY = normalbutton.y - 25
+      }
+    }*/
+    //if (mostOfTheScreen == "width" && isMobile == true || isMobile == false) {
+    if (game !== "notselected") {
+      //if (initialWidth == width) {
+      text("Escolha Um Modo De Jogo.", 0 - newWidthAdded / 2, textY, width);
+      //"Selecione Um Modo De Jogo.", x: width / 2, y:height / 2 - 95
+      /*} else {
+        text("Escolha Um Modo De Jogo.", 0 - newWidthAdded / 2, textY, width);
+        //"Selecione Um Modo De Jogo.", x: width / 2, y:height / 2 - 95
+      }*/
+    } else {
+      //if (initialWidth == width) {
+      text("Escolha Um Jogo.", 0 - newWidthAdded / 2, textY, width);
+      //"Selecione Um Jogo.", x: width / 2, y:height / 2 - 95
+      /*} else {
+        text("Escolha Um Jogo.", 0 - newWidthAdded / 2, height / 2 - 125, width);
+        //"Selecione Um Jogo.", x: width / 2, y:height / 2 - 95
+      }*/
+    }
+    /*} else if (mostOfTheScreen == "height" && isMobile == true) {
       if (game !== "notselected") {
         push();
         fill('cyan');
         stroke('green');
         textAlign('center');
         textSize(15.5);
-        text("Selecione Um Modo De Jogo.", 0, 30, width);
-        //y:50
+        text("Escolha Um Modo De Jogo.", 0, 30, width);
+        //"Selecione Um Modo De Jogo.", y:50
         pop();
       } else {
-        text("Selecione Um Jogo.", 0, 30, width);
-        //y:50
+        text("Escolha Um Jogo.", 0, 30, width);
+        //"Selecione Um Jogo.", y:50
       }
-    }
+    }*/
     pop();
 
     //text("Use As Setas Ou WASD.", width/2, height/2-55);
@@ -2550,7 +2633,7 @@ function draw() {
           trex.changeAnimation("crouching_green", trex_crouchinggreen);
         }
         trexIsCrouching = true;
-
+   
         //trex.velocityX = 2;
       } */
       if (keyWentUp("S") && !keyDown(DOWN_ARROW)
@@ -3677,7 +3760,7 @@ function turnColored() {
       var lobbyIndexRef = "/Trex/customLobbies/" + lobbyCodeInput.value() + "/";
       var lobbyConfigRef = database.ref("/Trex/customLobbies/" + lobbyCodeInput.value() + "/config");
       console.log("lobbyIndexRef: " + lobbyIndexRef);
-
+ 
       lobbyConfigRef.on("value", data => {
         var lobbyConfig = data.val();
         console.log("lobbyConfig: " + lobbyConfig);
@@ -3769,7 +3852,7 @@ function turnNormal() {
       var lobbyIndexRef = "/Trex/customLobbies/" + lobbyCodeInput.value() + "/";
       var lobbyConfigRef = database.ref("/Trex/customLobbies/" + lobbyCodeInput.value() + "/config");
       console.log("lobbyIndexRef: " + lobbyIndexRef);
-
+ 
       lobbyConfigRef.on("value", data => {
         var lobbyConfig = data.val();
         console.log("lobbyConfig: " + lobbyConfig);
