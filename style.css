@@ -7,9 +7,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  overflow-block: hidden;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -44,7 +43,7 @@ canvas {
 }
 
 .largebuttonC {
-  width: 360px;
+  /*width: 360px;*/
   height: 70px;
   border-radius: 35px;
   border-width: 1.5px;
@@ -64,7 +63,7 @@ canvas {
 }
 
 .largebuttonN {
-  width: 360px;
+  /*width: 360px;*/
   height: 70px;
   border-radius: 35px;
   border-width: 1.5px;
@@ -236,7 +235,7 @@ canvas {
 }
 
 .multiplayerToggle {
-  width: 360px;
+  /*width: 360px;*/
   height: 70px;
   border-radius: 25px;
   border-width: 1.5px;
@@ -258,8 +257,9 @@ canvas {
 }
 
 .nameInput {
-  width: 338px;
+  /*width: 338px;*/
   height: 20px;
+  /*20px*/
   border-radius: 13px;
   border-width: 1.5px;
   font-size: 30px;
@@ -276,6 +276,7 @@ canvas {
   justify-content: center;
   padding: 10px;
   display: inline-block;
+  cursor: text;
   -webkit-transition-duration: 0.0s;
   /* Safari */
   transition-duration: 0.0s;
@@ -336,8 +337,8 @@ canvas {
   font-size: 30px;
   color: red;
   border-color: darkred;
-  background: white;
-  /*transparent*/
+  background: transparent;
+  /*white*/
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
