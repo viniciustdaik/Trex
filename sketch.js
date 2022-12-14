@@ -771,6 +771,53 @@ text("Sel")*/
   player3text.position(-1000, -350);
 }
 
+function crouch() {
+  touches = [];
+
+  if (isMobile) {
+    touches = [];
+    if (/*MobileUnCrouchMode === "press" &&*/ trexIsJumping == true && trexIsCrouching == false) {
+      crouchAfterJumping = true;
+    }
+    if (trexIsCrouching == false && gamestate == PLAY && trexIsJumping == false) {
+      //trex.addAnimation("crouching", trex_crouching);
+      trexIsCrouching = true;
+      trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
+      if (TrexColorido == true && dinosaurcolor == "Cinza") {
+        trex.changeAnimation("crouchingnb", trex_crouchingnb);
+      }
+      if (TrexColorido == false) {
+        trex.changeAnimation("crouching", trex_crouching);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Marrom") {
+        trex.changeAnimation("crouching_brown", trex_crouchingbrown);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Verde") {
+        trex.changeAnimation("crouching_green", trex_crouchinggreen);
+      }
+      //trex.velocityX = 2;
+    } else if (trexIsCrouching == true && gamestate == PLAY) {
+      trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
+      trexIsCrouching = false;
+      if (TrexColorido == true || dinosaurcolor == "Cinza") {
+        trex.changeAnimation("runningnb", trex_runningnb);
+      }
+      if (TrexColorido == false) {
+        trex.changeAnimation("running", trex_running);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Marrom") {
+        trex.changeAnimation("running_brown", trex_runningbrown);
+      }
+      if (TrexColorido == true && dinosaurcolor == "Verde") {
+        trex.changeAnimation("running_green", trex_runninggreen);
+      }
+      //trex.velocityX = 0;
+    }
+  }
+
+  touches = [];
+}
+
 function draw() {
   if (keyCode == "116" && player !== undefined
     || key == "F5" && player !== undefined) {
@@ -835,7 +882,18 @@ function draw() {
   } else if (TrexColorido == false && Isday == true) {
     background('white');
   } else if (TrexColorido !== false && TrexColorido !== true && Isday == true) {
-    background('white');
+    background('#223'); //'white'
+  }
+
+  if (firebase.auth().currentUser !== null && gamestate === -1) {
+    push();
+    textAlign("right");
+    textFont(trexfont);
+    textSize(20);
+    fill("gold");
+    stroke("cyan");
+    text(firebase.auth().currentUser.email, width - 10, height - 15);
+    pop();
   }
 
   //text("numberOfBirds: " + birdG.length, width / 2, height / 2 - 100);
@@ -1029,59 +1087,66 @@ function draw() {
       player.update();
     }
 
-    //fix this
-    var addNum;//subtractNum
-    if (player.index % 2 === 0) {
-      //  addNum = 10 * player.index / 2;
-      //  trex.x = trex.x - subtractNum;
-      if (player.index === 2) {
-        addNum = 0;
+    if (playerCount > 1) {
+      //fix this
+      var addNum;//subtractNum
+      if (player.index % 2 === 0) {
+        //  addNum = 10 * player.index / 2;
+        //  trex.x = trex.x - subtractNum;
+        if (player.index === 2) {
+          addNum = 0;
+        } else {
+          //var num = player.index - 2;
+          var multiplyNum = player.index / 2;
+          addNum = 10 * multiplyNum;
+        }
       } else {
-        //var num = player.index - 2;
-        var multiplyNum = player.index / 2;
+        //                3 - 2 = 1, 5 - 2 = 3
+        //var multiplyNum = player.index - 2;// * 1.5;
+        //addNum = 10;// * multiplyNum;//3: 10, 5: 10 * 2...
+
+        //3 - 1 = 2, 5 - 1 = 4... 2 / 2 = 1, 4 / 2 = 2...
+        var num = player.index - 1;
+        var multiplyNum = num / 2;
         addNum = 10 * multiplyNum;
-      }
-    } else {
-      //                3 - 2 = 1, 5 - 2 = 3
-      //var multiplyNum = player.index - 2;// * 1.5;
-      //addNum = 10;// * multiplyNum;//3: 10, 5: 10 * 2...
 
-      //3 - 1 = 2, 5 - 1 = 4... 2 / 2 = 1, 4 / 2 = 2...
-      var num = player.index - 1;
-      var multiplyNum = num / 2;
-      addNum = 10 * multiplyNum;
-
-      //if player.index === 3
-      if (multiplyNum % 2 === 0) {
-        addNum = 10 * multiplyNum;//addNu = 10;
-      } else {
-        //10 * multiplyNum //15 * multiplyNum
-        addNum = 15 * multiplyNum;
+        //if player.index === 3
+        if (multiplyNum % 2 === 0) {
+          addNum = 10 * multiplyNum;//addNu = 10;
+        } else {
+          //10 * multiplyNum //15 * multiplyNum
+          addNum = 15 * multiplyNum;
+        }
       }
+
+      if (player.index === 1 && player.positionX !== 30 * player.index/* + 5 * player.index * player.index / 1.5*/) {
+        trex.x = 30 * player.index;// + 5 * player.index * player.index / 1.5;
+        player.positionX = trex.x;
+        player.update();
+      } else if (player.index > 1 && player.positionX !== 30 * player.index + 10 * player.index + addNum) {
+        trex.x = 30 * player.index + 10 * player.index + addNum;
+        player.positionX = trex.x;
+        player.update();
+      }
+      /*if (player.index === 1) {
+        trex.x = 75;
+        player.positionX = trex.x;
+        player.update();
+      } else if (player.index === 2) {
+        trex.x = 30;
+        player.positionX = trex.x;
+        player.update();
+      } else if (player.index === 3) {
+        trex.x = 75 + 45;
+        player.positionX = trex.x;
+        player.update();
+      }*/
+    } else if (player.positionX !== 50) {
+      trex.x = 50;
+      player.positionX = trex.x;
+      player.update();
     }
 
-    if (player.index === 1 && player.positionX !== 30 * player.index/* + 5 * player.index * player.index / 1.5*/) {
-      trex.x = 30 * player.index;// + 5 * player.index * player.index / 1.5;
-      player.positionX = trex.x;
-      player.update();
-    } else if (player.index > 1 && player.positionX !== 30 * player.index + 10 * player.index + addNum) {
-      trex.x = 30 * player.index + 10 * player.index + addNum;
-      player.positionX = trex.x;
-      player.update();
-    }
-    /*if (player.index === 1) {
-      trex.x = 75;
-      player.positionX = trex.x;
-      player.update();
-    } else if (player.index === 2) {
-      trex.x = 30;
-      player.positionX = trex.x;
-      player.update();
-    } else if (player.index === 3) {
-      trex.x = 75 + 45;
-      player.positionX = trex.x;
-      player.update();
-    }*/
     for (var playerNum = 2; playerNum <= playerCount; playerNum = playerNum + 1) {
       var otherPlayer;
       var otherPlayerColor;
@@ -1184,6 +1249,64 @@ function draw() {
   }*/
 
   if (playerCount > 1/* && playerCount === 2 */ && player !== undefined) {
+    /*var plrTimes = 1;
+    var allOtherPlayers = [player2, player3];
+    for (var plr in allPlayers) {
+      if (plrTimes !== player.index && plrTimes <= playerCount) {
+        plr = "player" + plrTimes;
+        console.log("plr: " + plr);
+        if (allPlayers[plr] !== undefined) {
+          var x = allPlayers[plr].positionX;
+          var y = allPlayers[plr].positionY;
+
+          player2isCrouching = allPlayers[plr].isCrouching;
+          player2isGameover = allPlayers[plr].isGameover;
+          player2color = allPlayers[plr].color;
+          player2gamePlaying = allPlayers[plr].gamePlaying;
+          player2hitGround = allPlayers[plr].hitGround;
+
+          otherPlayer.y = y;
+          if (initialWidth == width) {
+            otherPlayer.x = x;
+          } else {
+            otherPlayer.x = x - newWidthAdded / 2;
+          }
+
+          if (player2hitGround === true && player2gamePlaying === "Voo Infinito" && isMobile) {
+            if (player2color === "Cinza") {
+              otherPlayer.y = ground.y - 35 + 11;
+            } else {
+              otherPlayer.y = ground.y - 35 + 7.5;
+            }
+          }
+
+          otherPlayer.rotation = allPlayers[plr].rotation;
+          //console.log("player2.y:"+otherPlayer.y, ", player2.rotation:"+otherPlayer.rotation);
+          //console.log("player2gamePlaying: " + player2gamePlaying);
+          if (gamestate !== SELECT && player2gamePlaying === game) {
+            otherPlayer.visible = true;
+            if (game === "Voo Infinito") {
+              player2text.position(x - 25, otherPlayer.y - 30);
+            } else if (game === "Corrida Infinita") {
+              player2text.position(x - 20, otherPlayer.y - 35);
+            }
+            player2text.html(allPlayers[plr].name + "<br>" + allPlayers[plr].score + "<br>HI "
+              + allPlayers[plr].highscore);
+          } else if (player2gamePlaying !== game) {
+            player2text.position(-1000, -350);
+            otherPlayer.visible = false;
+            otherPlayer.y = 160;
+            otherPlayer.rotation = 0;
+            otherPlayer.changeAnimation("birdright", birdanmright);
+            console.log("Tchau Jogador.");
+          }
+        }
+      }
+      plrTimes = plrTimes + 1;
+      if (plrTimes > MaxOfPlayers) { plrTimes = MaxOfPlayers; }
+      console.log(plrTimes);
+    }*/
+
     if (playerCount === 2 || playerCount === 3) {
       for (var plr in allPlayers) {
         var otherPlayer = player2;
@@ -1222,6 +1345,7 @@ function draw() {
 
           otherPlayer.rotation = allPlayers[plr].rotation;
           //console.log("player2.y:"+otherPlayer.y, ", player2.rotation:"+otherPlayer.rotation);
+          //console.log("player2gamePlaying: " + player2gamePlaying);
           if (gamestate !== SELECT && player2gamePlaying === game) {
             otherPlayer.visible = true;
             if (game === "Voo Infinito") {
@@ -1231,6 +1355,13 @@ function draw() {
             }
             player2text.html(allPlayers[plr].name + "<br>" + allPlayers[plr].score + "<br>HI "
               + allPlayers[plr].highscore);
+          } else if (player2gamePlaying !== game) {
+            player2text.position(-1000, -350);
+            otherPlayer.visible = false;
+            otherPlayer.y = 160;
+            otherPlayer.rotation = 0;
+            otherPlayer.changeAnimation("birdright", birdanmright);
+            console.log("Tchau Jogador.");
           }
         }
       }
@@ -1273,6 +1404,7 @@ function draw() {
 
           otherPlayer.rotation = allPlayers[plr].rotation;
           //console.log("player3.y:"+otherPlayer.y, ", player3.rotation:"+otherPlayer.rotation);
+          //console.log("player2gamePlaying: " + player2gamePlaying);
           if (gamestate !== SELECT && player3gamePlaying === game) {
             otherPlayer.visible = true;
             if (game === "Voo Infinito") {
@@ -1282,6 +1414,13 @@ function draw() {
             }
             player3text.html(allPlayers[plr].name + "<br>" + allPlayers[plr].score + "<br>HI "
               + allPlayers[plr].highscore);
+          } else if (player2gamePlaying !== game) {
+            player3text.position(-1000, -350);
+            otherPlayer.visible = false;
+            otherPlayer.y = 160;
+            otherPlayer.rotation = 0;
+            otherPlayer.changeAnimation("birdright", birdanmright);
+            console.log("Tchau Jogador.");
           }
         }
       }
@@ -3650,53 +3789,6 @@ function setBirdColor() {
       player.update();
     }
   }
-}
-
-function crouch() {
-  touches = [];
-
-  if (isMobile) {
-    touches = [];
-    if (/*MobileUnCrouchMode === "press" &&*/ trexIsJumping == true && trexIsCrouching == false) {
-      crouchAfterJumping = true;
-    }
-    if (trexIsCrouching == false && gamestate == PLAY && trexIsJumping == false) {
-      //trex.addAnimation("crouching", trex_crouching);
-      trexIsCrouching = true;
-      trex.setCollider("rectangle", 0, 0, 35, 25);//crouching collider
-      if (TrexColorido == true && dinosaurcolor == "Cinza") {
-        trex.changeAnimation("crouchingnb", trex_crouchingnb);
-      }
-      if (TrexColorido == false) {
-        trex.changeAnimation("crouching", trex_crouching);
-      }
-      if (TrexColorido == true && dinosaurcolor == "Marrom") {
-        trex.changeAnimation("crouching_brown", trex_crouchingbrown);
-      }
-      if (TrexColorido == true && dinosaurcolor == "Verde") {
-        trex.changeAnimation("crouching_green", trex_crouchinggreen);
-      }
-      //trex.velocityX = 2;
-    } else if (trexIsCrouching == true && gamestate == PLAY) {
-      trex.setCollider("rectangle", -5, 0, 35, 80);//main collider
-      trexIsCrouching = false;
-      if (TrexColorido == true || dinosaurcolor == "Cinza") {
-        trex.changeAnimation("runningnb", trex_runningnb);
-      }
-      if (TrexColorido == false) {
-        trex.changeAnimation("running", trex_running);
-      }
-      if (TrexColorido == true && dinosaurcolor == "Marrom") {
-        trex.changeAnimation("running_brown", trex_runningbrown);
-      }
-      if (TrexColorido == true && dinosaurcolor == "Verde") {
-        trex.changeAnimation("running_green", trex_runninggreen);
-      }
-      //trex.velocityX = 0;
-    }
-  }
-
-  touches = [];
 }
 
 function turnColored() {
