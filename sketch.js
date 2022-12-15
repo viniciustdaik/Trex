@@ -889,7 +889,7 @@ function draw() {
 
   if (firebase.auth().currentUser !== null && gamestate === -1) {
     var textX = 0;
-    if (accountPhoto === undefined && firebase.auth().currentUser.photoURL !== undefined) {
+    if (accountPhoto === undefined && firebase.auth().currentUser.photoURL !== null) {
       accountPhoto = createImg(firebase.auth().currentUser.photoURL);
       accountPhoto.position(width - 55, height - 55);
       accountPhoto.style("content:contain");
