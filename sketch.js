@@ -899,6 +899,7 @@ function draw() {
     if (accountPhoto !== undefined) {
       textX = 50;
       accountPhoto.position(width - 55, height - 65);
+      accountPhoto.show();
     }
     push();
     textAlign("right");
@@ -909,6 +910,8 @@ function draw() {
     stroke("cyan");
     text(firebase.auth().currentUser.email, 0 - newWidthAdded / 2, height - 35, width - 10 - textX);
     pop();
+  } else if (gamestate !== -1 && accountPhoto !== undefined) {
+    accountPhoto.hide();
   }
 
   //text("numberOfBirds: " + birdG.length, width / 2, height / 2 - 100);
