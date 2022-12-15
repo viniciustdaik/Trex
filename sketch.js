@@ -910,7 +910,8 @@ function draw() {
     stroke("cyan");
     text(firebase.auth().currentUser.email, 0 - newWidthAdded / 2, height - 35, width - 10 - textX);
     pop();
-  } else if (gamestate !== -1 && accountPhoto !== undefined) {
+  } else if (gamestate !== -1 && accountPhoto !== undefined
+    || firebase.auth().currentUser === null && accountPhoto !== undefined) {
     accountPhoto.hide();
   }
 
