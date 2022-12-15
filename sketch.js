@@ -143,6 +143,8 @@ var lobbyIndex = null, customLobbyConfig = [{
   "game": "Voo Infinito",
 }];
 
+var accountPhoto;
+
 //517.7
 //372.7
 
@@ -886,13 +888,26 @@ function draw() {
   }
 
   if (firebase.auth().currentUser !== null && gamestate === -1) {
+    var textX = 0;
+    if (accountPhoto === undefined && firebase.auth().currentUser.photoURL !== undefined) {
+      accountPhoto = createImg(firebase.auth().currentUser.photoURL);
+      accountPhoto.position(width - 55, height - 55);
+      accountPhoto.style("content:contain");
+      accountPhoto.style("border-radius:45px");
+      accountPhoto.size(50, 50);
+    }
+    if (accountPhoto !== undefined) {
+      textX = 50;
+      accountPhoto.position(width - 55, height - 65);
+    }
     push();
     textAlign("right");
     textFont(trexfont);
+    textWrap("CHAR");
     textSize(20);
     fill("gold");
     stroke("cyan");
-    text(firebase.auth().currentUser.email, width - 10, height - 15);
+    text(firebase.auth().currentUser.email, 0 - newWidthAdded / 2, height - 35, width - 10 - textX);
     pop();
   }
 
