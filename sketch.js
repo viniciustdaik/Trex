@@ -55,7 +55,7 @@ var game = "notselected";
 
 var windowResizeX = true, windowResizeY = false;
 
-var version = 1.222991, mostRecentVersion = null, reloadButton,
+var version = 1.222992, mostRecentVersion = null, reloadButton,
   LatestUpdatePlatformsAimed = ""/* PC, Mobile, Android, iPhone, iPad, iPhoneXR, All */;//1.222991
 
 var infiniteflightbutton, infiniteracebutton;
@@ -144,6 +144,8 @@ var lobbyIndex = null, customLobbyConfig = [{
 }];
 
 var accountPhoto;
+
+var maxOfBirds;
 
 //517.7
 //372.7
@@ -2959,7 +2961,7 @@ function draw() {
       bird.rotation = bird.rotation - 1;
     }
     if (!isMobile) {
-      console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
+      //console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
     }
     //console.log("Flying: "+birdIsFlying);
     if (bird.isTouching(birdG) && birdIsInvencibleBirds === false && invencible === false
@@ -3535,66 +3537,92 @@ function createbird() {
     if (frameCount % 125 == 0 && score > 100) {
       var maxb;
       if (!isMobile) {
-        var randomform = Math.round(random(1, 3));
         maxb = 14;
       } else if (isMobile) {
-        var randomform = Math.round(random(1, 2));
         maxb = 20;
       }
       for (var b = 1; b <= maxb; b = b + 1) {
-        if (b !== 3 && b !== 4 && randomform == 1 && isMobile
-          || b !== 2 && b !== 3 && randomform == 2 && isMobile
-          || b !== 5 && b !== 6 && randomform == 1 && !isMobile
-          || b !== 2 && b !== 3 && randomform == 2 && !isMobile
-          || b !== 7 && b !== 8 && randomform == 3 && !isMobile) {
-          var enemybird = createSprite(width + 10, 80 * b, 10, 10);//+10, 10, 10);
-          enemybird.lifetime = 230;//315
+        var enemybird = createSprite(width + 10, 80 * b, 10, 10);//+10, 10, 10);
+        enemybird.lifetime = 230;//315
 
-          if (hearts !== [] && showHearts === true ||
-            hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
-            for (var h = 0; h < hearts.length; h = h + 1) {
-              hearts[h].depth = enemybird.depth + 1;
-            }
+        if (hearts !== [] && showHearts === true ||
+          hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
+          for (var h = 0; h < hearts.length; h = h + 1) {
+            hearts[h].depth = enemybird.depth + 1;
           }
-          highscoreS.depth = enemybird.depth + 1;
+        }
+        highscoreS.depth = enemybird.depth + 1;
 
-          if (b == maxb && isMobile) {
-            enemybird.y = 20;
-          } else if (b == maxb && !isMobile) {
-            enemybird.y = 0;
+        if (b == maxb && isMobile) {
+          enemybird.y = 20;
+        } else if (b == maxb && !isMobile) {
+          enemybird.y = 0;
+        }
+        enemybird.setCollider("rectangle", 0, 0, 50, 50);
+        if (enemybird.y > height) {
+          enemybird.destroy();
+
+          if (maxOfBirds === undefined) {
+            maxOfBirds = birdG.length + 1;
           }
-          enemybird.setCollider("rectangle", 0, 0, 50, 50);
-          if (enemybird.y > height) {
-            enemybird.destroy();
-          } else {
-            if (TrexColorido == true) {
-              var randombird = Math.round(random(1, 3));
-              if (randombird == 1) {
-                enemybird.addAnimation("birdleft", birdanmleft);
-                enemybird.addAnimation("birdimgleft", birdimgleft);
-                enemybird.changeAnimation("birdleft", birdanmleft);
-              }
-              if (randombird == 2) {
-                enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
-                enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
-                enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
-              }
-              if (randombird == 3) {
-                enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
-                enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
-                enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
-              }
-            } else if (TrexColorido == false) {
+        } else {
+          if (TrexColorido == true) {
+            var randombird = Math.round(random(1, 3));
+            if (randombird == 1) {
               enemybird.addAnimation("birdleft", birdanmleft);
               enemybird.addAnimation("birdimgleft", birdimgleft);
               enemybird.changeAnimation("birdleft", birdanmleft);
-            } else { }
-            enemybird.scale = 0.51 / 2 / 2 + 0.8;
-            if (debughitbox == true) {
-              enemybird.debug = true;
             }
-            birdG.add(enemybird);
+            if (randombird == 2) {
+              enemybird.addAnimation("greenbirdleft", greenbirdanmleft);
+              enemybird.addAnimation("greenbirdimgleft", greenbirdimgleft);
+              enemybird.changeAnimation("greenbirdleft", greenbirdanmleft);
+            }
+            if (randombird == 3) {
+              enemybird.addAnimation("brownbirdleft", brownbirdanmleft);
+              enemybird.addAnimation("brownbirdimgleft", brownbirdimgleft);
+              enemybird.changeAnimation("brownbirdleft", brownbirdanmleft);
+            }
+          } else if (TrexColorido == false) {
+            enemybird.addAnimation("birdleft", birdanmleft);
+            enemybird.addAnimation("birdimgleft", birdimgleft);
+            enemybird.changeAnimation("birdleft", birdanmleft);
+          } else { }
+          enemybird.scale = 0.51 / 2 / 2 + 0.8;
+          if (debughitbox == true) {
+            enemybird.debug = true;
           }
+          birdG.add(enemybird);
+        }
+
+        if (b === maxb) {
+          if (maxOfBirds === undefined) {
+            maxOfBirds = birdG.length + 1;
+          }
+
+          //print("maxOfBirds: " + maxOfBirds);
+          //print("birdG.length: " + birdG.length);
+
+          var roll = Math.round(birdG.length / maxOfBirds);
+          //print("roll: " + roll);
+
+          var rollNum = roll !== 1 ? (maxOfBirds - (2 * roll)) * roll : 1;
+          //print("rollNum: " + rollNum);
+
+          var maxOfBirdsMinus2 = maxOfBirds - 2;
+
+          //var minRandom = 2 + (maxOfBirdsMinus2 * (roll - 1)),
+          //  maxRandom = birdG.length - 3;
+          //console.log("minRandom: " + minRandom, " maxRandom: " + maxRandom);
+
+          var randomNum = roll !== 1 ? Math.round(random(2 + (maxOfBirdsMinus2 * (roll - 1)),
+            birdG.length - 3)) :
+            Math.round(random(2, birdG.length - 3));
+          //print("randomNum * rollNum: " + randomNum * rollNum);
+          //console.log("randomNum: " + randomNum);
+          birdG[randomNum].destroy();
+          birdG[randomNum - 1].destroy();
+          //print("birdG.length: " + birdG.length);
         }
       }
     }
@@ -4532,10 +4560,12 @@ function handleBack() {
     BestHighscores5DeleteButton.position(width - width - width, -350);
     crouchAfterJumping = false;
     BestHighscores.y = -350;
-    background("white");
+    //background('#223');//"white"
     gamestate = -1;//SELECT
     itemSelected = pastItemsSelected[2];//"infiniteracebutton"
     handleHearts(false);
+
+    maxOfBirds = undefined;
 
     if (!isMobile) {
       calibrateButton.position(width - 235 - 22 - newWidthAdded / 10000, 125);
