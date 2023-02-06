@@ -2961,7 +2961,7 @@ function draw() {
       bird.rotation = bird.rotation - 1;
     }
     if (!isMobile) {
-      //console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
+      console.log("Falling: " + birdIsFalling, "Flying: " + birdIsFlying);
     }
     //console.log("Flying: "+birdIsFlying);
     if (bird.isTouching(birdG) && birdIsInvencibleBirds === false && invencible === false
