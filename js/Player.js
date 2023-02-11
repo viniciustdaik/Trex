@@ -219,15 +219,14 @@ class Player {
             window.location.reload();
         } else if (reload === false) {
             for (var playerNum = 2; playerNum <= MaxOfPlayers; playerNum = playerNum + 1) {
-                var otherPlayer;
-                var otherPlayerText;
-                if (playerNum === 2) {
-                    otherPlayer = player2;
-                    otherPlayerText = player2text;
-                } else if (playerNum === 3) {
-                    otherPlayer = player3;
-                    otherPlayerText = player3text;
-                }
+                var otherPlayer, otherPlayerText;
+                //if (playerNum === 2) {
+                otherPlayer = players[playerNum - 2];//player2;
+                otherPlayerText = playersText[playerNum - 2];//player2text;
+                //} else if (playerNum === 3) {
+                //    otherPlayer = player3;
+                //    otherPlayerText = player3text;
+                //}
                 otherPlayerText.position(-1000, -350);
                 otherPlayer.visible = false;
                 otherPlayer.y = 160;
@@ -235,7 +234,17 @@ class Player {
                 otherPlayer.changeAnimation("birdright", birdanmright);
                 console.log("Tchau Jogador.");
             }
-            player2.visible = false;
+
+            players = [];
+            playersInfo = [];
+
+            /*for (var playerNum = 0; playerNum < players.length; playerNum = playerNum + 1) {
+                players[playerNum].visible = false;
+                playersText[playerNum].position(-1000, -350);
+                playersInfo[playerNum].color = "Cinza";
+                //players[playerNum] = undefined;
+            }*/
+            /*player2.visible = false;
             player3.visible = false;
             player4.visible = false;
             player5.visible = false;
@@ -254,7 +263,7 @@ class Player {
             player7 = undefined;
             player8 = undefined;
             player9 = undefined;
-            player10 = undefined;
+            player10 = undefined;*/
 
             player = undefined;
 
@@ -326,8 +335,8 @@ class Player {
                     || /*MaxOfPlayers > 2 &&*/ playerCount > MaxOfPlayers
                     || this.changedPlayerCountVerified !== playerCount) {
                     for (var playeri = 1; playeri <= MaxOfPlayers; playeri = playeri + 1) {
-                        console.log(allPlayers["player" + playeri]);
-                        console.log("playeri: " + playeri);
+                        //console.log(allPlayers["player" + playeri]);
+                        //console.log("playeri: " + playeri);
                         if (allPlayers["player" + playeri] === undefined) {
                             newPlayerCount = newPlayerCount - 1;
                         }
@@ -393,11 +402,15 @@ class Player {
         }
     }
 
+    //not being called?
     changePlayerIndex() {
+        console.log("changePlayerIndex called!");
         var changedIndex = false;
-        if (playerCount === 2 && player.index === 3) {
-            for (var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex + 1) {
-                if (allPlayers["player" + plrindex] === undefined && plrindex !== this.index && changedIndex === false) {
+        if (playerCount < player.index) {//playerCount === 2 && player.index === 3
+            //var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex + 1
+            for (var plrindex = 0; plrindex < MaxOfPlayers; plrindex = plrindex + 1) {
+                if (allPlayers["player" + (plrindex + 1)] === undefined
+                    && plrindex !== this.index && changedIndex === false) {
                     changedIndex = true;
                     database.ref("/Trex/").update({
                         playerCount: playerCount - 1
@@ -405,16 +418,17 @@ class Player {
                     console.log(playerCount, this.index);
                     database.ref("/Trex/players/player" + this.index).remove();
 
-                    this.index = plrindex;
+                    this.index = plrindex + 1;
+                    console.log("changed player index to: " + this.index);
                     this.playerAlreadyStarted = false;
 
                     this.startPlayer();
 
-                    player3.visible = false;
-                    player3.y = 160;
-                    player3.rotation = 0;
-                    player3.changeAnimation("birdright", birdanmright);
-                    player3text.position(-1000, -350);
+                    players[plrindex].visible = false;//player3
+                    players[plrindex].y = 160;//player3
+                    players[plrindex].rotation = 0;//player3
+                    players[plrindex].changeAnimation("birdright", birdanmright);//player3
+                    playersText[plrindex].position(-1000, -350);//player3text
 
                     console.log("Changed Player Index.");
                 }
@@ -423,29 +437,65 @@ class Player {
     }
 
     hideRemovedPlayers() {
-        for (var plr = 1; plr <= MaxOfPlayers; plr = plr + 1) {
-            if (allPlayers["player" + plr] === undefined && plr !== this.index) {
-                var otherPlayer;
-                var otherPlayerText;
-                if (plr === 2 && this.index === 1 && player2.visible === true
-                    || plr === 2 && this.index === 2 && player2.visible === true
-                    || plr === 1 && this.index === 2 && player2.visible === true) {
-                    otherPlayer = player2;
-                    otherPlayerText = player2text;
-                } else if (plr === 3 && this.index === 1 && player3.visible === true
-                    || plr === 3 && this.index === 2 && player3.visible === true) {
-                    otherPlayer = player3;
-                    otherPlayerText = player3text;
+        var allPlayersWithoutThisPlayer = {};
+        var playersWithoutThisPlayerArrayKeys = [],
+            playersWithoutThisPlayerArrayValues = [];
+        for (var plr = 1; plr <= playerCount; plr = plr + 1) {
+            //console.log("plr from allPlayersWithoutThisPlayer: " + plr);
+
+            if (plr !== player.index) {
+                playersWithoutThisPlayerArrayKeys.push("player" + plr);
+                playersWithoutThisPlayerArrayValues.push(allPlayers[playersWithoutThisPlayerArrayKeys
+                [playersWithoutThisPlayerArrayKeys.length - 1]]);
+                //console.log(playersWithoutThisPlayerArrayKeys[playersWithoutThisPlayerArrayKeys.length - 1]);
+            }
+
+            if (plr === playerCount) {
+                for (var p = 0; p < playersWithoutThisPlayerArrayKeys.length; p = p + 1) {
+                    Object.assign(allPlayersWithoutThisPlayer,
+                        { ["player" + (p + 1)]: playersWithoutThisPlayerArrayValues[p] });
+                    if (p === playersWithoutThisPlayerArrayKeys.length - 1) {
+                        //console.table(allPlayersWithoutThisPlayer);
+                    }
+                    //"allPlayersWithoutThisPlayer: " + allPlayersWithoutThisPlayer);
                 }
-                if (otherPlayer !== undefined && otherPlayerText !== undefined) {
+            }
+        }
+        //console.log("hideRemovedPlayers called!");
+        for (var plr = MaxOfPlayers - 1; plr >= playerCount - 1; plr = plr - 1) {
+            //var plr = 0; plr < MaxOfPlayers; plr = plr + 1
+            //var plr = 0; plr < playerCount - 1; plr = plr + 1
+            var objectWithPlayersInfo = allPlayersWithoutThisPlayer;
+            if (objectWithPlayersInfo["player" + (plr + 2)] === undefined
+                && plr + 2 <= MaxOfPlayers) {
+                var otherPlayer, otherPlayerText, otherPlayerInfo;
+                //console.log("players[plr]: " + players[plr]);
+                //console.log("plr: " + plr);
+                if (players[plr] !== undefined
+                    && players[plr].visible === true) {
+                    console.log("Removing Removed Player...")
+                    otherPlayer = players[plr];//player2;
+                    otherPlayerText = playersText[plr];//player2text;
+                    otherPlayerInfo = playersInfo[plr];
+
                     console.log("otherPlayer: " + otherPlayer, "otherPlayerText: " + otherPlayerText);
                     otherPlayerText.position(-1000, -350);
                     otherPlayer.visible = false;
                     otherPlayer.y = 160;
                     otherPlayer.rotation = 0;
-                    otherPlayer.changeAnimation("birdright", birdanmright);
+                    //otherPlayer.changeAnimation("birdright", birdanmright);
+                    otherPlayer = undefined;
+                    otherPlayerText = undefined;
+                    otherPlayerInfo = undefined;
+
                     console.log("Tchau Jogador.");
-                }
+
+                    this.changePlayerIndex();
+                }// else if (plr === 3 && this.index === 1 && players[1].visible === true
+                //    || plr === 3 && this.index === 2 && players[1].visible === true) {
+                //    otherPlayer = players[1];//player3;
+                //    otherPlayerText = playersText[1];//player3text;
+                //}
             }
         }
     }
