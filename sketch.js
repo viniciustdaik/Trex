@@ -55,7 +55,7 @@ var game = "notselected";
 
 var windowResizeX = true, windowResizeY = false;
 
-var version = 1.222992, mostRecentVersion = null, reloadButton,
+var version = 1.222993, mostRecentVersion = null, reloadButton,
   LatestUpdatePlatformsAimed = ""/* PC, Mobile, Android, iPhone, iPad, iPhoneXR, All */;//1.222991
 
 var infiniteflightbutton, infiniteracebutton;
