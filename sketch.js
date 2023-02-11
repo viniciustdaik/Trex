@@ -920,10 +920,6 @@ function draw() {
     accountPhoto = undefined;
   }
 
-  //text("numberOfBirds: " + birdG.length, width / 2, height / 2 - 100);
-  //text("numberOfCactus: " + cactuG.length, width / 2, height / 2 - 120);
-  //text("numberOfCactusHitboxes: " + cactuhitboxG.length, width / 2, height / 2 - 140);
-
   //cactu.lifetime
 
   //bird.lifetime
@@ -2998,10 +2994,27 @@ function draw() {
   if (game == "Voo Infinito" && gamestate == PLAY) {
     if (birdG.length > 0) {
       for (var enemyBirdOfBirdG of birdG) {
-        if (enemyBirdOfBirdG.x <= -50) {
+        if (enemyBirdOfBirdG.x <= -50
+          && initialWidth === width
+          || initialWidth !== width
+          && enemyBirdOfBirdG.x <= -50 - newWidthAdded / 2) {
           enemyBirdOfBirdG.destroy();
           if (!isMobile) {
             console.log("enemyBirdOfBirdG.x <= -50");
+          }
+        }
+      }
+    }
+
+    if (cloudG.length > 0) {
+      for (var cloudOfCloudG of cloudG) {
+        if (cloudOfCloudG.x <= -50
+          && initialWidth === width
+          || initialWidth !== width
+          && cloudOfCloudG.x <= -50 - newWidthAdded / 2) {
+          cloudOfCloudG.destroy();
+          if (!isMobile) {
+            //console.log("cloudOfCloudG.x <= -50");
           }
         }
       }
@@ -3220,6 +3233,34 @@ function draw() {
   //}
 
   drawSprites();
+
+  push();
+  textSize(22);
+  fill("black");
+  stroke("white");
+  textFont("sans-serif");
+  textAlign("center");
+
+  /*if (cactuG.length % 10 === 0
+    && cactuG.length !== 0) {
+    var numToMultiply = cactuG.length / 10;
+    //console.log(numToMultiply);
+    for (var add = 1; add <= numToMultiply; add = add + 1) {
+      addStringCactusHitboxesNumber = addStringCactusHitboxesNumber + " ";
+      addStringCloudsNumber = addStringCloudsNumber + " ";
+      addStringBirdsNumber = addStringBirdsNumber + " ";
+    }
+  }*/
+
+  /*text("numberOfCactus              : " + cactuG.length, width / 2, height / 2 - 125);//, height / 2 - 120
+
+  text("numberOfCactusHitboxes: " + cactuhitboxG.length, width / 2, height / 2 - 105);//, height / 2 - 100
+
+  text("numberOfBirds                 : " + birdG.length, width / 2, height / 2 - 145);//, height / 2 - 140
+
+  text("numberOfClouds              : " + cloudG.length, width / 2, height / 2 - 165);//, height / 2 - 160
+  */
+  pop();
 
   if (gamestate !== SELECT) {
     if (initialHeight === height) {
@@ -3624,7 +3665,7 @@ function createbird() {
       }
       for (var b = 1; b <= maxb; b = b + 1) {
         var enemybird = createSprite(width + 10, 80 * b, 10, 10);//+10, 10, 10);
-        enemybird.lifetime = 230;//315
+        enemybird.lifetime = 315;//315
 
         if (hearts !== [] && showHearts === true ||
           hearts !== [] && showHearts === true && heartsNumber === 1 && showTheOnlyOneHeart === true) {
