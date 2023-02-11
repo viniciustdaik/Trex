@@ -95,7 +95,7 @@ var AutoCrouchTime = 0750, MobileUnCrouchMode = "press"/* press, automatic */, c
 
 var scoreText, highscoreText;
 
-var player, playerCount, MultiplayerCircleColor = "blue", database, MaxOfPlayers = 4, allPlayers;
+var player, playerCount, MultiplayerCircleColor = "blue", database, MaxOfPlayers = 6, allPlayers;
 
 var players = [], playersText = [], playersInfo = [];
 //player2, player3, player4, player5, player6, player7, player8, player9, player10,
