@@ -4392,6 +4392,14 @@ function getState() {
       //console.log("MaxOfPlayers after: " + MaxOfPlayers);
 
       if (player !== undefined
+        && players.length >= MaxOfPlayers) {
+        for (var i = players.length - 1; i >= MaxOfPlayers - 1; i = i - 1) {
+          if (players[i] !== undefined) {
+            players.pop();
+            console.log("player" + i + " Removed!");
+          }
+        }
+      } else if (player !== undefined
         && players.length !== MaxOfPlayers - 1) {
         for (var i = players.length; i <= MaxOfPlayers - 2; i = i + 1) {
           if (players[i] === undefined) {
