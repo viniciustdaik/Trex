@@ -120,7 +120,8 @@ var invisibleGroundPositionOfTheScreen = "bottom", invisibleGroundPosY;
 
 var hearts = [], fullHeartImg, halfHeartImg, emptyHeartImg, heartsSprite, heartsNumber = 1, heartsLeft = 0,
   canSurpassHeartsSpriteArea = false, showTheOnlyOneHeart = false, showHearts = true, invencible = false,
-  invencibleDuration = 0650, heart1button, heart2button, heart3button;
+  invencibleDuration = 0650, heart1button, heart2button, heart3button,
+  heartsResizedX = false;
 
 var lobbyCodeInput, lobbyCodeButton, lobbyIndex;
 
@@ -850,19 +851,19 @@ function draw() {
 
   if (initialWidth !== width) {
     if (game === "Corrida Infinita" && heartsSprite.x !== 200 - 80) {// - newWidthAdded / 2) {
-      heartsSprite.x = 200 - 80;// - newWidthAdded / 2;
-      if (hearts !== []) {
+      heartsSprite.x = 200 - 80 - newWidthAdded / 2;
+      /*if (hearts !== []) {
         for (var h = 0; h < hearts.length; h = h + 1) {
-          hearts[h].x = hearts[h].x - newWidthAdded / 2;
+          //hearts[h].x = hearts[h].x - newWidthAdded / 2;
         }
-      }
+      }*/
     } else if (game === "Voo Infinito" && heartsSprite.x !== 200 + 20) {// - newWidthAdded / 2) {
-      heartsSprite.x = 200 + 20;// - newWidthAdded / 2;
-      if (hearts !== []) {
+      heartsSprite.x = 200 + 20 - newWidthAdded / 2;
+      /*if (hearts !== []) {
         for (var h = 0; h < hearts.length; h = h + 1) {
           hearts[h].x = hearts[h].x - newWidthAdded / 2;
         }
-      }
+      }*/
     }
 
     if (/*heartsXFixed === false && */newWidthAdded !== undefined) {
@@ -4170,7 +4171,11 @@ function turnNormal() {
 
 function turnCorridaInfinita() {
   game = "Corrida Infinita";
-  heartsSprite.x = 200 - 80;
+  if (initialWidth === width) {
+    heartsSprite.x = 200 - 80;
+  } else {
+    heartsSprite.x = 200 - 80 - newWidthAdded / 2;
+  }
   heartsSprite.y = invisibleGroundPosY + 35;
   handleHearts(true);
   trex.y = invisibleGroundPosY - 30;//160
@@ -4196,7 +4201,11 @@ function turnCorridaInfinita() {
 function turnVooInfinito() {
   //if(!isMobile || isMobile && PcFeaturesOnMobile == true){
   game = "Voo Infinito";
-  heartsSprite.x = 200 + 20;
+  if (initialWidth === width) {
+    heartsSprite.x = 200 + 20;
+  } else {
+    heartsSprite.x = 200 - 80 - newWidthAdded / 2;
+  }
   heartsSprite.y = invisibleGroundPosY + 28.5;//35 //invisibleground.y + 32.5
   handleHearts(true);
   bird.y = 160;
@@ -4597,6 +4606,15 @@ function windowResized() {
           newWidthAdded = width - initialWidth;
           invisibleground.x = width / 2 - newWidthAdded / 2;//200 - newWidthAdded / 2;
           invisibleground.width = width;
+          heartsSprite.x = 200 - newWidthAdded / 2;
+          if (hearts !== [] && heartsResizedX === false) {
+            for (var i = 0; i < hearts.length; i = i + 1) {
+              hearts[i].x = hearts[i].x - newWidthAdded / 2;
+              heartsResizedX = true;
+            }
+          } else if (hearts === []) {
+            heartsResizedX = true;
+          }
           ground.x = ground.x - newWidthAdded / 2;
           bird.x = 50 - newWidthAdded / 2;
 
@@ -4931,26 +4949,48 @@ function handleHearts(createHearts, newHeartsNumber) {
           //heart.x = heartsSprite.x + heartsSprite.x / 3;
         }
 
-        if (initialWidth === width) {
-          if (game === "Corrida Infinita") {
-            heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.5;
-          } else if (game === "Voo Infinito") {
-            heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2;
+        //if (initialWidth === width) {
+        if (game === "Corrida Infinita") {
+          if (h === 0) {
+            heart.x = heartsSprite.x - 68;
+          } else {
+            heart.x = hearts[h - 1].x + 60.5;
           }
-        } else if (initialWidth !== width) {
-          /*if (game === "Corrida Infinita") {
-            heart.x = heartsSprite.x + 60 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.8;
-          } else if (game === "Voo Infinito") {
-            heart.x = heartsSprite.x + 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 190;
-          }*/
-          if (game === "Corrida Infinita") {
-            heart.x = heartsSprite.x - 80 + newWidthAdded / 4.1 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.95
-              ;
-          } else if (game === "Voo Infinito") {
-            heart.x = heartsSprite.x - 80 - newWidthAdded / 24.1 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 26.75
-              ;
+          //heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.5;
+        } else if (game === "Voo Infinito") {
+          if (h === 0) {
+            heart.x = heartsSprite.x - 100;
+          } else {
+            heart.x = hearts[h - 1].x + 60.5;
           }
+          //heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2;
         }
+        //} else {
+        /*if (game === "Corrida Infinita") {
+          heart.x = heartsSprite.x + 60 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.8;
+        } else if (game === "Voo Infinito") {
+          heart.x = heartsSprite.x + 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 190;
+        }*/
+        /*if (game === "Corrida Infinita") {
+          heart.x = heartsSprite.x - 80 + newWidthAdded / 4.1 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.95
+            ;
+        } else if (game === "Voo Infinito") {
+          heart.x = heartsSprite.x - 80 - newWidthAdded / 24.1 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 26.75
+            ;
+        }*/
+
+        /*if (game === "Corrida Infinita") {
+          //heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h * 1.5;
+          heart.x = ((heartsSprite.x - 80 / 3 + newWidthAdded / 3)
+            - (heartsSprite.x / 3 + newWidthAdded / 3)
+            + (heartsSprite.x / 3 + newWidthAdded / 3) * h * 1.5);
+        } else if (game === "Voo Infinito") {
+          //heart.x = heartsSprite.x - 80 / 3 - heartsSprite.x / 3 + heartsSprite.x / 3 * h / 1.2;
+          heart.x = ((heartsSprite.x - 80 / 3 + newWidthAdded / 3)
+            - (heartsSprite.x / 3 + newWidthAdded / 3)
+            + (heartsSprite.x / 3 + newWidthAdded / 3) * h / 1.2);
+        }*/
+        //}
 
         //if (initialWidth !== width) {
         //  heart.x = heart.x + newWidthAdded / 10;
