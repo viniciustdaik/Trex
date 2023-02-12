@@ -1453,9 +1453,10 @@ function draw() {
             } else if (game === "Corrida Infinita") {
               if (plrInfo === "player1"
                 && player.index !== 1) {
-                playersText[plr].position((x + (trex.x * (player.index - 1))) - 20, otherPlayer.y - 35);//player2text
+                playersText[plr].position((x + (trex.x * (player.index - 1))) - 20,
+                  otherPlayer.y - 85);//player2text //, otherPlayer.y - 35
               } else {
-                playersText[plr].position(x - 20, otherPlayer.y - 35);//player2text
+                playersText[plr].position(x - 20, otherPlayer.y - 85);//player2text //otherPlayer.y - 35
               }
             }
             playersText[plr].html(objectWithPlayersInfo.name + "<br>"
