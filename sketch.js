@@ -4374,6 +4374,61 @@ function getState() {
       //console.log("MaxOfPlayers before: " + MaxOfPlayers);
       MaxOfPlayers = data.val();
       //console.log("MaxOfPlayers after: " + MaxOfPlayers);
+
+      if (player !== undefined
+        && players.length !== MaxOfPlayers - 1) {
+        for (var i = 2; i <= MaxOfPlayers; i = i + 1) {
+          if (players[i - 2] === undefined) {
+            var newPlayer = createSprite(50, 160, 20, 50);
+
+            newPlayer.addAnimation("birdright", birdanmright);
+            newPlayer.addAnimation("greenbirdright", greenbirdanmright);
+            newPlayer.addAnimation("brownbirdright", brownbirdanmright);
+            newPlayer.addAnimation("birdimgright", birdimgright);
+            newPlayer.addAnimation("greenbirdimgright", greenbirdimgright);
+            newPlayer.addAnimation("brownbirdimgright", brownbirdimgright);
+            newPlayer.addAnimation("running", trex_running);
+            newPlayer.addAnimation("runningnb", trex_runningnb);
+            newPlayer.addAnimation("collidednb", trex_collidednb);
+            newPlayer.addAnimation("collided", trex_collided);
+            newPlayer.addAnimation("crouching", trex_crouching);
+            newPlayer.addAnimation("crouchingnb", trex_crouchingnb);
+            newPlayer.addAnimation("running_green", trex_runninggreen);
+            newPlayer.addAnimation("collided_green", trex_collidedgreen);
+            newPlayer.addAnimation("crouching_green", trex_crouchinggreen);
+            newPlayer.addAnimation("running_brown", trex_runningbrown);
+            newPlayer.addAnimation("collided_brown", trex_collidedbrown);
+            newPlayer.addAnimation("crouching_brown", trex_crouchingbrown);
+            newPlayer.setCollider("rectangle", 0, 0, 50, 50);
+            if (game === "Voo Infinito") {
+              newPlayer.scale = 0.51 / 2 / 2 + 0.8;
+            } else if (game === "Corrida Infinita") {
+              newPlayer.scale = 0.5;
+            }
+
+            newPlayer.visible = false;
+
+            console.log("player" + i + " Created!");
+
+            players.push(newPlayer);
+
+            playersInfo.push({
+              color: "Cinza",
+              isCrouching: false,
+              isGameover: false,
+              gamePlaying: undefined,
+              hitGround: false,
+            });
+
+            var playerText = createElement("h2");
+            playerText.style("font-size", '15px');
+            playerText.style("color", 'darkgray');//gold
+            playerText.position(-1000, -350);
+
+            playersText.push(playerText);
+          }
+        }
+      }
     });
 
     var getStateOrNotRef = database.ref("/Trex/getStateOrNot/");
