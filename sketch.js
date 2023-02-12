@@ -595,7 +595,7 @@ function setup() {
   restart.scale = 0.6;
 
   //190
-  invisibleground = createSprite(200, invisibleGroundPosY, 400, 10);
+  invisibleground = createSprite(width / 2, invisibleGroundPosY, width, 10);//200, , 400, 10
   invisibleground.visible = false;
 
   //text test
@@ -4377,8 +4377,8 @@ function getState() {
 
       if (player !== undefined
         && players.length !== MaxOfPlayers - 1) {
-        for (var i = 2; i <= MaxOfPlayers; i = i + 1) {
-          if (players[i - 2] === undefined) {
+        for (var i = players.length; i <= MaxOfPlayers - 2; i = i + 1) {
+          if (players[i] === undefined) {
             var newPlayer = createSprite(50, 160, 20, 50);
 
             newPlayer.addAnimation("birdright", birdanmright);
@@ -4569,7 +4569,8 @@ function windowResized() {
 
         if (initialWidth !== width) {
           newWidthAdded = width - initialWidth;
-          invisibleground.x = 200 - newWidthAdded / 2;
+          invisibleground.x = width / 2 - newWidthAdded / 2;//200 - newWidthAdded / 2;
+          invisibleground.width = width;
           ground.x = ground.x - newWidthAdded / 2;
           bird.x = 50 - newWidthAdded / 2;
 
