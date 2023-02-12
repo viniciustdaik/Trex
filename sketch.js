@@ -1122,8 +1122,13 @@ function draw() {
     }
 
     if (playerCount > 1) {
+      var x = trex.x;
+      x = trex.x * player.index;
+      player.positionX = x;
+      player.update();
+
       //fix this
-      var addNum;//subtractNum
+      /*var addNum;//subtractNum
       if (player.index % 2 === 0) {
         //  addNum = 10 * player.index / 2;
         //  trex.x = trex.x - subtractNum;
@@ -1153,15 +1158,17 @@ function draw() {
         }
       }
 
-      if (player.index === 1 && player.positionX !== 30 * player.index/* + 5 * player.index * player.index / 1.5*/) {
-        trex.x = 30 * player.index;// + 5 * player.index * player.index / 1.5;
-        player.positionX = trex.x;
+      *///if (player.index === 1 && player.positionX !== 30 * player.index/* + 5 * player.index * player.index / 1.5*/) {
+      //  trex.x = 30 * player.index;// + 5 * player.index * player.index / 1.5;
+      /*  player.positionX = trex.x;
         player.update();
       } else if (player.index > 1 && player.positionX !== 30 * player.index + 10 * player.index + addNum) {
         trex.x = 30 * player.index + 10 * player.index + addNum;
         player.positionX = trex.x;
         player.update();
-      }
+      }*/
+
+
       /*if (player.index === 1) {
         trex.x = 75;
         player.positionX = trex.x;
@@ -1430,6 +1437,10 @@ function draw() {
             }
           } else if (playersInfo[plr].gamePlaying === "Corrida Infinita") {
             otherPlayer.y = invisibleground.y - y;
+            if (plrInfo === "player1"
+              && player.index !== 1) {
+              otherPlayer.x = x + (trex.x * (player.index - 1));
+            }
           }
 
           otherPlayer.rotation = objectWithPlayersInfo.rotation;
@@ -1440,7 +1451,12 @@ function draw() {
             if (game === "Voo Infinito") {
               playersText[plr].position(x - 25, otherPlayer.y - 30);//player2text
             } else if (game === "Corrida Infinita") {
-              playersText[plr].position(x - 20, otherPlayer.y - 35);//player2text
+              if (plrInfo === "player1"
+                && player.index !== 1) {
+                playersText[plr].position((x + (trex.x * (player.index - 1))) - 20, otherPlayer.y - 35);//player2text
+              } else {
+                playersText[plr].position(x - 20, otherPlayer.y - 35);//player2text
+              }
             }
             playersText[plr].html(objectWithPlayersInfo.name + "<br>"
               + objectWithPlayersInfo.score + "<br>HI "
@@ -1450,7 +1466,7 @@ function draw() {
             otherPlayer.visible = false;
             otherPlayer.y = 160;
             otherPlayer.rotation = 0;
-            otherPlayer.changeAnimation("birdright", birdanmright);
+            //otherPlayer.changeAnimation("birdright", birdanmright);
             console.log("Tchau Jogador.");
           }
         }
