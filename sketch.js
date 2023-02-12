@@ -635,8 +635,9 @@ function setup() {
   backButton.mousePressed(handleBack);
 
   //x: invisibleground.x //110
-  heartsSprite = createSprite(invisibleground.x - 80, invisibleGroundPosY + 35, 200, 65);
+  heartsSprite = createSprite(200 - 80, invisibleGroundPosY + 35, 200, 65);
   heartsSprite.visible = false;
+  //heartsSprite.x
 
   heart1button = createButton("");
   heart1button.style("background-image", "url('./assets/hearts/fullHeart.png')");
@@ -848,15 +849,15 @@ function draw() {
   }
 
   if (initialWidth !== width) {
-    if (game === "Corrida Infinita" && heartsSprite.x !== invisibleground.x - 80) {// - newWidthAdded / 2) {
-      heartsSprite.x = invisibleground.x - 80;// - newWidthAdded / 2;
+    if (game === "Corrida Infinita" && heartsSprite.x !== 200 - 80) {// - newWidthAdded / 2) {
+      heartsSprite.x = 200 - 80;// - newWidthAdded / 2;
       if (hearts !== []) {
         for (var h = 0; h < hearts.length; h = h + 1) {
           hearts[h].x = hearts[h].x - newWidthAdded / 2;
         }
       }
-    } else if (game === "Voo Infinito" && heartsSprite.x !== invisibleground.x + 20) {// - newWidthAdded / 2) {
-      heartsSprite.x = invisibleground.x + 20;// - newWidthAdded / 2;
+    } else if (game === "Voo Infinito" && heartsSprite.x !== 200 + 20) {// - newWidthAdded / 2) {
+      heartsSprite.x = 200 + 20;// - newWidthAdded / 2;
       if (hearts !== []) {
         for (var h = 0; h < hearts.length; h = h + 1) {
           hearts[h].x = hearts[h].x - newWidthAdded / 2;
@@ -4169,7 +4170,7 @@ function turnNormal() {
 
 function turnCorridaInfinita() {
   game = "Corrida Infinita";
-  heartsSprite.x = invisibleground.x - 80;
+  heartsSprite.x = 200 - 80;
   heartsSprite.y = invisibleGroundPosY + 35;
   handleHearts(true);
   trex.y = invisibleGroundPosY - 30;//160
@@ -4195,7 +4196,7 @@ function turnCorridaInfinita() {
 function turnVooInfinito() {
   //if(!isMobile || isMobile && PcFeaturesOnMobile == true){
   game = "Voo Infinito";
-  heartsSprite.x = invisibleground.x + 20;
+  heartsSprite.x = 200 + 20;
   heartsSprite.y = invisibleGroundPosY + 28.5;//35 //invisibleground.y + 32.5
   handleHearts(true);
   bird.y = 160;
