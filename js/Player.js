@@ -364,7 +364,11 @@ class Player {
             for (var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex + 1) {
                 //console.log(allPlayers["player"+plrindex]);
                 console.log("playeri: " + plrindex);
-                allPlayerIndexsAvailable = allPlayerIndexsAvailable + "" + plrindex;
+                if (plrindex < 10) {
+                    allPlayerIndexsAvailable = allPlayerIndexsAvailable + "0" + plrindex;
+                } else {
+                    allPlayerIndexsAvailable = allPlayerIndexsAvailable + "" + plrindex;
+                }
                 console.log("allPlayersIndexsAvailable: " + allPlayerIndexsAvailable);
             }
         }
@@ -375,7 +379,11 @@ class Player {
                 //console.log(allPlayers["player"+plrindex]);
                 console.log("playeri: " + plrindex);
                 if (allPlayers["player" + plrindex] === undefined || allPlayers["player" + plrindex] === null) {
-                    allPlayerIndexsAvailable = allPlayerIndexsAvailable + "" + plrindex;
+                    if (plrindex < 10) {
+                        allPlayerIndexsAvailable = allPlayerIndexsAvailable + "0" + plrindex;
+                    } else {
+                        allPlayerIndexsAvailable = allPlayerIndexsAvailable + "" + plrindex;
+                    }
                     console.log("allPlayersIndexsAvailable: " + allPlayerIndexsAvailable);
                 }
             }
@@ -390,7 +398,10 @@ class Player {
     givePlayerIndex() {
         if (allPlayerIndexsAvailable !== "") {
             for (var plrindex = 1; plrindex <= MaxOfPlayers; plrindex = plrindex + 1) {
-                if (allPlayerIndexsAvailable.includes(plrindex) && this.index === null) {
+                if (allPlayerIndexsAvailable.includes("0" + plrindex) && this.index === null
+                    && plrindex < 10
+                    || allPlayerIndexsAvailable.includes(plrindex) && this.index === null
+                    && plrindex >= 10) {
                     this.index = plrindex;
                     if (this.index <= MaxOfPlayers && this.index !== null) {
                         this.updateCount(playerCount);
@@ -402,7 +413,6 @@ class Player {
         }
     }
 
-    //not being called?
     changePlayerIndex() {
         console.log("changePlayerIndex called!");
         var changedIndex = false;
