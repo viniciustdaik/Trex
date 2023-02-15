@@ -4457,7 +4457,7 @@ function getState() {
 
             var playerText = createElement("h2");
             playerText.style("font-size", '15px');
-            playerText.style("color", 'darkgray');//gold
+            playerText.style("color", 'black');//gold //'darkgray'
             playerText.position(-1000, -350);
 
             playersText.push(playerText);
@@ -4720,7 +4720,7 @@ function Multiplayer() {
 
       var playerText = createElement("h2");
       playerText.style("font-size", '15px');
-      playerText.style("color", 'darkgray');//gold
+      playerText.style("color", 'black');//gold //'darkgray'
       playerText.position(-1000, -350);
 
       playersText.push(playerText);
